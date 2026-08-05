@@ -1,0 +1,292 @@
+/*
+ * Design tokens.
+ *
+ * Two rules govern this file, and both are checked by `tokens.test.ts` rather than trusted.
+ *
+ * 1. MARK tones and TEXT tones are different sets. A colour that reads well as a chart fill is
+ *    usually too light to be text: `#0ca30c` is a fine "good" fill and only 3.35:1 on white.
+ *    Every `-text` token clears WCAG AA (4.5:1) against the exact background it renders on —
+ *    including the tinted washes, which are explicit hexes rather than alpha utilities so the
+ *    contrast is computable instead of depending on a compositing step.
+ * 2. The categorical domain hues were computed, not chosen. All 56 five-hue subsets of the
+ *    reference ramps were run through the palette validator in both modes; `blue / orange /
+ *    aqua / violet / red` was the best passing order (CVD ΔE 9.2 light, 9.4 dark against an 8.0
+ *    target; normal-vision ΔE 27.6 / 22.5 against a 15.0 floor).
+ *
+ * See docs/adr/0006-domain-colour-and-chart-encoding.md.
+ *
+ * Dark values are declared twice on purpose: once behind the OS preference, once behind the
+ * explicit `data-theme` stamp, so the in-app toggle wins in both directions.
+ */
+
+:root {
+  /* ---------------------------------------------------------------- surfaces */
+  --sp-page: #f7f7f5;
+  --sp-surface: #ffffff;
+  --sp-raised: #ffffff;
+  --sp-sunken: #f0efec;
+
+  /* -------------------------------------------------------- ink (text tones) */
+  --sp-ink: #0b0b0b;
+  --sp-ink-secondary: #52514e; /* 7.94:1 on the surface */
+  --sp-ink-muted: #696863; /* 5.58:1 on the surface, 4.86:1 on sunken */
+  --sp-ink-inverse: #ffffff;
+
+  /* ------------------------------------------------------------ lines, edges */
+  --sp-border: rgb(11 11 11 / 0.1);
+  --sp-border-strong: #c3c2b7;
+  --sp-gridline: #e1e0d9;
+
+  /* ------------------------------- domain MARK tones (fills, rings, borders) */
+  --sp-domain-1: #2a78d6;
+  --sp-domain-2: #eb6834;
+  --sp-domain-3: #1baf7a;
+  --sp-domain-4: #4a3aa7;
+  --sp-domain-5: #e34948;
+
+  /* ------------------------------------ domain TEXT tones, all ≥ 5:1 on the surface */
+  --sp-domain-1-text: #276ec5; /* 5.09:1 */
+  --sp-domain-2-text: #b55028; /* 5.07:1 */
+  --sp-domain-3-text: #137e58; /* 5.06:1 */
+  --sp-domain-4-text: #4a3aa7; /* 8.56:1 — already dark enough */
+  --sp-domain-5-text: #c5403f; /* 5.02:1 */
+
+  /* ------------------------------- sequential ramp (blue) — magnitude only */
+  --sp-seq-100: #cde2fb;
+  --sp-seq-250: #86b6ef;
+  --sp-seq-350: #5598e7;
+  --sp-seq-450: #2a78d6;
+  --sp-seq-600: #184f95;
+
+  /* Heatmap buckets, low → high. Light mode: magnitude reads as increasing darkness. */
+  --sp-heat-1: #86b6ef;
+  --sp-heat-2: #5598e7;
+  --sp-heat-3: #2a78d6;
+  --sp-heat-4: #184f95;
+
+  /* ---------------------- action fills; white sits on these, so they must clear AA */
+  --sp-action: #256abf; /* white on it: 5.39:1 (the #2a78d6 mark tone is only 4.42) */
+  --sp-action-danger: #b3312f; /* white on it: 6.18:1 */
+
+  /* ------------------------------------- gamification accents (icon + label) */
+  --sp-xp: #eda100;
+  --sp-streak: #eb6834;
+
+  /* --------------------------------------------------- progress track / fill */
+  --sp-track: #e1e0d9;
+
+  /* ------------------------ status washes, as explicit hexes rather than alpha */
+  --sp-good-wash: #e2f4e2;
+  --sp-warning-wash: #fef3dd;
+  --sp-critical-wash: #f9e7e7;
+  --sp-info-wash: #e5effa;
+
+  /* -------------------- status TEXT tones, all ≥ 5:1 against their own wash */
+  --sp-good-text: #097709; /* 5.00:1 on the wash, 5.75:1 on the surface */
+  --sp-warning-text: #87600e; /* 5.14:1 on the wash */
+  --sp-critical-text: #b53333; /* 5.05:1 on the wash */
+  --sp-info-text: #2365b4; /* 5.03:1 on the wash */
+}
+
+/*
+ * Status MARK colours are fixed across themes on purpose: a state must not change hue with the
+ * theme. Each one always ships with an icon and a label, never colour alone. These are fills
+ * only — for status text use the `-text` tones, and for badge backgrounds the `-wash` tones.
+ */
+:root {
+  --sp-good: #0ca30c;
+  --sp-warning: #fab219;
+  --sp-serious: #ec835a;
+  --sp-critical: #d03b3b;
+}
+
+/*
+ * The dark block below is deliberately duplicated across the two scopes. Tailwind 4 has no
+ * mixin, and a shared class would break the requirement that an explicit `data-theme` stamp
+ * beat the OS preference in both directions. `tokens.test.ts` asserts the two blocks stay
+ * identical so the duplication cannot drift.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    --sp-page: #0d0f14;
+    --sp-surface: #161a22;
+    --sp-raised: #1d222c;
+    --sp-sunken: #10131a;
+
+    --sp-ink: #ffffff;
+    --sp-ink-secondary: #c3c2b7; /* 9.73:1 */
+    --sp-ink-muted: #898781; /* 4.85:1 */
+    --sp-ink-inverse: #0b0b0b;
+
+    --sp-border: rgb(255 255 255 / 0.1);
+    --sp-border-strong: #383835;
+    --sp-gridline: #2c2c2a;
+
+    --sp-domain-1: #3987e5;
+    --sp-domain-2: #d95926;
+    --sp-domain-3: #199e70;
+    --sp-domain-4: #9085e9;
+    --sp-domain-5: #e66767;
+
+    --sp-domain-1-text: #3f8be6; /* 5.02:1 */
+    --sp-domain-2-text: #dc683a; /* 5.05:1 */
+    --sp-domain-3-text: #199e70; /* 5.12:1 */
+    --sp-domain-4-text: #9085e9; /* 5.57:1 */
+    --sp-domain-5-text: #e66767; /* 5.39:1 */
+
+    --sp-seq-100: #184f95;
+    --sp-seq-250: #256abf;
+    --sp-seq-350: #3987e5;
+    --sp-seq-450: #5598e7;
+    --sp-seq-600: #86b6ef;
+
+    /* Dark mode inverts the direction: on a dark surface, more magnitude reads as lighter. */
+    --sp-heat-1: #184f95;
+    --sp-heat-2: #256abf;
+    --sp-heat-3: #3987e5;
+    --sp-heat-4: #86b6ef;
+
+    /* Unchanged across themes: the fill provides its own background for the white label, so
+       lightening it in dark mode would only push the text below AA. */
+    --sp-action: #256abf;
+    --sp-action-danger: #b3312f;
+
+    --sp-xp: #c98500;
+    --sp-streak: #d95926;
+
+    --sp-track: #2c2c2a;
+
+    --sp-good-wash: #152a1f;
+    --sp-warning-wash: #383121;
+    --sp-critical-wash: #2c1e25;
+    --sp-info-wash: #182538;
+
+    --sp-good-text: #22ab22; /* 5.00:1 on the wash */
+    --sp-warning-text: #fab219; /* 7.03:1 on the wash */
+    --sp-critical-text: #dd7070; /* 5.02:1 on the wash */
+    --sp-info-text: #5996df; /* 5.04:1 on the wash */
+  }
+}
+
+:root[data-theme='dark'] {
+  --sp-page: #0d0f14;
+  --sp-surface: #161a22;
+  --sp-raised: #1d222c;
+  --sp-sunken: #10131a;
+
+  --sp-ink: #ffffff;
+  --sp-ink-secondary: #c3c2b7; /* 9.73:1 */
+  --sp-ink-muted: #898781; /* 4.85:1 */
+  --sp-ink-inverse: #0b0b0b;
+
+  --sp-border: rgb(255 255 255 / 0.1);
+  --sp-border-strong: #383835;
+  --sp-gridline: #2c2c2a;
+
+  --sp-domain-1: #3987e5;
+  --sp-domain-2: #d95926;
+  --sp-domain-3: #199e70;
+  --sp-domain-4: #9085e9;
+  --sp-domain-5: #e66767;
+
+  --sp-domain-1-text: #3f8be6; /* 5.02:1 */
+  --sp-domain-2-text: #dc683a; /* 5.05:1 */
+  --sp-domain-3-text: #199e70; /* 5.12:1 */
+  --sp-domain-4-text: #9085e9; /* 5.57:1 */
+  --sp-domain-5-text: #e66767; /* 5.39:1 */
+
+  --sp-seq-100: #184f95;
+  --sp-seq-250: #256abf;
+  --sp-seq-350: #3987e5;
+  --sp-seq-450: #5598e7;
+  --sp-seq-600: #86b6ef;
+
+  --sp-heat-1: #184f95;
+  --sp-heat-2: #256abf;
+  --sp-heat-3: #3987e5;
+  --sp-heat-4: #86b6ef;
+
+  --sp-action: #256abf;
+  --sp-action-danger: #b3312f;
+
+  --sp-xp: #c98500;
+  --sp-streak: #d95926;
+
+  --sp-track: #2c2c2a;
+
+  --sp-good-wash: #152a1f;
+  --sp-warning-wash: #383121;
+  --sp-critical-wash: #2c1e25;
+  --sp-info-wash: #182538;
+
+  --sp-good-text: #22ab22; /* 5.00:1 on the wash */
+  --sp-warning-text: #fab219; /* 7.03:1 on the wash */
+  --sp-critical-text: #dd7070; /* 5.02:1 on the wash */
+  --sp-info-text: #5996df; /* 5.04:1 on the wash */
+}
+
+/*
+ * Expose the roles to Tailwind so utilities like `bg-surface`, `text-ink-muted` and
+ * `bg-domain-3` exist. The values are `var(...)` references, which is what lets a single
+ * `data-theme` stamp reskin every utility at once.
+ */
+@theme inline {
+  --color-page: var(--sp-page);
+  --color-surface: var(--sp-surface);
+  --color-raised: var(--sp-raised);
+  --color-sunken: var(--sp-sunken);
+
+  --color-ink: var(--sp-ink);
+  --color-ink-secondary: var(--sp-ink-secondary);
+  --color-ink-muted: var(--sp-ink-muted);
+  --color-ink-inverse: var(--sp-ink-inverse);
+
+  --color-edge: var(--sp-border);
+  --color-edge-strong: var(--sp-border-strong);
+  --color-gridline: var(--sp-gridline);
+
+  --color-domain-1: var(--sp-domain-1);
+  --color-domain-2: var(--sp-domain-2);
+  --color-domain-3: var(--sp-domain-3);
+  --color-domain-4: var(--sp-domain-4);
+  --color-domain-5: var(--sp-domain-5);
+
+  --color-domain-1-text: var(--sp-domain-1-text);
+  --color-domain-2-text: var(--sp-domain-2-text);
+  --color-domain-3-text: var(--sp-domain-3-text);
+  --color-domain-4-text: var(--sp-domain-4-text);
+  --color-domain-5-text: var(--sp-domain-5-text);
+
+  --color-seq-100: var(--sp-seq-100);
+  --color-seq-250: var(--sp-seq-250);
+  --color-seq-350: var(--sp-seq-350);
+  --color-seq-450: var(--sp-seq-450);
+  --color-seq-600: var(--sp-seq-600);
+
+  --color-heat-1: var(--sp-heat-1);
+  --color-heat-2: var(--sp-heat-2);
+  --color-heat-3: var(--sp-heat-3);
+  --color-heat-4: var(--sp-heat-4);
+
+  --color-action: var(--sp-action);
+  --color-action-danger: var(--sp-action-danger);
+
+  --color-xp: var(--sp-xp);
+  --color-streak: var(--sp-streak);
+  --color-track: var(--sp-track);
+
+  --color-good: var(--sp-good);
+  --color-warning: var(--sp-warning);
+  --color-serious: var(--sp-serious);
+  --color-critical: var(--sp-critical);
+
+  --color-good-wash: var(--sp-good-wash);
+  --color-warning-wash: var(--sp-warning-wash);
+  --color-critical-wash: var(--sp-critical-wash);
+  --color-info-wash: var(--sp-info-wash);
+
+  --color-good-text: var(--sp-good-text);
+  --color-warning-text: var(--sp-warning-text);
+  --color-critical-text: var(--sp-critical-text);
+  --color-info-text: var(--sp-info-text);
+}

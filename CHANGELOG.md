@@ -21,11 +21,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vercel configuration: SPA rewrite, immutable asset caching, and a restrictive
   Content-Security-Policy (the app makes no network calls, so `connect-src 'self'` is real).
 - Documentation: `docs/architecture.md`, `docs/content-authoring.md`, and ADRs 0001–0005.
+- Design system: light/dark design tokens, and the `Button`, `Card`, `Badge`, `ProgressBar`,
+  `ProgressRing` and `StatTile` primitives.
+- Accessibility gates: a unit test that computes WCAG contrast for every text token against the
+  background it actually renders on, and four axe passes in Playwright (light, OS dark, and
+  explicitly stamped dark) plus tests proving the theme stamp beats the OS preference both ways.
 
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no
   ESLint 10 release and `typescript-eslint` does not accept TypeScript ≥ 6.1. See
   [ADR-0003](docs/adr/0003-pin-lint-toolchain-versions.md).
+- Domain colours are wayfinding accents, not a data encoding: no five-hue palette keeps every
+  pair distinguishable with all five on screen, so progress uses a single sequential ramp and
+  every domain mark carries its number. See
+  [ADR-0006](docs/adr/0006-domain-colour-and-chart-encoding.md).
 
 [Unreleased]: https://github.com/Musmus05/security-plus-trainer/commits/main
