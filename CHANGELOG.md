@@ -24,8 +24,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Design system: light/dark design tokens, and the `Button`, `Card`, `Badge`, `ProgressBar`,
   `ProgressRing` and `StatTile` primitives.
 - Accessibility gates: a unit test that computes WCAG contrast for every text token against the
-  background it actually renders on, and four axe passes in Playwright (light, OS dark, and
-  explicitly stamped dark) plus tests proving the theme stamp beats the OS preference both ways.
+  background it actually renders on, and axe passes in Playwright over every route in both themes,
+  plus tests proving the theme stamp beats the OS preference both ways.
+- Application shell: routed layout with lazily loaded pages, bottom navigation on phones and a side
+  rail on wide screens, a skip link, and a settings screen.
+- Bilingual interface through i18next, with a test asserting the French and English catalogues share
+  exactly the same keys and interpolation placeholders.
+- Persisted store (Zustand) holding settings, versioned with a migration runner. The persisted blob
+  is re-validated field by field on rehydrate, so a hand-edited or half-written value costs one
+  preference rather than the session.
+- `Clock` and `Rng` ports with a fixed clock and a seeded generator, so the streak, spaced-repetition
+  and exam-sampling logic that lands next is deterministically testable.
+- Calendar-day arithmetic for streaks, which counts local days rather than subtracting milliseconds —
+  the latter is wrong twice a year in any timezone with daylight saving.
+- Graceful storage resolution: the app falls back to in-memory storage when `localStorage` is absent,
+  throws on access (Safari private browsing) or rejects writes (over quota), losing persistence
+  rather than the screen.
 
 ### Notes
 
