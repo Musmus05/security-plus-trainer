@@ -90,20 +90,26 @@ describe('design tokens', () => {
      * badge (dark red text on a pale red wash) passed here and was caught later by the axe pass
      * in a browser. The pairing below is the fix: each tone is named with what sits behind it.
      */
+    /*
+     * `--sp-raised` is in this list because leaving it out cost a real axe failure. In dark mode
+     * raised is *lighter* than surface, so a tone that clears AA on surface can miss on a raised
+     * card — `--sp-ink-muted` was 4.85:1 on surface and 4.44:1 on raised, and the violation only
+     * surfaced once a raised card appeared on the learning path.
+     *
+     * Every neutral text tone is therefore checked against every background it can land on.
+     */
+    const BACKGROUNDS = ['--sp-surface', '--sp-raised', '--sp-sunken'];
+    const NEUTRAL_TEXT = ['--sp-ink', '--sp-ink-secondary', '--sp-ink-muted'];
+    const DOMAIN_TEXT = [1, 2, 3, 4, 5].map((n) => `--sp-domain-${String(n)}-text`);
+
     const PAIRINGS: { role: string; on: string }[] = [
-      { role: '--sp-ink', on: '--sp-surface' },
-      { role: '--sp-ink-secondary', on: '--sp-surface' },
-      { role: '--sp-ink-muted', on: '--sp-surface' },
-      { role: '--sp-ink', on: '--sp-sunken' },
-      { role: '--sp-ink-secondary', on: '--sp-sunken' },
-      { role: '--sp-ink-muted', on: '--sp-sunken' },
-      // Domain labels sit on the surface; the mark tones they pair with are far too light for text.
-      { role: '--sp-domain-1-text', on: '--sp-surface' },
-      { role: '--sp-domain-2-text', on: '--sp-surface' },
-      { role: '--sp-domain-3-text', on: '--sp-surface' },
-      { role: '--sp-domain-4-text', on: '--sp-surface' },
-      { role: '--sp-domain-5-text', on: '--sp-surface' },
-      // Badge text sits on its own wash, which is a lighter background than the surface.
+      ...NEUTRAL_TEXT.flatMap((role) => BACKGROUNDS.map((on) => ({ role, on }))),
+      // Domain labels appear on cards, which may be raised.
+      ...DOMAIN_TEXT.flatMap((role) => [
+        { role, on: '--sp-surface' },
+        { role, on: '--sp-raised' },
+      ]),
+      // Badge text sits on its own wash rather than on any surface.
       { role: '--sp-good-text', on: '--sp-good-wash' },
       { role: '--sp-warning-text', on: '--sp-warning-wash' },
       { role: '--sp-critical-text', on: '--sp-critical-wash' },

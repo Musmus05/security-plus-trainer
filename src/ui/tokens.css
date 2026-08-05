@@ -115,7 +115,7 @@
 
     --sp-ink: #ffffff;
     --sp-ink-secondary: #c3c2b7; /* 9.73:1 */
-    --sp-ink-muted: #898781; /* 4.85:1 */
+    --sp-ink-muted: #8f8d87; /* 5.25:1 on surface, 4.80:1 on the lighter raised surface */
     --sp-ink-inverse: #0b0b0b;
 
     --sp-border: rgb(255 255 255 / 0.1);
@@ -176,7 +176,7 @@
 
   --sp-ink: #ffffff;
   --sp-ink-secondary: #c3c2b7; /* 9.73:1 */
-  --sp-ink-muted: #898781; /* 4.85:1 */
+  --sp-ink-muted: #8f8d87; /* 5.25:1 on surface, 4.80:1 on the lighter raised surface */
   --sp-ink-inverse: #0b0b0b;
 
   --sp-border: rgb(255 255 255 / 0.1);
