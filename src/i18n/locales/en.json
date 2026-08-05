@@ -1,0 +1,107 @@
+{
+  "app": {
+    "name": "Security+ Trainer",
+    "tagline": "Prepare for CompTIA Security+ {{code}}",
+    "skipToContent": "Skip to main content"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "dashboard": "Home",
+    "path": "Learn",
+    "exam": "Mock exam",
+    "flashcards": "Flashcards",
+    "glossary": "Glossary",
+    "settings": "Settings"
+  },
+  "topbar": {
+    "streak": "Streak",
+    "streakDays": "{{count}} day",
+    "streakDays_other": "{{count}} days",
+    "xp": "XP",
+    "level": "Level {{level}}",
+    "dailyGoal": "Daily goal",
+    "dailyGoalProgress": "{{earned}} of {{goal}} XP today"
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "Match my system",
+    "light": "Light",
+    "dark": "Dark",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français",
+    "switchTo": "Switch interface to {{language}}"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "languageSection": "Language",
+    "study": "Study",
+    "data": "Your data",
+    "questionLanguage": "Question language",
+    "questionLanguageInterface": "Same as the interface",
+    "questionLanguageEnglish": "Always English",
+    "questionLanguageHelp": "The Security+ exam is only delivered in English. Practising with English question text is closer to exam day, whatever language you read the lessons in.",
+    "dailyGoal": "Daily XP goal",
+    "sound": "Sound effects",
+    "reduceMotion": "Reduce motion",
+    "reduceMotionSystem": "Match my system",
+    "export": "Export my progress",
+    "exportHelp": "Downloads a JSON file. Your progress lives in this browser only, so this is the only backup there is.",
+    "import": "Import progress",
+    "reset": "Reset everything",
+    "resetConfirm": "This erases your XP, streak, quiz results and flashcard schedule. It cannot be undone.",
+    "on": "On",
+    "off": "Off"
+  },
+  "page": {
+    "dashboard": { "title": "Your progress" },
+    "path": {
+      "title": "Learning path",
+      "subtitle": "5 domains, 28 objectives",
+      "placeholder": "The domain and objective tree arrives with the content model."
+    },
+    "lesson": {
+      "title": "Lesson",
+      "placeholder": "Lesson content arrives with the content model."
+    },
+    "quiz": { "title": "Quiz", "placeholder": "The quiz engine arrives in its own change." },
+    "exam": {
+      "title": "Mock exam",
+      "subtitle": "{{questions}} questions in {{minutes}} minutes · pass at {{passing}}",
+      "placeholder": "The exam simulator arrives in its own change."
+    },
+    "flashcards": {
+      "title": "Flashcards",
+      "placeholder": "Spaced repetition arrives in its own change."
+    },
+    "glossary": {
+      "title": "Acronyms",
+      "placeholder": "The acronym appendix arrives with the content model."
+    }
+  },
+  "common": {
+    "continue": "Continue",
+    "back": "Back",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading…",
+    "comingSoon": "Coming soon"
+  },
+  "error": {
+    "title": "Something broke",
+    "description": "This screen failed to load. Your progress is saved and untouched.",
+    "retry": "Try again",
+    "details": "Technical details"
+  },
+  "notFound": {
+    "title": "No such page",
+    "description": "That address does not match anything in the app.",
+    "home": "Go to your progress"
+  }
+}

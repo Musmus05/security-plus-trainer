@@ -1,0 +1,107 @@
+{
+  "app": {
+    "name": "Security+ Trainer",
+    "tagline": "Préparer la certification CompTIA Security+ {{code}}",
+    "skipToContent": "Aller au contenu principal"
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "dashboard": "Accueil",
+    "path": "Apprendre",
+    "exam": "Examen blanc",
+    "flashcards": "Flashcards",
+    "glossary": "Glossaire",
+    "settings": "Réglages"
+  },
+  "topbar": {
+    "streak": "Série",
+    "streakDays": "{{count}} jour",
+    "streakDays_other": "{{count}} jours",
+    "xp": "XP",
+    "level": "Niveau {{level}}",
+    "dailyGoal": "Objectif du jour",
+    "dailyGoalProgress": "{{earned}} XP sur {{goal}} aujourd'hui"
+  },
+  "theme": {
+    "label": "Thème",
+    "system": "Comme mon système",
+    "light": "Clair",
+    "dark": "Sombre",
+    "switchToDark": "Passer au thème sombre",
+    "switchToLight": "Passer au thème clair"
+  },
+  "language": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français",
+    "switchTo": "Passer l'interface en {{language}}"
+  },
+  "settings": {
+    "title": "Réglages",
+    "appearance": "Apparence",
+    "languageSection": "Langue",
+    "study": "Révision",
+    "data": "Tes données",
+    "questionLanguage": "Langue des questions",
+    "questionLanguageInterface": "Comme l'interface",
+    "questionLanguageEnglish": "Toujours en anglais",
+    "questionLanguageHelp": "L'examen Security+ n'existe qu'en anglais. S'entraîner avec des énoncés en anglais rapproche des conditions réelles, quelle que soit la langue dans laquelle tu lis les leçons.",
+    "dailyGoal": "Objectif d'XP quotidien",
+    "sound": "Effets sonores",
+    "reduceMotion": "Réduire les animations",
+    "reduceMotionSystem": "Comme mon système",
+    "export": "Exporter ma progression",
+    "exportHelp": "Télécharge un fichier JSON. Ta progression ne vit que dans ce navigateur : c'est la seule sauvegarde qui existe.",
+    "import": "Importer une progression",
+    "reset": "Tout réinitialiser",
+    "resetConfirm": "Cela effacera tes XP, ta série, tes résultats de quiz et le planning de tes flashcards. C'est irréversible.",
+    "on": "Activé",
+    "off": "Désactivé"
+  },
+  "page": {
+    "dashboard": { "title": "Ta progression" },
+    "path": {
+      "title": "Parcours",
+      "subtitle": "5 domaines, 28 objectifs",
+      "placeholder": "L'arborescence des domaines et objectifs arrive avec le modèle de contenu."
+    },
+    "lesson": {
+      "title": "Leçon",
+      "placeholder": "Le contenu des leçons arrive avec le modèle de contenu."
+    },
+    "quiz": { "title": "Quiz", "placeholder": "Le moteur de quiz arrive dans sa propre étape." },
+    "exam": {
+      "title": "Examen blanc",
+      "subtitle": "{{questions}} questions en {{minutes}} minutes · réussite à {{passing}}",
+      "placeholder": "Le simulateur d'examen arrive dans sa propre étape."
+    },
+    "flashcards": {
+      "title": "Flashcards",
+      "placeholder": "La répétition espacée arrive dans sa propre étape."
+    },
+    "glossary": {
+      "title": "Acronymes",
+      "placeholder": "L'annexe des acronymes arrive avec le modèle de contenu."
+    }
+  },
+  "common": {
+    "continue": "Continuer",
+    "back": "Retour",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "loading": "Chargement…",
+    "comingSoon": "Bientôt disponible"
+  },
+  "error": {
+    "title": "Quelque chose a cassé",
+    "description": "Cet écran n'a pas pu se charger. Ta progression est enregistrée et intacte.",
+    "retry": "Réessayer",
+    "details": "Détails techniques"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Cette adresse ne correspond à rien dans l'application.",
+    "home": "Voir ma progression"
+  }
+}
