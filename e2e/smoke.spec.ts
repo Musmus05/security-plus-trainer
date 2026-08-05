@@ -18,6 +18,8 @@ const ROUTES = [
   '/',
   '/path',
   '/objective/4.6',
+  '/objective/1.1',
+  '/objective/1.1/quiz',
   '/exam',
   '/flashcards',
   '/glossary',
