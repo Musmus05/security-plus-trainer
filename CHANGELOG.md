@@ -50,6 +50,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A browsable learning path and objective pages showing each objective’s official scope, with the
   English title kept visible beneath the French one.
 
+- Gamification engine as pure, injected-clock logic: an XP economy, an invertible level curve with
+  security-career rank titles, goal-based daily streaks with freezes, and mastery crowns per
+  objective. `src/domain/**` sits at 99.2% statement coverage.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no
