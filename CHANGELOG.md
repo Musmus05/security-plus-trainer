@@ -41,6 +41,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   throws on access (Safari private browsing) or rejects writes (over quota), losing persistence
   rather than the screen.
 
+- The SY0-701 exam outline: 5 domains and 28 objectives, with English titles quoted verbatim from
+  the official objectives document, French working translations, and each objective’s 176 official
+  sub-topics. Every English string was cross-checked verbatim against the source document.
+- Zod schemas for the whole content model — objectives, domains, questions, flashcards, acronyms —
+  with the content gate extended to validate the outline and cross-check it against the exam
+  metadata.
+- A browsable learning path and objective pages showing each objective’s official scope, with the
+  English title kept visible beneath the French one.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

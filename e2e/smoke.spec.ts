@@ -14,7 +14,15 @@ async function accessibilityViolations(page: Page) {
   }));
 }
 
-const ROUTES = ['/', '/path', '/exam', '/flashcards', '/glossary', '/settings'] as const;
+const ROUTES = [
+  '/',
+  '/path',
+  '/objective/4.6',
+  '/exam',
+  '/flashcards',
+  '/glossary',
+  '/settings',
+] as const;
 
 test.describe('application shell', () => {
   test('serves the app', async ({ page }) => {

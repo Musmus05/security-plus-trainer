@@ -15,12 +15,12 @@
   },
   "topbar": {
     "streak": "Streak",
-    "streakDays": "{{count}} day",
-    "streakDays_other": "{{count}} days",
     "xp": "XP",
     "level": "Level {{level}}",
     "dailyGoal": "Daily goal",
-    "dailyGoalProgress": "{{earned}} of {{goal}} XP today"
+    "dailyGoalProgress": "{{earned}} of {{goal}} XP today",
+    "streakDays_one": "{{count}} day",
+    "streakDays_other": "{{count}} days"
   },
   "theme": {
     "label": "Theme",
@@ -59,7 +59,9 @@
     "off": "Off"
   },
   "page": {
-    "dashboard": { "title": "Your progress" },
+    "dashboard": {
+      "title": "Your progress"
+    },
     "path": {
       "title": "Learning path",
       "subtitle": "5 domains, 28 objectives",
@@ -69,7 +71,10 @@
       "title": "Lesson",
       "placeholder": "Lesson content arrives with the content model."
     },
-    "quiz": { "title": "Quiz", "placeholder": "The quiz engine arrives in its own change." },
+    "quiz": {
+      "title": "Quiz",
+      "placeholder": "The quiz engine arrives in its own change."
+    },
     "exam": {
       "title": "Mock exam",
       "subtitle": "{{questions}} questions in {{minutes}} minutes · pass at {{passing}}",
@@ -103,5 +108,18 @@
     "title": "No such page",
     "description": "That address does not match anything in the app.",
     "home": "Go to your progress"
+  },
+  "path": {
+    "domainMastery": "Domain {{domain}} mastery",
+    "weight": "{{percent}}% of the exam",
+    "topicCount_one": "{{count}} official topic",
+    "topicCount_other": "{{count}} official topics"
+  },
+  "lesson": {
+    "backToPath": "Back to the learning path",
+    "scopeTitle": "What the exam expects here",
+    "scopeHelp": "The official sub-topics for this objective, in CompTIA’s own wording. A lesson that skips one has a hole in it.",
+    "unknownTitle": "No such objective",
+    "unknownBody": "\"{{id}}\" is not an SY0-701 objective number."
   }
 }
