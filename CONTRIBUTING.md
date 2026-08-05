@@ -15,22 +15,22 @@ gh pr create --fill
 
 ### Branch naming
 
-| Prefix | Use for |
-| --- | --- |
-| `feat/` | A new user-facing capability |
-| `fix/` | A bug fix |
-| `chore/` | Tooling, CI, dependencies, housekeeping |
-| `docs/` | Documentation only |
-| `content/` | Lessons, questions, flashcards, glossary entries |
-| `refactor/` | Behaviour-preserving restructuring |
-| `test/` | Tests only |
+| Prefix      | Use for                                          |
+| ----------- | ------------------------------------------------ |
+| `feat/`     | A new user-facing capability                     |
+| `fix/`      | A bug fix                                        |
+| `chore/`    | Tooling, CI, dependencies, housekeeping          |
+| `docs/`     | Documentation only                               |
+| `content/`  | Lessons, questions, flashcards, glossary entries |
+| `refactor/` | Behaviour-preserving restructuring               |
+| `test/`     | Tests only                                       |
 
 Use kebab-case after the prefix: `content/domain-2-threats`, not `content/Domain_2`.
 
 ## Commit messages
 
-[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by commitlint
-in a `commit-msg` hook. The subject is imperative, lowercase, and has no trailing period.
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by commitlint in a
+`commit-msg` hook. The subject is imperative, lowercase, and has no trailing period.
 
 ```
 <type>(<scope>): <subject>
@@ -43,9 +43,8 @@ in a `commit-msg` hook. The subject is imperative, lowercase, and has no trailin
 **Types:** `feat`, `fix`, `chore`, `docs`, `content`, `refactor`, `test`, `perf`, `style`, `ci`,
 `build`, `revert`.
 
-**Scopes:** `quiz`, `exam`, `flashcards`, `glossary`, `dashboard`, `path`, `lesson`,
-`gamification`, `srs`, `i18n`, `ui`, `store`, `content-model`, `domain-1` … `domain-5`, `ci`,
-`deps`, `repo`.
+**Scopes:** `quiz`, `exam`, `flashcards`, `glossary`, `dashboard`, `path`, `lesson`, `gamification`,
+`srs`, `i18n`, `ui`, `store`, `content-model`, `domain-1` … `domain-5`, `ci`, `deps`, `repo`.
 
 Good:
 
@@ -85,8 +84,8 @@ CI runs every one of these on the pull request. A red check blocks the merge.
    makes the gamification, SRS, and exam engines deterministically testable.
 2. **Content is data, not code.** Lessons are MDX; questions, flashcards, and acronyms are typed
    modules validated by Zod. No pedagogical prose inside components.
-3. **Content is lazy-loaded per objective.** Never add a static import that pulls the whole
-   question bank into the initial bundle.
+3. **Content is lazy-loaded per objective.** Never add a static import that pulls the whole question
+   bank into the initial bundle.
 4. **Persisted state is versioned.** Any change to the persisted shape ships with a bump of
    `STORE_VERSION` and a migration, plus a test that migrates a fixture of the previous shape.
 5. **Both languages, or neither.** A content PR that adds an English lesson without its French
@@ -94,8 +93,8 @@ CI runs every one of these on the pull request. A red check blocks the merge.
 
 ## Writing content
 
-See [`docs/content-authoring.md`](./docs/content-authoring.md) for the lesson template, the
-question quality checklist, and the rules on French terminology.
+See [`docs/content-authoring.md`](./docs/content-authoring.md) for the lesson template, the question
+quality checklist, and the rules on French terminology.
 
 One rule overrides all others: **never** submit content derived from recalled or leaked exam
 questions. See [`NOTICE.md`](./NOTICE.md).
