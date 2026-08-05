@@ -135,12 +135,12 @@ test.describe('settings persistence', () => {
   test('a chosen daily goal survives a reload', async ({ page }) => {
     await page.goto('/settings');
 
-    await page.getByRole('radio', { name: '250 XP' }).check();
+    await page.getByRole('radio', { name: '250 XP', exact: true }).check();
 
     await waitForPersisted(page, '"dailyGoalXp":250');
     await page.reload();
 
-    await expect(page.getByRole('radio', { name: '250 XP' })).toBeChecked();
+    await expect(page.getByRole('radio', { name: '250 XP', exact: true })).toBeChecked();
   });
 });
 

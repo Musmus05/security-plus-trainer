@@ -54,6 +54,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   security-career rank titles, goal-based daily streaks with freezes, and mastery crowns per
   objective. `src/domain/**` sits at 99.2% statement coverage.
 
+- A working dashboard: real streak, XP, level and rank, a daily-goal bar, per-domain mastery rings,
+  a 26-week activity heatmap scaled to the learner’s own goal, and a “continue” suggestion that
+  prioritises the heaviest exam domain.
+- Objectives can be marked read, which awards XP once and raises a mastery crown.
+- The persisted store now holds gamification state and per-objective progress, at `STORE_VERSION` 2
+  with a migration and a test that a version 1 blob keeps its settings.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

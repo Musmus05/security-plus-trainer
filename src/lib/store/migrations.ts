@@ -10,12 +10,22 @@
  * shape, and writing a fake predecessor just to have something to test would prove nothing.
  */
 
-export const STORE_VERSION = 1;
+export const STORE_VERSION = 2;
 
 export type Migration = (state: unknown) => unknown;
 
 /** Keyed by the version being migrated *from*. */
-export const MIGRATIONS: Record<number, Migration> = {};
+export const MIGRATIONS: Record<number, Migration> = {
+  /**
+   * 1 → 2: gamification and per-objective progress joined settings.
+   *
+   * Purely additive, so nothing is rewritten — the two new keys are simply absent, and `merge`
+   * coerces a missing key to its initial value. The migration exists anyway rather than relying on
+   * that: a version bump with no entry here is treated as unrecoverable and discards the learner's
+   * settings, which is a bad way to find out the table was not updated.
+   */
+  1: (state) => state,
+};
 
 export interface MigrationOutcome {
   state: unknown;
