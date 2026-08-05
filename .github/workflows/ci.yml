@@ -74,7 +74,7 @@ jobs:
         run: npm ci
 
       - name: Reuse the verified build
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist
