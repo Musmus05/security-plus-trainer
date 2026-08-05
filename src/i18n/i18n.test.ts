@@ -76,6 +76,8 @@ describe('translation catalogues', () => {
       'topbar.xp',
       // Interpolation plus a unit that is not translated. There is nothing here to translate.
       'dashboard.heatmapCell',
+      // Same word in both languages.
+      'quiz.kind.discrimination',
     ]);
 
     const english = new Map(leafEntries(en));

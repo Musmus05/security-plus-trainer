@@ -153,5 +153,35 @@
       "no-quiz": "Prêt pour un quiz",
       "weak-accuracy": "À revoir"
     }
+  },
+  "quiz": {
+    "backToObjective": "Retour à l’objectif",
+    "progress": "Question {{current}} sur {{total}}",
+    "progressLabel": "Progression du quiz",
+    "check": "Vérifier",
+    "nextQuestion": "Question suivante",
+    "seeResult": "Voir le résultat",
+    "answerLabel": "Réponses possibles",
+    "multiSelect": "Plusieurs réponses attendues",
+    "correctAnswer": "Bonne réponse",
+    "yourWrongAnswer": "Ta réponse, incorrecte",
+    "resultTitle": "Résultat",
+    "accuracy": "{{percent}} % de réussite",
+    "accuracyLabel": "Précision",
+    "retryWrong_one": "Refaire la {{count}} question manquée",
+    "retryWrong_other": "Refaire les {{count}} questions manquées",
+    "restart": "Nouveau quiz",
+    "noQuestions": "Aucune question n’a encore été rédigée pour cet objectif. Elles arrivent avec le contenu de son domaine.",
+    "startQuiz": "Passer le quiz",
+    "kind": {
+      "recall": "Restitution",
+      "discrimination": "Discrimination",
+      "scenario": "Scénario"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    }
   }
 }

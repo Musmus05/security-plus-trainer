@@ -14,8 +14,9 @@ import type { z } from 'zod';
 
 import { EXAM_META } from '../src/content/exam-meta.ts';
 import { examMetaSchema } from '../src/content/exam-meta.schema.ts';
-import { ALL_OBJECTIVES, DOMAINS } from '../src/content/exam/sy0-701/domains.ts';
-import { examOutlineSchema } from '../src/content/schemas.ts';
+import { ALL_OBJECTIVES, DOMAINS, findObjective } from '../src/content/exam/sy0-701/domains.ts';
+import { QUESTIONS_1_1 } from '../src/content/exam/sy0-701/questions/1-1.ts';
+import { examOutlineSchema, type Question, questionSchema } from '../src/content/schemas.ts';
 
 interface Violation {
   source: string;
@@ -110,6 +111,83 @@ for (const objective of ALL_OBJECTIVES) {
 for (const domain of DOMAINS) {
   if (domain.name.fr === domain.name.en) {
     fail('exam-outline', domain.number, 'the French domain name is identical to the English one');
+  }
+}
+
+/* -------------------------------------------------------------- question banks */
+
+/** Every authored bank. New objectives are added here as their questions are written. */
+const BANKS: { objective: string; questions: Question[] }[] = [
+  { objective: '1.1', questions: QUESTIONS_1_1 },
+];
+
+/** From docs/content-authoring.md. */
+const MIN_QUESTIONS_PER_OBJECTIVE = 15;
+
+/**
+ * A distractor with a one-line explanation is schema-valid and pedagogically useless. The floor is
+ * deliberately low: it catches placeholder text, not thin writing. Whether an explanation actually
+ * explains is a review judgement, not a machine one.
+ */
+const MIN_EXPLANATION_LENGTH = 40;
+
+const seenQuestionIds = new Set<string>();
+
+for (const bank of BANKS) {
+  const source = `questions/${bank.objective}`;
+  sourcesChecked += 1;
+
+  if (findObjective(bank.objective) === undefined) {
+    fail(source, 'objective', `no such objective: ${bank.objective}`);
+  }
+
+  if (bank.questions.length < MIN_QUESTIONS_PER_OBJECTIVE) {
+    fail(
+      source,
+      'count',
+      `${String(bank.questions.length)} questions, below the documented minimum of ` +
+        String(MIN_QUESTIONS_PER_OBJECTIVE),
+    );
+  }
+
+  for (const [index, question] of bank.questions.entries()) {
+    const at = `[${String(index)}]`;
+
+    const result = questionSchema.safeParse(question);
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        fail(source, `${at}.${issue.path.map(String).join('.')}`, issue.message);
+      }
+      // Everything below assumes the shape held.
+      continue;
+    }
+
+    // Ids must be unique across the whole corpus, not just within a bank: the mock exam pools them.
+    if (seenQuestionIds.has(question.id)) {
+      fail(source, `${at}.id`, `duplicate question id ${question.id}`);
+    }
+    seenQuestionIds.add(question.id);
+
+    if (question.objective !== bank.objective) {
+      fail(
+        source,
+        `${at}.objective`,
+        `question claims objective ${question.objective} but is filed under ${bank.objective}`,
+      );
+    }
+
+    for (const [optionIndex, option] of question.options.entries()) {
+      for (const locale of ['en', 'fr'] as const) {
+        const text = option.explanation[locale];
+        if (text.length < MIN_EXPLANATION_LENGTH) {
+          fail(
+            source,
+            `${at}.options[${String(optionIndex)}].explanation.${locale}`,
+            `${String(text.length)} characters; too short to explain anything`,
+          );
+        }
+      }
+    }
   }
 }
 

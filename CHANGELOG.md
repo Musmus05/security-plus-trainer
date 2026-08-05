@@ -61,6 +61,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The persisted store now holds gamification state and per-objective progress, at `STORE_VERSION` 2
   with a migration and a test that a version 1 blob keeps its settings.
 
+- Objective quizzes: a pure session engine with seeded shuffling of both question and option
+  order, per-option explanations shown for every answer rather than only the chosen one, a
+  retry-the-misses pass, and a question-language toggle independent of the interface language.
+- The first reference question bank: 15 original questions for objective 1.1, with the content gate
+  extended to validate banks (schema, unique ids, id/objective agreement, a minimum of 15 questions,
+  and a minimum explanation length on every option).
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

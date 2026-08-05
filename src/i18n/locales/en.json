@@ -153,5 +153,35 @@
       "no-quiz": "Ready for a quiz",
       "weak-accuracy": "Worth another look"
     }
+  },
+  "quiz": {
+    "backToObjective": "Back to the objective",
+    "progress": "Question {{current}} of {{total}}",
+    "progressLabel": "Quiz progress",
+    "check": "Check",
+    "nextQuestion": "Next question",
+    "seeResult": "See result",
+    "answerLabel": "Answer options",
+    "multiSelect": "Select all that apply",
+    "correctAnswer": "Correct answer",
+    "yourWrongAnswer": "Your answer, incorrect",
+    "resultTitle": "Result",
+    "accuracy": "{{percent}}% correct",
+    "accuracyLabel": "Accuracy",
+    "retryWrong_one": "Retry the {{count}} question you missed",
+    "retryWrong_other": "Retry the {{count}} questions you missed",
+    "restart": "New quiz",
+    "noQuestions": "No questions have been written for this objective yet. They arrive with the content for its domain.",
+    "startQuiz": "Take the quiz",
+    "kind": {
+      "recall": "Recall",
+      "discrimination": "Discrimination",
+      "scenario": "Scenario"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    }
   }
 }

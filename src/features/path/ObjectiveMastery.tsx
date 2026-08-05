@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { crownsFor, MAX_CROWNS, nextCrownHint } from '@/domain/gamification';
 import { toObjectiveProgress } from '@/features/dashboard/useDashboard';
 import { useAppStore } from '@/lib/store/store';
-import { Badge, Button, Card, cn } from '@/ui';
+import { hasQuestions } from '@/content/question-bank';
+import { Badge, Button, ButtonLink, Card, cn } from '@/ui';
 
 export interface ObjectiveMasteryProps {
   objectiveId: string;
@@ -52,20 +53,31 @@ export function ObjectiveMastery({ objectiveId }: ObjectiveMasteryProps) {
         </p>
       </div>
 
-      {progress.lessonRead ? (
-        <Badge tone="good">
-          <Check aria-hidden className="size-3" />
-          {t('lesson.alreadyRead')}
-        </Badge>
-      ) : (
-        <Button
-          onClick={() => {
-            markLessonRead(objectiveId);
-          }}
-        >
-          {t('lesson.markRead')}
-        </Button>
-      )}
+      <div className="flex flex-wrap items-center gap-3">
+        {progress.lessonRead ? (
+          <Badge tone="good">
+            <Check aria-hidden className="size-3" />
+            {t('lesson.alreadyRead')}
+          </Badge>
+        ) : (
+          <Button
+            variant="secondary"
+            onClick={() => {
+              markLessonRead(objectiveId);
+            }}
+          >
+            {t('lesson.markRead')}
+          </Button>
+        )}
+
+        {/*
+          Only offered where questions exist. A "take the quiz" button that leads to "no questions
+          yet" is worse than no button — it reads as a broken feature rather than unwritten content.
+        */}
+        {hasQuestions(objectiveId) && (
+          <ButtonLink to={`/objective/${objectiveId}/quiz`}>{t('quiz.startQuiz')}</ButtonLink>
+        )}
+      </div>
     </Card>
   );
 }
