@@ -15,12 +15,12 @@
   },
   "topbar": {
     "streak": "Série",
-    "streakDays": "{{count}} jour",
-    "streakDays_other": "{{count}} jours",
     "xp": "XP",
     "level": "Niveau {{level}}",
     "dailyGoal": "Objectif du jour",
-    "dailyGoalProgress": "{{earned}} XP sur {{goal}} aujourd'hui"
+    "dailyGoalProgress": "{{earned}} XP sur {{goal}} aujourd’hui",
+    "streakDays_one": "{{count}} jour",
+    "streakDays_other": "{{count}} jours"
   },
   "theme": {
     "label": "Thème",
@@ -34,7 +34,7 @@
     "label": "Langue",
     "en": "English",
     "fr": "Français",
-    "switchTo": "Passer l'interface en {{language}}"
+    "switchTo": "Passer l’interface en {{language}}"
   },
   "settings": {
     "title": "Réglages",
@@ -43,37 +43,42 @@
     "study": "Révision",
     "data": "Tes données",
     "questionLanguage": "Langue des questions",
-    "questionLanguageInterface": "Comme l'interface",
+    "questionLanguageInterface": "Comme l’interface",
     "questionLanguageEnglish": "Toujours en anglais",
-    "questionLanguageHelp": "L'examen Security+ n'existe qu'en anglais. S'entraîner avec des énoncés en anglais rapproche des conditions réelles, quelle que soit la langue dans laquelle tu lis les leçons.",
-    "dailyGoal": "Objectif d'XP quotidien",
+    "questionLanguageHelp": "L’examen Security+ n’existe qu’en anglais. S’entraîner avec des énoncés en anglais rapproche des conditions réelles, quelle que soit la langue dans laquelle tu lis les leçons.",
+    "dailyGoal": "Objectif d’XP quotidien",
     "sound": "Effets sonores",
     "reduceMotion": "Réduire les animations",
     "reduceMotionSystem": "Comme mon système",
     "export": "Exporter ma progression",
-    "exportHelp": "Télécharge un fichier JSON. Ta progression ne vit que dans ce navigateur : c'est la seule sauvegarde qui existe.",
+    "exportHelp": "Télécharge un fichier JSON. Ta progression ne vit que dans ce navigateur : c’est la seule sauvegarde qui existe.",
     "import": "Importer une progression",
     "reset": "Tout réinitialiser",
-    "resetConfirm": "Cela effacera tes XP, ta série, tes résultats de quiz et le planning de tes flashcards. C'est irréversible.",
+    "resetConfirm": "Cela effacera tes XP, ta série, tes résultats de quiz et le planning de tes flashcards. C’est irréversible.",
     "on": "Activé",
     "off": "Désactivé"
   },
   "page": {
-    "dashboard": { "title": "Ta progression" },
+    "dashboard": {
+      "title": "Ta progression"
+    },
     "path": {
       "title": "Parcours",
       "subtitle": "5 domaines, 28 objectifs",
-      "placeholder": "L'arborescence des domaines et objectifs arrive avec le modèle de contenu."
+      "placeholder": "L’arborescence des domaines et objectifs arrive avec le modèle de contenu."
     },
     "lesson": {
       "title": "Leçon",
       "placeholder": "Le contenu des leçons arrive avec le modèle de contenu."
     },
-    "quiz": { "title": "Quiz", "placeholder": "Le moteur de quiz arrive dans sa propre étape." },
+    "quiz": {
+      "title": "Quiz",
+      "placeholder": "Le moteur de quiz arrive dans sa propre étape."
+    },
     "exam": {
       "title": "Examen blanc",
       "subtitle": "{{questions}} questions en {{minutes}} minutes · réussite à {{passing}}",
-      "placeholder": "Le simulateur d'examen arrive dans sa propre étape."
+      "placeholder": "Le simulateur d’examen arrive dans sa propre étape."
     },
     "flashcards": {
       "title": "Flashcards",
@@ -81,7 +86,7 @@
     },
     "glossary": {
       "title": "Acronymes",
-      "placeholder": "L'annexe des acronymes arrive avec le modèle de contenu."
+      "placeholder": "L’annexe des acronymes arrive avec le modèle de contenu."
     }
   },
   "common": {
@@ -95,13 +100,26 @@
   },
   "error": {
     "title": "Quelque chose a cassé",
-    "description": "Cet écran n'a pas pu se charger. Ta progression est enregistrée et intacte.",
+    "description": "Cet écran n’a pas pu se charger. Ta progression est enregistrée et intacte.",
     "retry": "Réessayer",
     "details": "Détails techniques"
   },
   "notFound": {
     "title": "Page introuvable",
-    "description": "Cette adresse ne correspond à rien dans l'application.",
+    "description": "Cette adresse ne correspond à rien dans l’application.",
     "home": "Voir ma progression"
+  },
+  "path": {
+    "domainMastery": "Maîtrise du domaine {{domain}}",
+    "weight": "{{percent}} % de l’examen",
+    "topicCount_one": "{{count}} point officiel",
+    "topicCount_other": "{{count}} points officiels"
+  },
+  "lesson": {
+    "backToPath": "Retour au parcours",
+    "scopeTitle": "Ce que l’examen attend ici",
+    "scopeHelp": "Les sous-points officiels de cet objectif, dans la formulation de CompTIA. Une leçon qui en oublie un est incomplète.",
+    "unknownTitle": "Objectif introuvable",
+    "unknownBody": "« {{id}} » n’est pas un numéro d’objectif SY0-701."
   }
 }

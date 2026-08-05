@@ -84,4 +84,43 @@ describe('translation catalogues', () => {
 
     expect(untranslated).toEqual([]);
   });
+
+  it('uses typographic apostrophes in French, not the ASCII one', () => {
+    /*
+     * French uses an apostrophe on roughly every other word, so a mixture of ’ and ' is visible
+     * in ordinary prose — it looks like two people wrote the app. Enforcing it here rather than in
+     * review because it is exactly the kind of detail that is invisible until it is everywhere.
+     */
+    const offenders = leafEntries(fr)
+      .filter(([, value]) => value.includes("'"))
+      .map(([key]) => key);
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('gives every pluralised key a complete set of forms', () => {
+    /*
+     * i18next resolves `t(key, { count })` to `key_one` / `key_other`, not to a bare `key`. A base
+     * key without suffixes appears to work — i18next falls back to it — but the fallback is not the
+     * plural machinery, so the singular silently renders the plural string. Requiring both suffixes
+     * to be present makes that impossible.
+     */
+    for (const [catalogue, entries] of [
+      ['en', leafEntries(en)],
+      ['fr', leafEntries(fr)],
+    ] as const) {
+      const keys = new Set(entries.map(([key]) => key));
+      const pluralBases = new Set(
+        [...keys]
+          .filter((key) => key.endsWith('_one') || key.endsWith('_other'))
+          .map((key) => key.replace(/_(one|other)$/, '')),
+      );
+
+      for (const base of pluralBases) {
+        expect(keys.has(`${base}_one`), `${catalogue}: ${base}_one is missing`).toBe(true);
+        expect(keys.has(`${base}_other`), `${catalogue}: ${base}_other is missing`).toBe(true);
+        expect(keys.has(base), `${catalogue}: ${base} shadows its own plural forms`).toBe(false);
+      }
+    }
+  });
 });
