@@ -1,0 +1,9 @@
+# Every change needs the owner's review before it can land on main.
+*                       @Musmus05
+
+# The pure engines and the content gate are the two places a mistake is expensive:
+# a wrong SRS interval silently degrades revision, a loose content check lets bad
+# questions through. Called out explicitly so they are never skimmed.
+/src/domain/            @Musmus05
+/scripts/               @Musmus05
+/docs/adr/              @Musmus05

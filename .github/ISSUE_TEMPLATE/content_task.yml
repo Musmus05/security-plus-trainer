@@ -1,0 +1,44 @@
+name: Content task
+description: Write or correct a lesson, question, flashcard or glossary entry
+labels: [content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: all practice questions must be **original**, written from the published
+        exam objectives. Content recalled from a real exam cannot be accepted — see
+        [`NOTICE.md`](../../NOTICE.md).
+
+  - type: input
+    id: objective
+    attributes:
+      label: Objective
+      description: The numbered objective this concerns.
+      placeholder: '4.6 — Given a scenario, implement and maintain identity and access management'
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: artefacts
+    attributes:
+      label: What needs producing
+      options:
+        - label: Lesson (English)
+        - label: Lesson (French)
+        - label: Practice questions
+        - label: Flashcards
+        - label: Glossary / acronym entries
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Sub-topics to cover, known exam traps, sources consulted.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [New content, Correction of existing content]
+    validations:
+      required: true

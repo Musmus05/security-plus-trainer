@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in the app behaves incorrectly
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Learning path
+        - Lesson
+        - Objective quiz
+        - Mock exam
+        - Flashcards / spaced repetition
+        - Acronym glossary
+        - Dashboard / XP / streak
+        - Settings / data export
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Interface language when it happened
+      options: [English, French, Both]
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and OS
+      placeholder: Firefox 142 on Windows 11

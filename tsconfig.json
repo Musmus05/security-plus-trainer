@@ -1,0 +1,49 @@
+{
+  /*
+   * One program covering application code, tests, e2e specs and node-side scripts.
+   *
+   * A split app/node pair was tried first and rejected: `scripts/validate-content.ts` imports
+   * from `src/content`, and once the two configs become project references that cross-import
+   * needs declaration output, which a typecheck-only setup does not produce. Splitting also
+   * hides files from typescript-eslint's project service. The layer boundaries that actually
+   * matter are enforced by lint rules in eslint.config.js, not by tsconfig geography.
+   */
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client"],
+
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    // Node-side scripts run under tsx, which resolves explicit .ts specifiers.
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+
+    /* Type safety: every one of these is load-bearing, not decoration. */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // No `baseUrl`: it is deprecated in TypeScript 6 and removed in 7. Without it, `paths`
+    // resolve relative to this file, which is what we want anyway.
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "e2e/**/*.ts", "scripts/**/*.ts", "vite.config.ts", "playwright.config.ts"]
+}

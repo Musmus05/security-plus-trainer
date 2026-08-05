@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+      include: scope
+    groups:
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom', 'react-router']
+      linting:
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*']
+      testing:
+        patterns: ['vitest', '@vitest/*', '@testing-library/*', '@playwright/test', 'jsdom']
+      tailwind:
+        patterns: ['tailwindcss', '@tailwindcss/*', 'prettier-plugin-tailwindcss']
+    ignore:
+      # All three are pinned deliberately — see docs/adr/0003.
+      # typescript-eslint's peer range is `typescript >=4.8.4 <6.1.0`, so TypeScript 6.1+/7.x
+      # silently disables every type-aware lint rule.
+      - dependency-name: typescript
+        versions: ['>=6.1.0']
+      # eslint-plugin-jsx-a11y has no ESLint 10 release, and accessibility linting is worth
+      # more here than the major version bump.
+      - dependency-name: eslint
+        versions: ['>=10.0.0']
+      - dependency-name: '@eslint/js'
+        versions: ['>=10.0.0']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'chore(ci)'
