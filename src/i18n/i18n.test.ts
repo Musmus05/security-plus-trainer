@@ -74,6 +74,8 @@ describe('translation catalogues', () => {
       'page.flashcards.title',
       'page.quiz.title',
       'topbar.xp',
+      // Interpolation plus a unit that is not translated. There is nothing here to translate.
+      'dashboard.heatmapCell',
     ]);
 
     const english = new Map(leafEntries(en));
@@ -121,6 +123,26 @@ describe('translation catalogues', () => {
         expect(keys.has(`${base}_other`), `${catalogue}: ${base}_other is missing`).toBe(true);
         expect(keys.has(base), `${catalogue}: ${base} shadows its own plural forms`).toBe(false);
       }
+    }
+  });
+
+  it('gives plural forms to every key that interpolates a count', () => {
+    /*
+     * The stronger half of the rule, and the one that catches the real bug. Checking only that
+     * already-suffixed keys are complete says nothing about a key like `lesson.crowns` that uses
+     * `{{count}}` with no forms at all — which is how "1 couronnes sur 5" reaches the screen.
+     */
+    for (const [catalogue, entries] of [
+      ['en', leafEntries(en)],
+      ['fr', leafEntries(fr)],
+    ] as const) {
+      const offenders = entries
+        .filter(
+          ([key, value]) => value.includes('{{count}}') && !/_(one|other|many|few)$/.test(key),
+        )
+        .map(([key]) => key);
+
+      expect(offenders, `${catalogue} keys using {{count}} without plural forms`).toEqual([]);
     }
   });
 });

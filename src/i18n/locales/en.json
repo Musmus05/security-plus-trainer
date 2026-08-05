@@ -120,6 +120,38 @@
     "scopeTitle": "What the exam expects here",
     "scopeHelp": "The official sub-topics for this objective, in CompTIA’s own wording. A lesson that skips one has a hole in it.",
     "unknownTitle": "No such objective",
-    "unknownBody": "\"{{id}}\" is not an SY0-701 objective number."
+    "unknownBody": "\"{{id}}\" is not an SY0-701 objective number.",
+    "markRead": "Mark as read",
+    "alreadyRead": "Read",
+    "nextCrown": {
+      "read-lesson": "Read the lesson to earn your first crown.",
+      "take-quiz": "Take the quiz to earn another crown.",
+      "improve-accuracy": "Reach {{target}}% on the quiz for the next crown.",
+      "review-cards": "Keep the flashcards for this objective mature to earn the next crown.",
+      "nothing": "Fully mastered."
+    },
+    "crowns_one": "{{count}} of {{max}} crowns",
+    "crowns_other": "{{count}} of {{max}} crowns"
+  },
+  "dashboard": {
+    "rank": "{{rank}} · level {{level}}",
+    "longestStreak_one": "Longest: {{count}} day",
+    "longestStreak_other": "Longest: {{count}} days",
+    "xpToNext": "{{xp}} XP to the next level",
+    "goalMet": "Goal met today",
+    "goalRemaining": "{{xp}} XP to go",
+    "levelProgress": "{{into}} / {{span}} XP this level",
+    "masteryTitle": "Mastery by domain",
+    "activityTitle": "Your activity",
+    "heatmapLabel": "Daily XP over the last {{weeks}} weeks",
+    "heatmapCell": "{{date}} — {{xp}} XP",
+    "heatmapLess": "Less",
+    "heatmapMore": "More",
+    "next": {
+      "not-started": "Start here",
+      "lesson-unread": "Finish reading",
+      "no-quiz": "Ready for a quiz",
+      "weak-accuracy": "Worth another look"
+    }
   }
 }

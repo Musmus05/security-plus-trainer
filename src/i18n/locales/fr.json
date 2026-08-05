@@ -120,6 +120,38 @@
     "scopeTitle": "Ce que l’examen attend ici",
     "scopeHelp": "Les sous-points officiels de cet objectif, dans la formulation de CompTIA. Une leçon qui en oublie un est incomplète.",
     "unknownTitle": "Objectif introuvable",
-    "unknownBody": "« {{id}} » n’est pas un numéro d’objectif SY0-701."
+    "unknownBody": "« {{id}} » n’est pas un numéro d’objectif SY0-701.",
+    "markRead": "Marquer comme lu",
+    "alreadyRead": "Lu",
+    "nextCrown": {
+      "read-lesson": "Lis la leçon pour gagner ta première couronne.",
+      "take-quiz": "Passe le quiz pour gagner une couronne de plus.",
+      "improve-accuracy": "Atteins {{target}} % au quiz pour la couronne suivante.",
+      "review-cards": "Maintiens les flashcards de cet objectif à maturité pour la couronne suivante.",
+      "nothing": "Totalement maîtrisé."
+    },
+    "crowns_one": "{{count}} couronne sur {{max}}",
+    "crowns_other": "{{count}} couronnes sur {{max}}"
+  },
+  "dashboard": {
+    "rank": "{{rank}} · niveau {{level}}",
+    "longestStreak_one": "Record : {{count}} jour",
+    "longestStreak_other": "Record : {{count}} jours",
+    "xpToNext": "{{xp}} XP avant le niveau suivant",
+    "goalMet": "Objectif atteint aujourd’hui",
+    "goalRemaining": "encore {{xp}} XP",
+    "levelProgress": "{{into}} / {{span}} XP dans ce niveau",
+    "masteryTitle": "Maîtrise par domaine",
+    "activityTitle": "Ton activité",
+    "heatmapLabel": "XP quotidiens sur les {{weeks}} dernières semaines",
+    "heatmapCell": "{{date}} — {{xp}} XP",
+    "heatmapLess": "Moins",
+    "heatmapMore": "Plus",
+    "next": {
+      "not-started": "Commence ici",
+      "lesson-unread": "Termine la lecture",
+      "no-quiz": "Prêt pour un quiz",
+      "weak-accuracy": "À revoir"
+    }
   }
 }

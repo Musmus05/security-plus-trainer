@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 
 import { findDomain, findObjective } from '@/content/exam/sy0-701/domains';
+import { ObjectiveMastery } from '@/features/path/ObjectiveMastery';
 import { Badge, ButtonLink, Card, domainAccent } from '@/ui';
 
 /**
@@ -60,6 +61,8 @@ export function LessonPage() {
           </p>
         )}
       </header>
+
+      <ObjectiveMastery objectiveId={objective.id} />
 
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-bold">{t('lesson.scopeTitle')}</h2>
