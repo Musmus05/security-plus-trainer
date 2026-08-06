@@ -22,6 +22,7 @@ const BANKS: Partial<Record<string, BankLoader>> = {
   '1.4': async () => (await import('./exam/sy0-701/questions/1-4')).QUESTIONS_1_4,
   '2.1': async () => (await import('./exam/sy0-701/questions/2-1')).QUESTIONS_2_1,
   '2.2': async () => (await import('./exam/sy0-701/questions/2-2')).QUESTIONS_2_2,
+  '2.3': async () => (await import('./exam/sy0-701/questions/2-3')).QUESTIONS_2_3,
 };
 
 /** Objectives that currently have a question bank. */

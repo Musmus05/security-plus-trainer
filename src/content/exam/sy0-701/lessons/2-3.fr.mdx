@@ -1,0 +1,128 @@
+## Pourquoi cet objectif compte
+
+Onze familles de vulnérabilités. L’examen ne demande jamais d’en exploiter une : il décrit un
+symptôme et demande **de quelle famille il relève**.
+
+La difficulté est que plusieurs familles produisent des symptômes voisins. Une fuite de données peut
+venir d’une injection SQL (application), d’un compartiment de stockage laissé public
+(configuration), ou d’un chiffrement mal choisi (cryptographie). Ce qui tranche, c’est **où se
+trouve le défaut**, pas ce qu’il produit.
+
+<KeyPoint>
+  Pose-toi toujours la question : **qui aurait dû empêcher cela ?** Le développeur → application.
+  L’administrateur → mauvaise configuration. Le fournisseur, avant livraison → chaîne
+  d’approvisionnement. Personne, parce que ce n’était pas connu → jour zéro.
+</KeyPoint>
+
+## Application et web
+
+| Vulnérabilité                                             | Le défaut                                                |
+| --------------------------------------------------------- | -------------------------------------------------------- |
+| <Term en="Memory injection">Injection en mémoire</Term>   | Du code inséré dans l’espace mémoire d’un processus      |
+| <Term en="Buffer overflow">Débordement de tampon</Term>   | Plus de données écrites que la zone n’en peut contenir   |
+| <Term en="Race condition">Situation de compétition</Term> | Le résultat dépend de l’ordre d’exécution                |
+| <Term en="TOC/TOU">TOC/TOU</Term>                         | Une vérification faite, puis l’état change avant l’usage |
+| <Term en="SQL injection">Injection SQL</Term>             | Une saisie interprétée comme une requête                 |
+| <Term en="XSS">Script intersites</Term>                   | Une saisie interprétée comme du script par le navigateur |
+
+<ExamTrap>
+  <Term en="TOC/TOU">TOC/TOU</Term> —{' '}
+  <Term en="time-of-check to time-of-use">time-of-check to time-of-use</Term> — est un cas
+  particulier de situation de compétition, et l’examen les propose ensemble. Le mot déclencheur est
+  **« entre la vérification et l’utilisation »**. S’il y a une vérification puis un usage séparés
+  dans le temps, c’est TOC/TOU.
+</ExamTrap>
+
+<Mnemonic>
+  **Injection SQL : la saisie atteint la base. Script intersites : la saisie atteint un autre
+  utilisateur.** L’une vise le serveur, l’autre le navigateur d’une victime.
+</Mnemonic>
+
+## Système, matériel et mobile
+
+**Système d’exploitation** — les défauts du noyau et des services de base. Corrigés par les
+correctifs, ce qui ramène au redémarrage vu en 1.3.
+
+| Matériel                                 | Le défaut                                                   |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| <Term en="Firmware">Micrologiciel</Term> | Du code sous le système d’exploitation, rarement mis à jour |
+| <Term en="End-of-life">Fin de vie</Term> | Le fabricant a cessé la production et le support            |
+| <Term en="Legacy">Hérité</Term>          | Toujours en service, plus maintenu                          |
+
+| Mobile                                                  | Le défaut                                                     |
+| ------------------------------------------------------- | ------------------------------------------------------------- |
+| <Term en="Sideloading">Installation hors magasin</Term> | Une application installée sans passer par le magasin officiel |
+| <Term en="Jailbreaking">Débridage</Term>                | Les protections du système délibérément retirées              |
+
+<ExamTrap>
+  <Term en="End-of-life">Fin de vie</Term> et <Term en="Legacy">hérité</Term> ne sont pas synonymes.
+  Fin de vie décrit la position du **fabricant** : il ne vend plus, il ne corrige plus. Hérité
+  décrit ta position à toi : tu l’utilises encore. Un équipement peut être en fin de vie sans être
+  chez toi.
+</ExamTrap>
+
+## Virtualisation et nuage
+
+| Vulnérabilité                                                | Ce qui se passe                                                       |
+| ------------------------------------------------------------ | --------------------------------------------------------------------- |
+| <Term en="VM escape">Évasion de machine virtuelle</Term>     | Sortir d’une machine invitée vers l’hyperviseur, donc vers les autres |
+| <Term en="Resource reuse">Réutilisation de ressources</Term> | De la mémoire ou du disque réattribué sans être effacé                |
+| <Term en="Cloud-specific">Spécifique au nuage</Term>         | Responsabilité partagée mal comprise, droits trop larges              |
+
+<KeyPoint>
+  L’évasion de machine virtuelle est la vulnérabilité la plus grave de la liste, parce qu’elle casse
+  la frontière sur laquelle repose toute la mutualisation : un locataire atteint les autres.
+</KeyPoint>
+
+## Chaîne d’approvisionnement et cryptographie
+
+**Chaîne d’approvisionnement** — vue en 2.2 comme vecteur ; ici comme vulnérabilité. Le fournisseur
+de services, l’éditeur, le sous-traitant matériel.
+
+**Cryptographie** — l’examen vise trois cas : un algorithme obsolète, une clé trop courte, et une
+implémentation correcte utilisée au mauvais endroit. Le chiffrement n’est pas une case à cocher.
+
+## Mauvaise configuration
+
+C’est, en pratique, la famille la plus fréquente : identifiants par défaut, port ouvert sans raison,
+stockage en nuage public, journalisation désactivée, permissions trop larges.
+
+<InPractice>
+  La mauvaise configuration se distingue des autres familles par un test simple : **existe-t-il un
+  correctif ?** Non — parce qu’il n’y a rien à corriger. Le logiciel fonctionne comme prévu ; c’est
+  le réglage qui est faux. Le remède est le durcissement et l’application de configuration, pas la
+  mise à jour.
+</InPractice>
+
+## Le jour zéro
+
+Une <Term en="Zero-day">vulnérabilité jour zéro</Term> est inconnue de celui qui devrait la
+corriger. Aucun correctif n’existe, et aucune signature ne la détecte.
+
+<ExamTrap>
+  On ne se défend pas contre un jour zéro par des correctifs — par définition. On s’en défend par ce
+  qui ne dépend pas de la connaissance préalable : détection comportementale, segmentation, moindre
+  privilège, défense en profondeur. Une question qui demande comment se protéger d’un jour zéro
+  attend une réponse de ce type, jamais « appliquer le correctif ».
+</ExamTrap>
+
+<ExamTrap>
+  Le mot **jour zéro** est très souvent employé à tort dans les énoncés. Une vulnérabilité connue
+  depuis six mois et non corrigée n’est pas un jour zéro : c’est un défaut de gestion des
+  correctifs. Ce qui définit le jour zéro est l’absence de connaissance, pas l’absence de correctif
+  appliqué.
+</ExamTrap>
+
+## Se tester
+
+1. Un compartiment de stockage en nuage contenant des données clients est accessible sans
+   authentification. Quelle famille ?
+2. Un programme vérifie qu’un fichier appartient à l’utilisateur, puis l’ouvre ; entre les deux, le
+   fichier est remplacé par un lien. Quelle vulnérabilité ?
+3. Comment se protéger d’un jour zéro ?
+
+<KeyPoint>
+  (1) Mauvaise configuration — le service fonctionne comme prévu, le réglage est faux. (2) TOC/TOU,
+  cas particulier de situation de compétition. (3) Par des contrôles qui ne dépendent pas de la
+  connaissance de la faille : détection comportementale, segmentation, moindre privilège.
+</KeyPoint>

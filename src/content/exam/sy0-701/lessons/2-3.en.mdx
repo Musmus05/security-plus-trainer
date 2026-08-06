@@ -1,0 +1,121 @@
+## Why this objective matters
+
+Eleven families of vulnerability. The exam never asks you to exploit one: it describes a symptom and
+asks **which family it belongs to**.
+
+The difficulty is that several families produce neighbouring symptoms. A data leak can come from SQL
+injection (application), a storage bucket left public (misconfiguration), or a badly chosen cipher
+(cryptographic). What decides it is **where the defect lives**, not what it produces.
+
+<KeyPoint>
+  Always ask: **who should have prevented this?** The developer → application. The administrator →
+  misconfiguration. The vendor, before delivery → supply chain. Nobody, because it was not known →
+  zero-day.
+</KeyPoint>
+
+## Application and web
+
+| Vulnerability    | The defect                                             |
+| ---------------- | ------------------------------------------------------ |
+| Memory injection | Code inserted into a process's memory space            |
+| Buffer overflow  | More data written than the region can hold             |
+| Race condition   | The outcome depends on execution order                 |
+| TOC/TOU          | A check is made, then the state changes before the use |
+| SQL injection    | Input interpreted as a query                           |
+| XSS              | Input interpreted as script by the browser             |
+
+<ExamTrap>
+  TOC/TOU — time-of-check to time-of-use — is a special case of a race condition, and the exam
+  offers them together. The trigger phrase is **"between the check and the use"**. If there is a
+  check and a use separated in time, it is TOC/TOU.
+</ExamTrap>
+
+<Mnemonic>
+  **SQL injection: the input reaches the database. XSS: the input reaches another user.** One aims
+  at the server, the other at a victim's browser.
+</Mnemonic>
+
+## Operating system, hardware and mobile
+
+**Operating system** — defects in the kernel and core services. Fixed by patching, which brings back
+the restart from 1.3.
+
+| Hardware    | The defect                                          |
+| ----------- | --------------------------------------------------- |
+| Firmware    | Code beneath the operating system, rarely updated   |
+| End-of-life | The manufacturer has stopped production and support |
+| Legacy      | Still in service, no longer maintained              |
+
+| Mobile       | The defect                                      |
+| ------------ | ----------------------------------------------- |
+| Sideloading  | An app installed outside the official store     |
+| Jailbreaking | The platform's protections deliberately removed |
+
+<ExamTrap>
+  End-of-life and legacy are not synonyms. End-of-life describes the **manufacturer's** position: no
+  longer sold, no longer patched. Legacy describes **yours**: you are still running it. Something
+  can be end-of-life without being anywhere near your estate.
+</ExamTrap>
+
+## Virtualization and cloud
+
+| Vulnerability  | What happens                                                          |
+| -------------- | --------------------------------------------------------------------- |
+| VM escape      | Breaking out of a guest to the hypervisor, and so to the other guests |
+| Resource reuse | Memory or disk reallocated without being wiped                        |
+| Cloud-specific | Shared responsibility misunderstood, permissions too broad            |
+
+<KeyPoint>
+  VM escape is the most severe item on this list, because it breaks the boundary all multi-tenancy
+  rests on: one tenant reaches the others.
+</KeyPoint>
+
+## Supply chain and cryptographic
+
+**Supply chain** — seen in 2.2 as a vector; here as a vulnerability. The service provider, the
+software vendor, the hardware supplier.
+
+**Cryptographic** — the exam targets three cases: an obsolete algorithm, a key that is too short,
+and a correct implementation used in the wrong place. Encryption is not a checkbox.
+
+## Misconfiguration
+
+In practice the most common family of all: default credentials, a port open for no reason, public
+cloud storage, logging switched off, permissions too broad.
+
+<InPractice>
+  Misconfiguration separates from the other families by one test: **is there a patch?** No — because
+  there is nothing to fix. The software is working as designed; the setting is wrong. The remedy is
+  hardening and configuration enforcement, not an update.
+</InPractice>
+
+## Zero-day
+
+A zero-day vulnerability is unknown to whoever ought to fix it. No patch exists, and no signature
+detects it.
+
+<ExamTrap>
+  You do not defend against a zero-day with patching — by definition. You defend with what does not
+  depend on prior knowledge: behavioural detection, segmentation, least privilege, defence in depth.
+  A question asking how to protect against a zero-day wants an answer of that kind, never "apply the
+  patch".
+</ExamTrap>
+
+<ExamTrap>
+  The phrase **zero-day** is very often misused in stems. A vulnerability known for six months and
+  left unpatched is not a zero-day; it is a patch management failure. What defines a zero-day is the
+  absence of knowledge, not the absence of an applied fix.
+</ExamTrap>
+
+## Test yourself
+
+1. A cloud storage bucket holding customer data is reachable without authentication. Which family?
+2. A program checks that a file belongs to the user, then opens it; in between, the file is replaced
+   by a link. Which vulnerability?
+3. How do you protect against a zero-day?
+
+<KeyPoint>
+  (1) Misconfiguration — the service works as designed, the setting is wrong. (2) TOC/TOU, a special
+  case of a race condition. (3) With controls that do not depend on knowing the flaw: behavioural
+  detection, segmentation, least privilege.
+</KeyPoint>
