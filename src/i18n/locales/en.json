@@ -115,7 +115,9 @@
     "topicCount_one": "{{count}} official topic",
     "topicCount_other": "{{count}} official topics",
     "youAreHere": "here",
-    "lessonAvailable": "Lesson"
+    "lessonAvailable": "Lesson",
+    "trailLabel_one": "A trail of {{count}} objective",
+    "trailLabel_other": "A trail of {{count}} objectives"
   },
   "lesson": {
     "backToPath": "Back to the learning path",
