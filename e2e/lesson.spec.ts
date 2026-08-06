@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+import { ALL_OBJECTIVES } from '../src/content/exam/sy0-701/domains';
+import { hasLesson } from '../src/content/lesson-bank';
+
 test.describe('lesson content', () => {
   test('renders the lesson prose for an objective that has one', async ({ page }) => {
     await page.goto('/objective/1.1');
@@ -64,9 +67,18 @@ test.describe('lesson content', () => {
   });
 
   test('the path marks which objectives have a lesson', async ({ page }) => {
+    /*
+     * The expected count is derived, not hard-coded. It used to be a literal `1`, which meant
+     * writing the second lesson broke a test that had nothing to do with the change — the failure
+     * said "content was added", not "something is wrong". Asserting against the lesson bank tests
+     * the invariant that actually matters: the path badges exactly the objectives that have prose.
+     */
+    const expected = ALL_OBJECTIVES.filter((objective) => hasLesson(objective.id, 'fr')).length;
+    expect(expected, 'no lessons registered; this test would assert nothing').toBeGreaterThan(0);
+
     await page.goto('/path');
 
     // Retrying, for the same reason as above: this one actually failed by reading too early.
-    await expect(page.getByText('Leçon', { exact: true })).toHaveCount(1);
+    await expect(page.getByText('Leçon', { exact: true })).toHaveCount(expected);
   });
 });

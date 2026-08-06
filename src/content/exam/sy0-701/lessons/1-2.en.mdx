@@ -1,0 +1,167 @@
+## Why this objective matters
+
+This is the "basic vocabulary" objective, and that is exactly what makes it awkward: everything
+looks obvious until a question asks **which** of the three triad properties was violated, or
+**which** Zero Trust component makes the decision.
+
+Seven official topics, and they have little in common: three abstract concepts, an architecture
+model, an analysis method, and two very concrete families — physical security and deception
+technology.
+
+<KeyPoint>
+  This objective rarely asks "what is it". It describes a situation and asks **which term names
+  it**. Learn the boundaries between terms, not their definitions.
+</KeyPoint>
+
+## The CIA triad
+
+| Property        | What it guarantees             | Violated when…                 | Typical control            |
+| --------------- | ------------------------------ | ------------------------------ | -------------------------- |
+| Confidentiality | Only the authorised can read   | A leak, a network capture      | Encryption, access control |
+| Integrity       | The data has not been altered  | An undetected modification     | Hashing, digital signature |
+| Availability    | Access is possible when needed | A denial of service, an outage | Redundancy, backups        |
+
+<ExamTrap>
+  Ransomware that encrypts your files attacks **availability**, not confidentiality — nobody read
+  your data, you simply cannot reach it. If the attacker also exfiltrates the files before
+  encrypting them (double extortion), confidentiality falls too. Read carefully what the scenario
+  actually describes.
+</ExamTrap>
+
+## Non-repudiation
+
+Non-repudiation guarantees that an author cannot deny having produced a message or an action.
+
+It is a distinct property from integrity, and the exam exploits the confusion:
+
+- A **hash** proves the data has not changed → integrity.
+- A **digital signature** proves _who_ produced it, because it uses a private key only the author
+  holds → integrity **and** non-repudiation.
+
+An audit log also contributes to non-repudiation, provided it cannot be modified.
+
+<Mnemonic>
+  **Non-repudiation means "you cannot say it was not you".** So it needs something only you possess:
+  a private key, a biometric. A shared password does not qualify.
+</Mnemonic>
+
+## AAA
+
+| Stage          | Question asked   | Example                            |
+| -------------- | ---------------- | ---------------------------------- |
+| Authentication | Who are you?     | Password, certificate, fingerprint |
+| Authorization  | What may you do? | Group membership, role             |
+| Accounting     | What did you do? | Logs, session recording            |
+
+The objective splits this into three strands.
+
+**Authenticating people** — passwords, MFA, biometrics.
+
+**Authenticating systems** — a machine has no fingers. Certificates, API keys, or 802.1X for a
+device joining the network. This is the strand most often skipped in revision.
+
+**Authorization models** — how the decision is made: by role, by attribute, by rule. The detail
+belongs to objective 4.6; here it is enough to know that authorization is a decision _separate_ from
+authentication.
+
+<ExamTrap>
+  Authenticating grants no rights. A valid account that can reach nothing is authenticated but not
+  authorized — and that is precisely the state least privilege aims for.
+</ExamTrap>
+
+## Gap analysis
+
+A gap analysis compares **where you are** with **where you should be**: current posture against a
+framework, a standard, or a regulatory requirement. The output is a list of gaps, usually
+prioritised, which feeds a remediation plan.
+
+It is not an audit — an audit verifies compliance, a gap analysis measures distance. Nor is it a
+risk assessment: it does not weight by likelihood.
+
+## Zero Trust
+
+The principle: **no implicit trust**, not for a user, not for a device, and not because something is
+"inside the network". Every access is verified.
+
+The objective splits the architecture into two planes, and it is that split the exam tests.
+
+### The control plane — it decides
+
+| Component                    | Role                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| Policy Engine                | **Makes** the allow-or-deny decision                                    |
+| Policy Administrator         | **Communicates** the decision and establishes or tears down the session |
+| Adaptive identity            | Adjusts the requirement by context: location, device, time              |
+| Threat scope reduction       | Limits what is reachable, and therefore what can be attacked            |
+| Policy-driven access control | Access follows from policy, not from manual configuration               |
+
+### The data plane — it enforces
+
+| Component                | Role                                             |
+| ------------------------ | ------------------------------------------------ |
+| Policy Enforcement Point | **Applies** the decision: lets through or blocks |
+| Subject/System           | Whatever is requesting access: a user, a service |
+| Implicit trust zones     | What Zero Trust exists to **eliminate**          |
+
+<ExamTrap>
+  The **engine** decides, the **administrator** relays, the **enforcement point** executes.
+  Confusing the Policy Engine with the Policy Enforcement Point is the most common mistake on this
+  objective: one thinks, the other obeys.
+</ExamTrap>
+
+<Mnemonic>
+  **Control plane is the brain. Data plane is the hands.** If the component reasons, it is control
+  plane; if it lets a packet through, it is data plane.
+</Mnemonic>
+
+## Physical security
+
+| Control                  | What it actually does                                                 |
+| ------------------------ | --------------------------------------------------------------------- |
+| Bollards                 | Stop a **vehicle**, not a person                                      |
+| Access control vestibule | Prevents tailgating: one door at a time                               |
+| Fencing                  | Delimits and delays; deterrent **and** preventive depending on height |
+| Video surveillance       | Detective; deterrent if visible                                       |
+| Security guard           | The only control that **exercises judgement**                         |
+| Access badge             | Authenticates and records the passage                                 |
+| Lighting                 | Deterrent, and what makes detection possible                          |
+
+### The four sensors
+
+A detail the exam likes, because it is purely factual.
+
+| Sensor     | Detects                     |
+| ---------- | --------------------------- |
+| Infrared   | Body heat                   |
+| Pressure   | Weight on a surface         |
+| Microwave  | Movement, by reflected wave |
+| Ultrasonic | Movement, by sound wave     |
+
+## Deception technology
+
+These protect nothing: they **reveal** an intrusion and waste an attacker's time.
+
+| Decoy      | What it is                                                       |
+| ---------- | ---------------------------------------------------------------- |
+| Honeypot   | A fake **system**, exposed to be attacked                        |
+| Honeynet   | A whole **network** of honeypots                                 |
+| Honeyfile  | A tempting **file** — `passwords.xlsx` — that alerts when opened |
+| Honeytoken | A fictitious **piece of data** whose use anywhere proves a leak  |
+
+<InPractice>
+  The difference between a honeyfile and a honeytoken is what triggers the alert. The file alerts
+  when somebody **opens** it, on your system. The token — a fake email address in a customer
+  database — alerts when somebody **uses** it, often elsewhere, which proves the database leaked.
+</InPractice>
+
+## Test yourself
+
+1. An air-conditioning failure shuts down a data centre. Which triad property is affected?
+2. In Zero Trust, which component establishes and tears down the session?
+3. A fake email address planted in a customer database receives mail: which decoy, and what does it
+   prove?
+
+<KeyPoint>
+  (1) Availability — nothing was read or altered. (2) The Policy Administrator: the engine decides,
+  the administrator acts on the decision. (3) A honeytoken, and its use proves the database leaked.
+</KeyPoint>
