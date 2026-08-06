@@ -1,0 +1,123 @@
+## Pourquoi cet objectif compte
+
+Le domaine 2 se termine par les remèdes. Onze techniques d’atténuation, et l’examen ne demande pas
+comment les configurer — il demande **laquelle choisir** face à un problème donné.
+
+C’est le miroir exact de l’objectif 2.3. Là on classait des défauts ; ici on choisit une réponse. Et
+la réponse dépend du défaut, pas de la gravité.
+
+<KeyPoint>
+  Les mauvaises réponses de cet objectif sont presque toujours des contrôles **réels et utiles** —
+  simplement appliqués au mauvais problème. Chiffrer une base ne corrige pas une injection SQL : la
+  requête est légitime, elle obtiendra les données déchiffrées.
+</KeyPoint>
+
+## Réduire ce qui est atteignable
+
+| Technique                                           | Ce qu’elle fait                                                 |
+| --------------------------------------------------- | --------------------------------------------------------------- |
+| <Term en="Segmentation">Segmentation</Term>         | Découpe le réseau : une compromission ne se propage pas partout |
+| <Term en="Isolation">Isolation</Term>               | Coupe complètement un système du reste                          |
+| <Term en="Least privilege">Moindre privilège</Term> | Chaque compte n’a que ce dont il a besoin                       |
+| <Term en="Access control">Contrôle d’accès</Term>   | Décide qui peut atteindre quoi                                  |
+
+<ExamTrap>
+  <Term en="Segmentation">Segmentation</Term> et <Term en="Isolation">isolation</Term> ne sont pas
+  la même chose. La segmentation **limite** la communication entre zones qui continuent de se parler
+  ; l’isolation la **supprime**. On segmente un réseau d’entreprise ; on isole un système hérité ou
+  une machine infectée.
+</ExamTrap>
+
+<KeyPoint>
+  Le moindre privilège est la réponse la plus souvent correcte de tout l’examen, parce qu’il réduit
+  l’impact de presque tout : identifiants volés, menace interne, jour zéro. Il ne prévient pas
+  l’intrusion, il en borne les conséquences.
+</KeyPoint>
+
+Le contrôle d’accès est le mécanisme dont dépendent les trois autres. Le moindre privilège est un
+principe, et il ne devient réel que si quelque chose décide, requête par requête, si une identité
+peut atteindre une ressource. C’est la même séparation moteur de politique / point d’application vue
+en 1.2, appliquée ici comme atténuation plutôt que comme architecture.
+
+Les quatre sont cumulatives, pas alternatives. Un réseau segmenté dont les comptes sont surdotés
+perd tout de même l’intégralité d’une zone ; un parc au moindre privilège sur un réseau plat laisse
+tout de même un attaquant atteindre chaque hôte pour essayer. Une question a généralement une
+meilleure réponse parce que l’énoncé nomme une défaillance précise — mais en pratique ce sont des
+couches, et c’est ce que signifie la défense en profondeur.
+
+## Contrôler ce qui s’exécute
+
+**Liste d’autorisation d’applications** — seuls les logiciels approuvés s’exécutent. C’est la
+réponse à un scénario de rançongiciel ou de logiciel non autorisé, et c’est la même polarité qu’en
+1.3 : tout ce qui n’est pas sur la liste est refusé.
+
+**Application de configuration** — l’état voulu est appliqué automatiquement, et la dérive est
+corrigée. C’est ce qui empêche la mauvaise configuration de revenir.
+
+**Durcissement** — retirer ce qui n’est pas nécessaire. L’objectif liste six mesures concrètes :
+
+| Mesure de durcissement                                                             | Effet                                            |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------ |
+| <Term en="Encryption">Chiffrement</Term>                                           | Les données au repos deviennent illisibles       |
+| <Term en="Endpoint protection">Protection des postes</Term>                        | Détection et blocage sur la machine              |
+| <Term en="Host-based firewall">Pare-feu local</Term>                               | Filtre au niveau de l’hôte, pas du périmètre     |
+| <Term en="HIPS">Prévention d’intrusion sur hôte</Term>                             | Bloque un comportement, pas seulement un fichier |
+| <Term en="Disabling ports/protocols">Désactivation de ports</Term>                 | Supprime des chemins — réduit la surface         |
+| <Term en="Default password changes">Changement des mots de passe par défaut</Term> | Ferme le vecteur le plus facile                  |
+| <Term en="Removal of unnecessary software">Retrait des logiciels superflus</Term>  | Moins de code, moins de failles                  |
+
+## Voir et corriger
+
+**Correctifs** — la réponse aux vulnérabilités **connues**, et à rien d’autre. Un jour zéro n’a pas
+de correctif ; une mauvaise configuration n’en a pas besoin.
+
+**Surveillance** — ne prévient rien. Elle permet de détecter et de reconstituer. C’est un contrôle
+détectif, au sens de l’objectif 1.1.
+
+**Chiffrement** — protège la confidentialité au repos et en transit. Il ne protège ni contre une
+requête légitime, ni contre un compte compromis qui a le droit de lire.
+
+<ExamTrap>
+  Le chiffrement est le distracteur universel de cet objectif. Il est presque toujours une bonne
+  idée, et presque jamais la bonne réponse quand le problème est un **accès autorisé mais
+  indésirable**. Si l’attaquant passe par un chemin légitime, il obtient des données déchiffrées.
+</ExamTrap>
+
+## Retirer du service
+
+Le <Term en="Decommissioning">démantèlement</Term> est la seule technique qui supprime
+définitivement un risque. Elle est listée parce qu’on l’oublie : un système hors service mais
+toujours branché reste une surface d’attaque, et souvent la moins surveillée de toutes.
+
+<InPractice>
+  Le démantèlement n’est pas « éteindre ». C’est retirer les accès, effacer les données, supprimer
+  les entrées DNS et les règles de pare-feu, et rendre les licences. Un serveur éteint qu’on rallume
+  six mois plus tard revient avec six mois de correctifs manquants.
+</InPractice>
+
+## Associer le remède au défaut
+
+C’est la compétence que l’objectif évalue. Quelques associations que l’examen affectionne :
+
+| Le problème                                        | La réponse attendue                   |
+| -------------------------------------------------- | ------------------------------------- |
+| Un système hérité impossible à corriger            | Isolation et contrôles compensatoires |
+| Un rançongiciel qui se propage latéralement        | Segmentation                          |
+| Des identifiants volés qui atteignent tout         | Moindre privilège                     |
+| Un logiciel non autorisé qui s’exécute             | Liste d’autorisation d’applications   |
+| Une dérive de configuration qui revient sans cesse | Application de configuration          |
+| Un portable volé                                   | Chiffrement de disque entier          |
+| Une vulnérabilité connue                           | Correctif                             |
+| Un serveur oublié encore branché                   | Démantèlement                         |
+
+## Se tester
+
+1. Un système industriel hérité ne peut plus être corrigé. Quelle atténuation ?
+2. La surveillance empêche-t-elle une attaque ?
+3. Une injection SQL exfiltre une table. Le chiffrement de la base aurait-il aidé ?
+
+<KeyPoint>
+  (1) L’isolation, plus des contrôles compensatoires — il n’y a pas de correctif à appliquer. (2)
+  Non : c’est un contrôle détectif, elle permet de voir et de reconstituer. (3) Non — la requête
+  injectée passe par l’application, qui reçoit les données déjà déchiffrées.
+</KeyPoint>

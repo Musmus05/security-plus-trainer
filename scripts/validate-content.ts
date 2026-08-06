@@ -25,6 +25,7 @@ import { QUESTIONS_2_1 } from '../src/content/exam/sy0-701/questions/2-1.ts';
 import { QUESTIONS_2_2 } from '../src/content/exam/sy0-701/questions/2-2.ts';
 import { QUESTIONS_2_3 } from '../src/content/exam/sy0-701/questions/2-3.ts';
 import { QUESTIONS_2_4 } from '../src/content/exam/sy0-701/questions/2-4.ts';
+import { QUESTIONS_2_5 } from '../src/content/exam/sy0-701/questions/2-5.ts';
 import { examOutlineSchema, type Question, questionSchema } from '../src/content/schemas.ts';
 
 interface Violation {
@@ -135,6 +136,7 @@ const BANKS: { objective: string; questions: Question[] }[] = [
   { objective: '2.2', questions: QUESTIONS_2_2 },
   { objective: '2.3', questions: QUESTIONS_2_3 },
   { objective: '2.4', questions: QUESTIONS_2_4 },
+  { objective: '2.5', questions: QUESTIONS_2_5 },
 ];
 
 /** From docs/content-authoring.md. */
