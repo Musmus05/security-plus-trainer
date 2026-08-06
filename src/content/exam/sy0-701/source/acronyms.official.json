@@ -1,0 +1,1282 @@
+[
+  {
+    "acronym": "AAA",
+    "en": "Authentication, Authorization, and Accounting"
+  },
+  {
+    "acronym": "ACL",
+    "en": "Access Control List"
+  },
+  {
+    "acronym": "AES",
+    "en": "Advanced Encryption Standard"
+  },
+  {
+    "acronym": "AES-256",
+    "en": "Advanced Encryption Standards 256-bit"
+  },
+  {
+    "acronym": "AH",
+    "en": "Authentication Header"
+  },
+  {
+    "acronym": "AI",
+    "en": "Artificial Intelligence"
+  },
+  {
+    "acronym": "AIS",
+    "en": "Automated Indicator Sharing"
+  },
+  {
+    "acronym": "ALE",
+    "en": "Annualized Loss Expectancy"
+  },
+  {
+    "acronym": "AP",
+    "en": "Access Point"
+  },
+  {
+    "acronym": "API",
+    "en": "Application Programming Interface"
+  },
+  {
+    "acronym": "APT",
+    "en": "Advanced Persistent Threat"
+  },
+  {
+    "acronym": "ARO",
+    "en": "Annualized Rate of Occurrence"
+  },
+  {
+    "acronym": "ARP",
+    "en": "Address Resolution Protocol"
+  },
+  {
+    "acronym": "ASLR",
+    "en": "Address Space Layout Randomization"
+  },
+  {
+    "acronym": "ATT&CK",
+    "en": "Adversarial Tactics, Techniques, and Common Knowledge"
+  },
+  {
+    "acronym": "AUP",
+    "en": "Acceptable Use Policy"
+  },
+  {
+    "acronym": "AV",
+    "en": "Antivirus"
+  },
+  {
+    "acronym": "BASH",
+    "en": "Bourne Again Shell"
+  },
+  {
+    "acronym": "BCP",
+    "en": "Business Continuity Planning"
+  },
+  {
+    "acronym": "BGP",
+    "en": "Border Gateway Protocol"
+  },
+  {
+    "acronym": "BIA",
+    "en": "Business Impact Analysis"
+  },
+  {
+    "acronym": "BIOS",
+    "en": "Basic Input/Output System"
+  },
+  {
+    "acronym": "BPA",
+    "en": "Business Partners Agreement"
+  },
+  {
+    "acronym": "BPDU",
+    "en": "Bridge Protocol Data Unit"
+  },
+  {
+    "acronym": "BYOD",
+    "en": "Bring Your Own Device"
+  },
+  {
+    "acronym": "CA",
+    "en": "Certificate Authority"
+  },
+  {
+    "acronym": "CAR",
+    "en": "Corrective Action Report"
+  },
+  {
+    "acronym": "CASB",
+    "en": "Cloud Access Security Broker"
+  },
+  {
+    "acronym": "CBC",
+    "en": "Cipher Block Chaining"
+  },
+  {
+    "acronym": "CCMP",
+    "en": "Counter Mode/CBC-MAC Protocol"
+  },
+  {
+    "acronym": "CCTV",
+    "en": "Closed-circuit Television"
+  },
+  {
+    "acronym": "CERT",
+    "en": "Computer Emergency Response Team"
+  },
+  {
+    "acronym": "CFB",
+    "en": "Cipher Feedback"
+  },
+  {
+    "acronym": "CHAP",
+    "en": "Challenge Handshake Authentication Protocol"
+  },
+  {
+    "acronym": "CIA",
+    "en": "Confidentiality, Integrity, Availability"
+  },
+  {
+    "acronym": "CIO",
+    "en": "Chief Information Officer"
+  },
+  {
+    "acronym": "CIRT",
+    "en": "Computer Incident Response Team"
+  },
+  {
+    "acronym": "CMS",
+    "en": "Content Management System"
+  },
+  {
+    "acronym": "COOP",
+    "en": "Continuity of Operation Planning"
+  },
+  {
+    "acronym": "COPE",
+    "en": "Corporate Owned, Personally Enabled"
+  },
+  {
+    "acronym": "CP",
+    "en": "Contingency Planning"
+  },
+  {
+    "acronym": "CRC",
+    "en": "Cyclical Redundancy Check"
+  },
+  {
+    "acronym": "CRL",
+    "en": "Certificate Revocation List"
+  },
+  {
+    "acronym": "CSO",
+    "en": "Chief Security Officer"
+  },
+  {
+    "acronym": "CSP",
+    "en": "Cloud Service Provider"
+  },
+  {
+    "acronym": "CSR",
+    "en": "Certificate Signing Request"
+  },
+  {
+    "acronym": "CSRF",
+    "en": "Cross-site Request Forgery"
+  },
+  {
+    "acronym": "CSU",
+    "en": "Channel Service Unit"
+  },
+  {
+    "acronym": "CTM",
+    "en": "Counter Mode"
+  },
+  {
+    "acronym": "CTO",
+    "en": "Chief Technology Officer"
+  },
+  {
+    "acronym": "CVE",
+    "en": "Common Vulnerability Enumeration"
+  },
+  {
+    "acronym": "CVSS",
+    "en": "Common Vulnerability Scoring System"
+  },
+  {
+    "acronym": "CYOD",
+    "en": "Choose Your Own Device"
+  },
+  {
+    "acronym": "DAC",
+    "en": "Discretionary Access Control"
+  },
+  {
+    "acronym": "DBA",
+    "en": "Database Administrator"
+  },
+  {
+    "acronym": "DDoS",
+    "en": "Distributed Denial of Service"
+  },
+  {
+    "acronym": "DEP",
+    "en": "Data Execution Prevention"
+  },
+  {
+    "acronym": "DES",
+    "en": "Digital Encryption Standard"
+  },
+  {
+    "acronym": "DHCP",
+    "en": "Dynamic Host Configuration Protocol"
+  },
+  {
+    "acronym": "DHE",
+    "en": "Diffie-Hellman Ephemeral"
+  },
+  {
+    "acronym": "DKIM",
+    "en": "DomainKeys Identified Mail"
+  },
+  {
+    "acronym": "DLL",
+    "en": "Dynamic Link Library"
+  },
+  {
+    "acronym": "DLP",
+    "en": "Data Loss Prevention"
+  },
+  {
+    "acronym": "DMARC",
+    "en": "Domain Message Authentication Reporting and Conformance"
+  },
+  {
+    "acronym": "DNAT",
+    "en": "Destination Network Address Translation"
+  },
+  {
+    "acronym": "DNS",
+    "en": "Domain Name System"
+  },
+  {
+    "acronym": "DoS",
+    "en": "Denial of Service"
+  },
+  {
+    "acronym": "DPO",
+    "en": "Data Privacy Officer C"
+  },
+  {
+    "acronym": "DRP",
+    "en": "Disaster Recovery Plan"
+  },
+  {
+    "acronym": "DSA",
+    "en": "Digital Signature Algorithm"
+  },
+  {
+    "acronym": "DSL",
+    "en": "Digital Subscriber Line"
+  },
+  {
+    "acronym": "EAP",
+    "en": "Extensible Authentication Protocol"
+  },
+  {
+    "acronym": "ECB",
+    "en": "Electronic Code Book"
+  },
+  {
+    "acronym": "ECC",
+    "en": "Elliptic Curve Cryptography"
+  },
+  {
+    "acronym": "ECDHE",
+    "en": "Elliptic Curve Diffie-Hellman Ephemeral"
+  },
+  {
+    "acronym": "ECDSA",
+    "en": "Elliptic Curve Digital Signature Algorithm"
+  },
+  {
+    "acronym": "EDR",
+    "en": "Endpoint Detection and Response"
+  },
+  {
+    "acronym": "EFS",
+    "en": "Encrypted File System"
+  },
+  {
+    "acronym": "ERP",
+    "en": "Enterprise Resource Planning"
+  },
+  {
+    "acronym": "ESN",
+    "en": "Electronic Serial Number"
+  },
+  {
+    "acronym": "ESP",
+    "en": "Encapsulated Security Payload"
+  },
+  {
+    "acronym": "FACL",
+    "en": "File System Access Control List"
+  },
+  {
+    "acronym": "FDE",
+    "en": "Full Disk Encryption"
+  },
+  {
+    "acronym": "FIM",
+    "en": "File Integrity Management"
+  },
+  {
+    "acronym": "FPGA",
+    "en": "Field Programmable Gate Array"
+  },
+  {
+    "acronym": "FRR",
+    "en": "False Rejection Rate"
+  },
+  {
+    "acronym": "FTP",
+    "en": "File Transfer Protocol"
+  },
+  {
+    "acronym": "FTPS",
+    "en": "Secured File Transfer Protocol"
+  },
+  {
+    "acronym": "GCM",
+    "en": "Galois Counter Mode"
+  },
+  {
+    "acronym": "GDPR",
+    "en": "General Data Protection Regulation"
+  },
+  {
+    "acronym": "GPG",
+    "en": "Gnu Privacy Guard"
+  },
+  {
+    "acronym": "GPO",
+    "en": "Group Policy Object"
+  },
+  {
+    "acronym": "GPS",
+    "en": "Global Positioning System"
+  },
+  {
+    "acronym": "GPU",
+    "en": "Graphics Processing Unit"
+  },
+  {
+    "acronym": "GRE",
+    "en": "Generic Routing Encapsulation"
+  },
+  {
+    "acronym": "HA",
+    "en": "High Availability"
+  },
+  {
+    "acronym": "HDD",
+    "en": "Hard Disk Drive"
+  },
+  {
+    "acronym": "HIDS",
+    "en": "Host-based Intrusion Detection System"
+  },
+  {
+    "acronym": "HIPS",
+    "en": "Host-based Intrusion Prevention System"
+  },
+  {
+    "acronym": "HMAC",
+    "en": "Hashed Message Authentication Code"
+  },
+  {
+    "acronym": "HOTP",
+    "en": "HMAC-based One-time Password"
+  },
+  {
+    "acronym": "HSM",
+    "en": "Hardware Security Module"
+  },
+  {
+    "acronym": "HTML",
+    "en": "Hypertext Markup Language"
+  },
+  {
+    "acronym": "HTTP",
+    "en": "Hypertext Transfer Protocol"
+  },
+  {
+    "acronym": "HTTPS",
+    "en": "Hypertext Transfer Protocol Secure"
+  },
+  {
+    "acronym": "HVAC",
+    "en": "Heating, Ventilation Air Conditioning"
+  },
+  {
+    "acronym": "IaaS",
+    "en": "Infrastructure as a Service"
+  },
+  {
+    "acronym": "IaC",
+    "en": "Infrastructure as Code"
+  },
+  {
+    "acronym": "IAM",
+    "en": "Identity and Access Management"
+  },
+  {
+    "acronym": "ICMP",
+    "en": "Internet Control Message Protocol"
+  },
+  {
+    "acronym": "ICS",
+    "en": "Industrial Control Systems"
+  },
+  {
+    "acronym": "IDEA",
+    "en": "International Data Encryption Algorithm"
+  },
+  {
+    "acronym": "IDF",
+    "en": "Intermediate Distribution Frame"
+  },
+  {
+    "acronym": "IdP",
+    "en": "Identity Provider"
+  },
+  {
+    "acronym": "IDS",
+    "en": "Intrusion Detection System"
+  },
+  {
+    "acronym": "IEEE",
+    "en": "Institute of Electrical and Electronics Engineers"
+  },
+  {
+    "acronym": "IKE",
+    "en": "Internet Key Exchange"
+  },
+  {
+    "acronym": "IM",
+    "en": "Instant Messaging"
+  },
+  {
+    "acronym": "IMAP",
+    "en": "Internet Message Access Protocol"
+  },
+  {
+    "acronym": "IoC",
+    "en": "Indicators of Compromise"
+  },
+  {
+    "acronym": "IoT",
+    "en": "Internet of Things"
+  },
+  {
+    "acronym": "IP",
+    "en": "Internet Protocol"
+  },
+  {
+    "acronym": "IPS",
+    "en": "Intrusion Prevention System"
+  },
+  {
+    "acronym": "IPSec",
+    "en": "Internet Protocol Security"
+  },
+  {
+    "acronym": "IR",
+    "en": "Incident Response"
+  },
+  {
+    "acronym": "IRC",
+    "en": "Internet Relay Chat"
+  },
+  {
+    "acronym": "IRP",
+    "en": "Incident Response Plan"
+  },
+  {
+    "acronym": "ISO",
+    "en": "International Standards Organization"
+  },
+  {
+    "acronym": "ISP",
+    "en": "Internet Service Provider"
+  },
+  {
+    "acronym": "ISSO",
+    "en": "Information Systems Security Officer"
+  },
+  {
+    "acronym": "IV",
+    "en": "Initialization Vector"
+  },
+  {
+    "acronym": "KDC",
+    "en": "Key Distribution Center"
+  },
+  {
+    "acronym": "KEK",
+    "en": "Key Encryption Key"
+  },
+  {
+    "acronym": "L2TP",
+    "en": "Layer 2 Tunneling Protocol"
+  },
+  {
+    "acronym": "LAN",
+    "en": "Local Area Network"
+  },
+  {
+    "acronym": "LDAP",
+    "en": "Lightweight Directory Access Protocol"
+  },
+  {
+    "acronym": "LEAP",
+    "en": "Lightweight Extensible Authentication Protocol"
+  },
+  {
+    "acronym": "MaaS",
+    "en": "Monitoring as a Service"
+  },
+  {
+    "acronym": "MAC",
+    "en": "Mandatory Access Control"
+  },
+  {
+    "acronym": "MAN",
+    "en": "Metropolitan Area Network"
+  },
+  {
+    "acronym": "MBR",
+    "en": "Master Boot Record"
+  },
+  {
+    "acronym": "MD5",
+    "en": "Message Digest 5"
+  },
+  {
+    "acronym": "MDF",
+    "en": "Main Distribution Frame"
+  },
+  {
+    "acronym": "MDM",
+    "en": "Mobile Device Management"
+  },
+  {
+    "acronym": "MFA",
+    "en": "Multifactor Authentication"
+  },
+  {
+    "acronym": "MFD",
+    "en": "Multifunction Device"
+  },
+  {
+    "acronym": "MFP",
+    "en": "Multifunction Printer"
+  },
+  {
+    "acronym": "ML",
+    "en": "Machine Learning"
+  },
+  {
+    "acronym": "MMS",
+    "en": "Multimedia Message Service"
+  },
+  {
+    "acronym": "MOA",
+    "en": "Memorandum of Agreement"
+  },
+  {
+    "acronym": "MOU",
+    "en": "Memorandum of Understanding"
+  },
+  {
+    "acronym": "MPLS",
+    "en": "Multi-protocol Label Switching"
+  },
+  {
+    "acronym": "MSA",
+    "en": "Master Service Agreement"
+  },
+  {
+    "acronym": "MSCHAP",
+    "en": "Microsoft Challenge Handshake Authentication Protocol"
+  },
+  {
+    "acronym": "MSP",
+    "en": "Managed Service Provider"
+  },
+  {
+    "acronym": "MSSP",
+    "en": "Managed Security Service Provider"
+  },
+  {
+    "acronym": "MTBF",
+    "en": "Mean Time Between Failures"
+  },
+  {
+    "acronym": "MTTF",
+    "en": "Mean Time to Failure"
+  },
+  {
+    "acronym": "MTTR",
+    "en": "Mean Time to Recover"
+  },
+  {
+    "acronym": "MTU",
+    "en": "Maximum Transmission Unit"
+  },
+  {
+    "acronym": "NAC",
+    "en": "Network Access Control"
+  },
+  {
+    "acronym": "NAT",
+    "en": "Network Address Translation"
+  },
+  {
+    "acronym": "NDA",
+    "en": "Non-disclosure Agreement"
+  },
+  {
+    "acronym": "NFC",
+    "en": "Near Field Communication"
+  },
+  {
+    "acronym": "NGFW",
+    "en": "Next-generation Firewall"
+  },
+  {
+    "acronym": "NICs",
+    "en": "Power supplies"
+  },
+  {
+    "acronym": "NIDS",
+    "en": "Network-based Intrusion Detection System"
+  },
+  {
+    "acronym": "NIPS",
+    "en": "Network-based Intrusion Prevention System"
+  },
+  {
+    "acronym": "NIST",
+    "en": "National Institute of Standards & Technology"
+  },
+  {
+    "acronym": "NTFS",
+    "en": "New Technology File System"
+  },
+  {
+    "acronym": "NTLM",
+    "en": "New Technology LAN Manager"
+  },
+  {
+    "acronym": "NTP",
+    "en": "Network Time Protocol"
+  },
+  {
+    "acronym": "OAUTH",
+    "en": "Open Authorization"
+  },
+  {
+    "acronym": "OCSP",
+    "en": "Online Certificate Status Protocol"
+  },
+  {
+    "acronym": "OID",
+    "en": "Object Identifier"
+  },
+  {
+    "acronym": "OS",
+    "en": "Operating System"
+  },
+  {
+    "acronym": "OSINT",
+    "en": "Open-source Intelligence"
+  },
+  {
+    "acronym": "OSPF",
+    "en": "Open Shortest Path First"
+  },
+  {
+    "acronym": "OT",
+    "en": "Operational Technology"
+  },
+  {
+    "acronym": "OTA",
+    "en": "Over the Air"
+  },
+  {
+    "acronym": "OVAL",
+    "en": "Open Vulnerability Assessment Language"
+  },
+  {
+    "acronym": "P12",
+    "en": "PKCS #12"
+  },
+  {
+    "acronym": "P2P",
+    "en": "Peer to Peer"
+  },
+  {
+    "acronym": "PaaS",
+    "en": "Platform as a Service"
+  },
+  {
+    "acronym": "PAC",
+    "en": "Proxy Auto Configuration"
+  },
+  {
+    "acronym": "PAM",
+    "en": "Privileged Access Management"
+  },
+  {
+    "acronym": "PAP",
+    "en": "Password Authentication Protocol"
+  },
+  {
+    "acronym": "PAT",
+    "en": "Port Address Translation"
+  },
+  {
+    "acronym": "PBKDF2",
+    "en": "Password-based Key Derivation Function 2"
+  },
+  {
+    "acronym": "PBX",
+    "en": "Private Branch Exchange"
+  },
+  {
+    "acronym": "PCAP",
+    "en": "Packet Capture"
+  },
+  {
+    "acronym": "PCI DSS",
+    "en": "Payment Card Industry Data Security Standard"
+  },
+  {
+    "acronym": "PDU",
+    "en": "Power Distribution Unit"
+  },
+  {
+    "acronym": "PEAP",
+    "en": "Protected Extensible Authentication Protocol"
+  },
+  {
+    "acronym": "PED",
+    "en": "Personal Electronic Device"
+  },
+  {
+    "acronym": "PEM",
+    "en": "Privacy Enhanced Mail"
+  },
+  {
+    "acronym": "PFS",
+    "en": "Perfect Forward Secrecy"
+  },
+  {
+    "acronym": "PGP",
+    "en": "Pretty Good Privacy"
+  },
+  {
+    "acronym": "PHI",
+    "en": "Personal Health Information"
+  },
+  {
+    "acronym": "PII",
+    "en": "Personally Identifiable Information"
+  },
+  {
+    "acronym": "PIV",
+    "en": "Personal Identity Verification"
+  },
+  {
+    "acronym": "PKCS",
+    "en": "Public Key Cryptography Standards"
+  },
+  {
+    "acronym": "PKI",
+    "en": "Public Key Infrastructure"
+  },
+  {
+    "acronym": "POP",
+    "en": "Post Office Protocol"
+  },
+  {
+    "acronym": "POTS",
+    "en": "Plain Old Telephone Service"
+  },
+  {
+    "acronym": "PPP",
+    "en": "Point-to-Point Protocol"
+  },
+  {
+    "acronym": "PPTP",
+    "en": "Point-to-Point Tunneling Protocol"
+  },
+  {
+    "acronym": "PSK",
+    "en": "Pre-shared Key"
+  },
+  {
+    "acronym": "PTZ",
+    "en": "Pan-tilt-zoom"
+  },
+  {
+    "acronym": "PUP",
+    "en": "Potentially Unwanted Program"
+  },
+  {
+    "acronym": "RA",
+    "en": "Recovery Agent"
+  },
+  {
+    "acronym": "RAD",
+    "en": "Rapid Application Development"
+  },
+  {
+    "acronym": "RADIUS",
+    "en": "Remote Authentication Dial-in User Service"
+  },
+  {
+    "acronym": "RAID",
+    "en": "Redundant Array of Inexpensive Disks"
+  },
+  {
+    "acronym": "RAS",
+    "en": "Remote Access Server"
+  },
+  {
+    "acronym": "RAT",
+    "en": "Remote Access Trojan"
+  },
+  {
+    "acronym": "RBAC",
+    "en": "Role-based Access Control"
+  },
+  {
+    "acronym": "RC4",
+    "en": "Rivest Cipher version 4"
+  },
+  {
+    "acronym": "RDP",
+    "en": "Remote Desktop Protocol"
+  },
+  {
+    "acronym": "RFID",
+    "en": "Radio Frequency Identifier"
+  },
+  {
+    "acronym": "RIPEMD",
+    "en": "RACE Integrity Primitives Evaluation Message Digest"
+  },
+  {
+    "acronym": "ROI",
+    "en": "Return on Investment"
+  },
+  {
+    "acronym": "RPO",
+    "en": "Recovery Point Objective"
+  },
+  {
+    "acronym": "RSA",
+    "en": "Rivest, Shamir, & Adleman"
+  },
+  {
+    "acronym": "RTBH",
+    "en": "Remotely Triggered Black Hole"
+  },
+  {
+    "acronym": "RTO",
+    "en": "Recovery Time Objective"
+  },
+  {
+    "acronym": "RTOS",
+    "en": "Real-time Operating System"
+  },
+  {
+    "acronym": "RTP",
+    "en": "Real-time Transport Protocol"
+  },
+  {
+    "acronym": "S/MIME",
+    "en": "Secure/Multipurpose Internet Mail Extensions"
+  },
+  {
+    "acronym": "SaaS",
+    "en": "Software as a Service"
+  },
+  {
+    "acronym": "SAE",
+    "en": "Simultaneous Authentication of Equals"
+  },
+  {
+    "acronym": "SAML",
+    "en": "Security Assertions Markup Language"
+  },
+  {
+    "acronym": "SAN",
+    "en": "Storage Area Network"
+  },
+  {
+    "acronym": "SASE",
+    "en": "Secure Access Service Edge"
+  },
+  {
+    "acronym": "SCADA",
+    "en": "Supervisory Control and Data Acquisition"
+  },
+  {
+    "acronym": "SCAP",
+    "en": "Security Content Automation Protocol"
+  },
+  {
+    "acronym": "SCEP",
+    "en": "Simple Certificate Enrollment Protocol"
+  },
+  {
+    "acronym": "SD-WAN",
+    "en": "Software-defined Wide Area Network"
+  },
+  {
+    "acronym": "SDK",
+    "en": "Software Development Kit"
+  },
+  {
+    "acronym": "SDLC",
+    "en": "Software Development Lifecycle"
+  },
+  {
+    "acronym": "SDLM",
+    "en": "Software Development Lifecycle Methodology"
+  },
+  {
+    "acronym": "SDN",
+    "en": "Software-defined Networking"
+  },
+  {
+    "acronym": "SE Linux",
+    "en": "Security-enhanced Linux"
+  },
+  {
+    "acronym": "SED",
+    "en": "Self-encrypting Drives"
+  },
+  {
+    "acronym": "SEH",
+    "en": "Structured Exception Handler"
+  },
+  {
+    "acronym": "SFPs",
+    "en": "Managed Switch Wireless access point"
+  },
+  {
+    "acronym": "SFTP",
+    "en": "Secured File Transfer Protocol"
+  },
+  {
+    "acronym": "SHA",
+    "en": "Secure Hashing Algorithm"
+  },
+  {
+    "acronym": "SHTTP",
+    "en": "Secure Hypertext Transfer Protocol"
+  },
+  {
+    "acronym": "SIEM",
+    "en": "Security Information and Event Management"
+  },
+  {
+    "acronym": "SIM",
+    "en": "Subscriber Identity Module"
+  },
+  {
+    "acronym": "SLA",
+    "en": "Service-level Agreement"
+  },
+  {
+    "acronym": "SLE",
+    "en": "Single Loss Expectancy"
+  },
+  {
+    "acronym": "SMS",
+    "en": "Short Message Service"
+  },
+  {
+    "acronym": "SMTP",
+    "en": "Simple Mail Transfer Protocol"
+  },
+  {
+    "acronym": "SMTPS",
+    "en": "Simple Mail Transfer Protocol Secure"
+  },
+  {
+    "acronym": "SNMP",
+    "en": "Simple Network Management Protocol"
+  },
+  {
+    "acronym": "SOAP",
+    "en": "Simple Object Access Protocol"
+  },
+  {
+    "acronym": "SOAR",
+    "en": "Security Orchestration, Automation, Response"
+  },
+  {
+    "acronym": "SoC",
+    "en": "System on Chip"
+  },
+  {
+    "acronym": "SOC",
+    "en": "Security Operations Center"
+  },
+  {
+    "acronym": "SOW",
+    "en": "Statement of Work"
+  },
+  {
+    "acronym": "SPF",
+    "en": "Sender Policy Framework"
+  },
+  {
+    "acronym": "SPIM",
+    "en": "Spam over Internet Messaging"
+  },
+  {
+    "acronym": "SQL",
+    "en": "Structured Query Language"
+  },
+  {
+    "acronym": "SQLi",
+    "en": "SQL Injection"
+  },
+  {
+    "acronym": "SRTP",
+    "en": "Secure Real-Time Protocol"
+  },
+  {
+    "acronym": "SSD",
+    "en": "Solid State Drive"
+  },
+  {
+    "acronym": "SSH",
+    "en": "Secure Shell"
+  },
+  {
+    "acronym": "SSL",
+    "en": "Secure Sockets Layer"
+  },
+  {
+    "acronym": "SSO",
+    "en": "Single Sign-on"
+  },
+  {
+    "acronym": "STIX",
+    "en": "Structured Threat Information eXchange"
+  },
+  {
+    "acronym": "SWG",
+    "en": "Secure Web Gateway"
+  },
+  {
+    "acronym": "TACACS+",
+    "en": "Terminal Access Controller Access Control System"
+  },
+  {
+    "acronym": "TAXII",
+    "en": "Trusted Automated eXchange of Indicator Information"
+  },
+  {
+    "acronym": "TCP/IP",
+    "en": "Transmission Control Protocol/Internet Protocol"
+  },
+  {
+    "acronym": "TGT",
+    "en": "Ticket Granting Ticket"
+  },
+  {
+    "acronym": "TKIP",
+    "en": "Temporal Key Integrity Protocol"
+  },
+  {
+    "acronym": "TLS",
+    "en": "Transport Layer Security"
+  },
+  {
+    "acronym": "TOC",
+    "en": "Time-of-check"
+  },
+  {
+    "acronym": "TOTP",
+    "en": "Time-based One-time Password"
+  },
+  {
+    "acronym": "TOU",
+    "en": "Time-of-use"
+  },
+  {
+    "acronym": "TPM",
+    "en": "Trusted Platform Module"
+  },
+  {
+    "acronym": "TSIG",
+    "en": "Transaction Signature"
+  },
+  {
+    "acronym": "TTP",
+    "en": "Tactics, Techniques, and Procedures"
+  },
+  {
+    "acronym": "UAT",
+    "en": "User Acceptance Testing"
+  },
+  {
+    "acronym": "UAV",
+    "en": "Unmanned Aerial Vehicle"
+  },
+  {
+    "acronym": "UDP",
+    "en": "User Datagram Protocol"
+  },
+  {
+    "acronym": "UEFI",
+    "en": "Unified Extensible Firmware Interface"
+  },
+  {
+    "acronym": "UEM",
+    "en": "Unified Endpoint Management"
+  },
+  {
+    "acronym": "UPS",
+    "en": "Uninterruptable Power Supply"
+  },
+  {
+    "acronym": "URI",
+    "en": "Uniform Resource Identifier"
+  },
+  {
+    "acronym": "URL",
+    "en": "Universal Resource Locator"
+  },
+  {
+    "acronym": "USB",
+    "en": "Universal Serial Bus USB OTG"
+  },
+  {
+    "acronym": "UTM",
+    "en": "Unified Threat Management"
+  },
+  {
+    "acronym": "UTP",
+    "en": "Unshielded Twisted Pair"
+  },
+  {
+    "acronym": "VBA",
+    "en": "Visual Basic"
+  },
+  {
+    "acronym": "VDE",
+    "en": "Virtual Desktop Environment"
+  },
+  {
+    "acronym": "VDI",
+    "en": "Virtual Desktop Infrastructure"
+  },
+  {
+    "acronym": "VLAN",
+    "en": "Virtual Local Area Network"
+  },
+  {
+    "acronym": "VLSM",
+    "en": "Variable Length Subnet Masking"
+  },
+  {
+    "acronym": "VM",
+    "en": "Virtual Machine"
+  },
+  {
+    "acronym": "VoIP",
+    "en": "Voice over IP"
+  },
+  {
+    "acronym": "VPC",
+    "en": "Virtual Private Cloud"
+  },
+  {
+    "acronym": "VPN",
+    "en": "Virtual Private Network"
+  },
+  {
+    "acronym": "VTC",
+    "en": "Video Teleconferencing"
+  },
+  {
+    "acronym": "WAF",
+    "en": "Web Application Firewall"
+  },
+  {
+    "acronym": "WAP",
+    "en": "Wireless Access Point"
+  },
+  {
+    "acronym": "WEP",
+    "en": "Wired Equivalent Privacy"
+  },
+  {
+    "acronym": "WIDS",
+    "en": "Wireless Intrusion Detection System"
+  },
+  {
+    "acronym": "WIPS",
+    "en": "Wireless Intrusion Prevention System"
+  },
+  {
+    "acronym": "WO",
+    "en": "Work Order"
+  },
+  {
+    "acronym": "WPA",
+    "en": "Wi-Fi Protected Access"
+  },
+  {
+    "acronym": "WPS",
+    "en": "Wi-Fi Protected Setup"
+  },
+  {
+    "acronym": "WTLS",
+    "en": "Wireless TLS"
+  },
+  {
+    "acronym": "XDR",
+    "en": "Extended Detection and Response"
+  },
+  {
+    "acronym": "XML",
+    "en": "Extensible Markup Language"
+  },
+  {
+    "acronym": "XOR",
+    "en": "Exclusive Or"
+  },
+  {
+    "acronym": "XSRF",
+    "en": "Cross-site Request Forgery"
+  },
+  {
+    "acronym": "XSS",
+    "en": "Cross-site Scripting"
+  }
+]
