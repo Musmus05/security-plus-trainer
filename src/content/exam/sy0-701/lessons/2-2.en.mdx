@@ -1,0 +1,125 @@
+## Why this objective matters
+
+Twelve official topics, and the longest objective in domain 2. It answers a single question: **how
+do they get in?**
+
+A threat vector is the path taken. An attack surface is the set of all available paths. Reducing the
+surface closes doors; defending a vector puts a guard on a door that stays open.
+
+<KeyPoint>
+  Questions on this objective describe a compromise and ask **how it got in**. The trap is answering
+  with the payload — "ransomware" is not a vector, it is what arrived once the door was open.
+</KeyPoint>
+
+## Content-borne vectors
+
+| Vector        | How it works                                                  |
+| ------------- | ------------------------------------------------------------- |
+| Message-based | Email, SMS, instant messaging — the most common vector by far |
+| Image-based   | Payload concealed in an image file or in how it is rendered   |
+| File-based    | A booby-trapped document: macro, script, disguised executable |
+| Voice call    | Vishing, CEO fraud                                            |
+
+Email dominates because it combines two things: it reaches everybody, and it carries both a link and
+an attachment.
+
+<ExamTrap>
+  A phishing SMS is a **message-based** vector, not a separate one. "Smishing" and "vishing" name
+  the social engineering technique; the vector is the channel — message, or voice call.
+</ExamTrap>
+
+## Device and network vectors
+
+**Removable device** — USB stick, external drive. It bypasses the network perimeter entirely, which
+makes it the vector of choice against an air-gapped system.
+
+**Vulnerable software** — the objective splits this in two: what is **managed by patching** and what
+is not. Unmanaged software ages without anybody noticing.
+
+**Unsupported systems and applications** — no patch exists any more. This is the legacy application
+from 1.3, seen from the attacker's side.
+
+**Unsecure networks** — wireless, wired and Bluetooth. An open network is not only a chance to
+listen; it is a position from which to intercept.
+
+**Open service ports** — every listening port is a door. This is the most literal definition of an
+attack surface there is.
+
+**Default credentials** — `admin` / `admin`. The most embarrassing vector and one of the most
+common, because it requires no skill whatsoever.
+
+<Mnemonic>
+  **Attack surface = how many doors. Threat vector = which door was used.** Closing a port reduces
+  the surface. Filtering email defends a vector without reducing the surface, because the door is
+  still there.
+</Mnemonic>
+
+## The supply chain
+
+Three angles, and the exam names them separately.
+
+| Angle                     | What is compromised                                        |
+| ------------------------- | ---------------------------------------------------------- |
+| Managed service providers | A provider that already holds administrative access to you |
+| Vendors                   | Legitimate software, altered before it reaches you         |
+| Suppliers                 | Hardware or a component modified upstream                  |
+
+<ExamTrap>
+  What makes the supply chain formidable is not the technique but the **trust**. The software is
+  signed, the provider is authorised, the hardware is new. Every control you own says yes — because
+  the compromise happened before the thing arrived.
+</ExamTrap>
+
+## Human vectors
+
+Social engineering is half of this objective. It exploits behaviour, not a technical flaw.
+
+| Technique                     | The lever it pulls                            |
+| ----------------------------- | --------------------------------------------- |
+| Phishing                      | A mass message imitating a trusted source     |
+| Spear phishing                | The same, targeted and researched             |
+| Whaling                       | The same, aimed at an executive               |
+| Vishing                       | The voice, which creates immediate pressure   |
+| Smishing                      | SMS, where the URL is hard to verify          |
+| Misinformation/disinformation | False information, spread to steer a decision |
+| Impersonation                 | Passing as somebody authorised                |
+| Business email compromise     | Hierarchical authority plus urgency           |
+| Pretexting                    | A credible story that justifies the request   |
+| Watering hole                 | A third-party site the target already visits  |
+| Brand impersonation           | Trust already extended to a familiar brand    |
+| Typosquatting                 | A typo in a domain name                       |
+
+<KeyPoint>
+  Phishing, spear phishing and whaling are **one technique at three levels of targeting**: everyone,
+  one specific person, an executive. A question that stresses how much the attacker knew about the
+  victim is describing spear phishing, not phishing.
+</KeyPoint>
+
+<InPractice>
+  The watering hole attack is the least intuitive. The attacker never touches the target: they
+  compromise a site the target visits daily — an industry forum, a local supplier — and wait. It is
+  used when the target itself is too well defended to approach directly.
+</InPractice>
+
+## Reducing the surface beats defending every vector
+
+The two call for different responses, and the exam tests the difference.
+
+- Disabling an unused service **reduces the surface** — the door is gone.
+- Adding a spam filter **defends a vector** — the door remains and gets a guard.
+
+Surface reduction is structural and permanent; vector defence has to be maintained indefinitely.
+When both are possible, reduction wins.
+
+## Test yourself
+
+1. An employee plugs in a USB stick found in the car park. Which vector, and why did the network
+   perimeter see nothing?
+2. Software signed by its vendor installs a backdoor. Which vector?
+3. What is the difference between disabling a port and filtering it?
+
+<KeyPoint>
+  (1) A removable device: it physically bypasses the network, so no network control is on the path.
+  (2) The supply chain — the compromise happened before delivery, and the signature is genuine. (3)
+  Disabling reduces the attack surface; filtering defends a vector while leaving the door open.
+</KeyPoint>
