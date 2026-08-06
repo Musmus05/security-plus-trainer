@@ -24,6 +24,14 @@ export interface DomainAccent {
   bg: string;
   border: string;
   ring: string;
+  /**
+   * Fill tone for a control that carries a **white label on top of it**, such as a path node.
+   *
+   * Distinct from `bg` for the same reason `--sp-action` is distinct from `--sp-domain-1`: the mark
+   * tones are chosen to be seen, not to be written on, and white on `#1baf7a` is 2.81:1. Pair it
+   * only with white text.
+   */
+  fill: string;
 }
 
 const DOMAIN_ACCENT: Record<DomainId, DomainAccent> = {
@@ -32,30 +40,35 @@ const DOMAIN_ACCENT: Record<DomainId, DomainAccent> = {
     bg: 'bg-domain-1',
     border: 'border-domain-1',
     ring: 'ring-domain-1',
+    fill: 'bg-domain-1-fill',
   },
   2: {
     text: 'text-domain-2-text',
     bg: 'bg-domain-2',
     border: 'border-domain-2',
     ring: 'ring-domain-2',
+    fill: 'bg-domain-2-fill',
   },
   3: {
     text: 'text-domain-3-text',
     bg: 'bg-domain-3',
     border: 'border-domain-3',
     ring: 'ring-domain-3',
+    fill: 'bg-domain-3-fill',
   },
   4: {
     text: 'text-domain-4-text',
     bg: 'bg-domain-4',
     border: 'border-domain-4',
     ring: 'ring-domain-4',
+    fill: 'bg-domain-4-fill',
   },
   5: {
     text: 'text-domain-5-text',
     bg: 'bg-domain-5',
     border: 'border-domain-5',
     ring: 'ring-domain-5',
+    fill: 'bg-domain-5-fill',
   },
 };
 

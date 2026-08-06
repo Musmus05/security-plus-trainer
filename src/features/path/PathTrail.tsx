@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { hasLesson } from '@/content/lesson-bank';
+import { hasQuestions } from '@/content/question-bank';
 import type { DomainId, Objective } from '@/content/schemas';
 import { cn, domainAccent } from '@/ui';
 
@@ -68,19 +69,26 @@ export function PathTrail({
         viewBox={`0 0 ${String(TRAIL_WIDTH)} ${String(height)}`}
         className="absolute inset-0"
       >
+        {/*
+          Dashed for the road ahead, solid for the road behind. A 10px solid grey band read as a
+          ribbon laid over the page rather than a route, and it gave the untravelled part exactly
+          as much visual weight as the travelled part — so the trail said nothing about progress
+          until you read the nodes. Dashes also survive the theme change better than a pale tint.
+        */}
         <path
           d={trailPath(points)}
           fill="none"
           stroke="var(--sp-track)"
-          strokeWidth={10}
+          strokeWidth={7}
           strokeLinecap="round"
+          strokeDasharray="2 16"
         />
         {travelled !== '' && (
           <path
             d={travelled}
             fill="none"
             stroke="currentColor"
-            strokeWidth={10}
+            strokeWidth={7}
             strokeLinecap="round"
             className={accent.text}
           />
@@ -108,6 +116,9 @@ export function PathTrail({
                 domain={domain}
                 crowns={crownsFor(objective.id)}
                 isNext={nextObjectiveId === objective.id}
+                // Either kind of material makes the objective worth opening: a lesson to read, or a
+                // quiz to take. Requiring both would mark a finished lesson as dormant.
+                hasContent={hasLesson(objective.id, locale) || hasQuestions(objective.id)}
                 label={`${objective.id} — ${title}`}
               />
 

@@ -51,6 +51,17 @@
   --sp-domain-4-text: #4a3aa7; /* 8.56:1 — already dark enough */
   --sp-domain-5-text: #c5403f; /* 5.02:1 */
 
+  /* ---- domain FILL tones: a node fill that carries a white label at AA ----
+     The mark tones cannot: white on #1baf7a is 2.81:1. Each fill is the smallest
+     lightness move from its mark that clears 4.5:1 for the white label AND 3:1
+     against its own surface, so the node still reads as a control. Same reason
+     --sp-action exists rather than reusing --sp-domain-1. Asserted in tokens.test.ts. */
+  --sp-domain-1-fill: #2974d0; /* white 4.65:1, on surface 4.65:1 */
+  --sp-domain-2-fill: #be542a; /* white 4.66:1, on surface 4.66:1 */
+  --sp-domain-3-fill: #15855d; /* white 4.62:1, on surface 4.62:1 */
+  --sp-domain-4-fill: #4a3aa7; /* white 8.56:1, on surface 8.56:1 */
+  --sp-domain-5-fill: #cf4242; /* white 4.66:1, on surface 4.66:1 */
+
   /* ------------------------------- sequential ramp (blue) — magnitude only */
   --sp-seq-100: #cde2fb;
   --sp-seq-250: #86b6ef;
@@ -134,6 +145,14 @@
     --sp-domain-4-text: #9085e9; /* 5.57:1 */
     --sp-domain-5-text: #e66767; /* 5.39:1 */
 
+    /* Unlike --sp-action these differ by theme: a fill dark enough for a white label is only
+       2.04:1 against the dark surface for domain 4, so it would vanish. Re-solved per surface. */
+    --sp-domain-1-fill: #3275c7; /* white 4.64:1, on surface 3.76:1 */
+    --sp-domain-2-fill: #c35022; /* white 4.66:1, on surface 3.74:1 */
+    --sp-domain-3-fill: #15855e; /* white 4.63:1, on surface 3.76:1 */
+    --sp-domain-4-fill: #736aba; /* white 4.64:1, on surface 3.75:1 */
+    --sp-domain-5-fill: #ba5353; /* white 4.70:1, on surface 3.71:1 */
+
     --sp-seq-100: #184f95;
     --sp-seq-250: #256abf;
     --sp-seq-350: #3987e5;
@@ -194,6 +213,14 @@
   --sp-domain-3-text: #199e70; /* 5.12:1 */
   --sp-domain-4-text: #9085e9; /* 5.57:1 */
   --sp-domain-5-text: #e66767; /* 5.39:1 */
+
+  /* Unlike --sp-action these differ by theme: a fill dark enough for a white label is only
+     2.04:1 against the dark surface for domain 4, so it would vanish. Re-solved per surface. */
+  --sp-domain-1-fill: #3275c7; /* white 4.64:1, on surface 3.76:1 */
+  --sp-domain-2-fill: #c35022; /* white 4.66:1, on surface 3.74:1 */
+  --sp-domain-3-fill: #15855e; /* white 4.63:1, on surface 3.76:1 */
+  --sp-domain-4-fill: #736aba; /* white 4.64:1, on surface 3.75:1 */
+  --sp-domain-5-fill: #ba5353; /* white 4.70:1, on surface 3.71:1 */
 
   --sp-seq-100: #184f95;
   --sp-seq-250: #256abf;
@@ -256,6 +283,12 @@
   --color-domain-3-text: var(--sp-domain-3-text);
   --color-domain-4-text: var(--sp-domain-4-text);
   --color-domain-5-text: var(--sp-domain-5-text);
+
+  --color-domain-1-fill: var(--sp-domain-1-fill);
+  --color-domain-2-fill: var(--sp-domain-2-fill);
+  --color-domain-3-fill: var(--sp-domain-3-fill);
+  --color-domain-4-fill: var(--sp-domain-4-fill);
+  --color-domain-5-fill: var(--sp-domain-5-fill);
 
   --color-seq-100: var(--sp-seq-100);
   --color-seq-250: var(--sp-seq-250);
