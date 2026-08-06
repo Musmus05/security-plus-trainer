@@ -1,0 +1,140 @@
+## Pourquoi cet objectif compte
+
+C’est le seul objectif du domaine 2 formulé « dans un scénario donné ». Il ne demande pas de
+définitions : il donne des **symptômes** et attend le nom de l’attaque.
+
+L’examen te met dans la position de l’analyste. Un journal, une plainte utilisateur, une alerte — et
+la question est : qu’est-ce que cela indique ?
+
+<KeyPoint>
+  Travaille à l’envers. Ne cherche pas « quelle attaque connais-je ? » mais **« quel indicateur est
+  incompatible avec une explication bénigne ? »**. Un compte verrouillé peut être un oubli de mot de
+  passe ; deux mille comptes verrouillés en dix minutes ne peuvent pas l’être.
+</KeyPoint>
+
+## Les logiciels malveillants
+
+| Type                                               | Le signe distinctif                                  |
+| -------------------------------------------------- | ---------------------------------------------------- |
+| <Term en="Ransomware">Rançongiciel</Term>          | Fichiers chiffrés, demande de rançon                 |
+| <Term en="Trojan">Cheval de Troie</Term>           | Un programme utile qui fait aussi autre chose        |
+| <Term en="Worm">Ver</Term>                         | Se propage **seul**, sans action de l’utilisateur    |
+| <Term en="Virus">Virus</Term>                      | S’attache à un fichier, nécessite une exécution      |
+| <Term en="Spyware">Logiciel espion</Term>          | Observe et transmet                                  |
+| <Term en="Keylogger">Enregistreur de frappe</Term> | Capture les touches saisies                          |
+| <Term en="Rootkit">Rootkit</Term>                  | Se cache **du système lui-même**                     |
+| <Term en="Logic bomb">Bombe logique</Term>         | Se déclenche sur une condition — une date, un départ |
+| <Term en="Bloatware">Logiciel superflu</Term>      | Préinstallé, inutile, élargit la surface d’attaque   |
+
+<ExamTrap>
+  **Ver contre virus** : la propagation autonome. Un ver traverse un réseau sans que personne ne
+  clique ; un virus attend une exécution. « S’est répandu à trois cents postes en une nuit » désigne
+  un ver.
+</ExamTrap>
+
+<ExamTrap>
+  Le <Term en="Rootkit">rootkit</Term> se reconnaît à une **incohérence** : le gestionnaire de
+  tâches ne voit pas un processus que le trafic réseau trahit, ou un fichier absent de l’explorateur
+  mais présent sur le disque. Il ment au système d’exploitation, donc à tous les outils qui
+  l’interrogent.
+</ExamTrap>
+
+## Les attaques physiques
+
+Trois seulement, et elles sont concrètes : la <Term en="Brute force">force brute</Term> physique
+(forcer une porte, un boîtier), la <Term en="RFID cloning">copie de badge RFID</Term>, et
+l’<Term en="Environmental">attaque environnementale</Term> — couper la climatisation d’un centre de
+données est une attaque sur la disponibilité.
+
+## Les attaques réseau
+
+| Attaque                                                  | L’indicateur                                                     |
+| -------------------------------------------------------- | ---------------------------------------------------------------- |
+| <Term en="DDoS">Déni de service distribué</Term>         | Trafic massif depuis de très nombreuses sources                  |
+| <Term en="DNS attacks">Attaques DNS</Term>               | Un nom résolu vers une adresse inattendue                        |
+| <Term en="Wireless">Sans fil</Term>                      | Un point d’accès jumeau, une désauthentification répétée         |
+| <Term en="On-path">Attaque de l’intermédiaire</Term>     | Un certificat inattendu, un chemin réseau anormal                |
+| <Term en="Credential replay">Rejeu d’identifiants</Term> | La même authentification réussie deux fois, depuis deux endroits |
+| <Term en="Malicious code">Code malveillant</Term>        | Une exécution inattendue au bout de la chaîne                    |
+
+<KeyPoint>
+  L’attaque de l’intermédiaire s’appelle désormais <Term en="on-path attack">on-path attack</Term>
+  dans les objectifs, et non plus « man-in-the-middle ». Les deux désignent la même chose.
+</KeyPoint>
+
+## Les attaques applicatives
+
+| Attaque                                                        | Ce qu’elle exploite                                     |
+| -------------------------------------------------------------- | ------------------------------------------------------- |
+| <Term en="Injection">Injection</Term>                          | Une saisie interprétée comme une instruction            |
+| <Term en="Buffer overflow">Débordement de tampon</Term>        | Une zone mémoire trop petite                            |
+| <Term en="Replay">Rejeu</Term>                                 | Une requête valide capturée et renvoyée                 |
+| <Term en="Privilege escalation">Élévation de privilèges</Term> | Un accès légitime transformé en accès supérieur         |
+| <Term en="Forgery">Falsification</Term>                        | Une requête fabriquée qui semble venir de l’utilisateur |
+| <Term en="Directory traversal">Traversée de répertoire</Term>  | `../` pour sortir du dossier prévu                      |
+
+## Les attaques cryptographiques
+
+**Anniversaire** — exploite la probabilité de <Term en="collision">collision</Term>, pas la force de
+l’algorithme. Beaucoup plus facile que de deviner une empreinte précise.
+
+**Rétrogradation** — force les deux parties à négocier une version plus faible du protocole. La
+défense est d’interdire les versions faibles, pas de les « préférer moins ».
+
+**Collision** — deux entrées produisant la même empreinte, ce qui casse l’intégrité.
+
+## Les attaques sur les mots de passe
+
+| Attaque                                           | Ce qui la caractérise                                            |
+| ------------------------------------------------- | ---------------------------------------------------------------- |
+| <Term en="Brute force">Force brute</Term>         | Toutes les combinaisons, sur **un** compte — bruyant, verrouille |
+| <Term en="Password spraying">Pulvérisation</Term> | **Un** mot de passe courant, sur **tous** les comptes — discret  |
+| <Term en="Dictionary">Dictionnaire</Term>         | Une liste de mots probables                                      |
+
+<Mnemonic>
+  **Force brute : mille mots de passe sur un compte. Pulvérisation : un mot de passe sur mille
+  comptes.** La pulvérisation existe précisément pour ne pas déclencher le verrouillage — c’est
+  pourquoi elle est plus difficile à détecter.
+</Mnemonic>
+
+<ExamTrap>
+  Un indicateur de pulvérisation : **un échec unique sur un très grand nombre de comptes différents,
+  dans un intervalle court**. Aucun compte n’est verrouillé, donc aucune alerte de verrouillage ne
+  se déclenche. Il faut corréler à travers les comptes pour la voir.
+</ExamTrap>
+
+## Lire les indicateurs
+
+Les indicateurs officiels sont le vocabulaire de la question, pas de la réponse.
+
+| Indicateur                                                        | Ce qu’il suggère typiquement                      |
+| ----------------------------------------------------------------- | ------------------------------------------------- |
+| <Term en="Account lockout">Verrouillage de compte</Term>          | Force brute, ou pulvérisation mal réglée          |
+| <Term en="Concurrent session usage">Sessions simultanées</Term>   | Identifiants volés, rejeu                         |
+| <Term en="Impossible travel">Voyage impossible</Term>             | Deux connexions géographiquement incompatibles    |
+| <Term en="Resource consumption">Consommation de ressources</Term> | Exfiltration, minage, déni de service             |
+| <Term en="Resource inaccessibility">Ressource inaccessible</Term> | Rançongiciel, déni de service                     |
+| <Term en="Out-of-cycle logging">Journalisation hors cycle</Term>  | Une activité à une heure où personne ne travaille |
+| <Term en="Missing logs">Journaux manquants</Term>                 | Effacement de traces — un indicateur en soi       |
+| <Term en="Published/documented">Publication</Term>                | Les données apparaissent en ligne                 |
+
+<InPractice>
+  Les **journaux manquants** sont l’indicateur le plus sous-estimé. Un trou dans une séquence n’est
+  pas une panne : c’est quelqu’un qui a nettoyé derrière lui. C’est aussi pour cela qu’on expédie
+  les journaux hors de la machine qui les produit.
+</InPractice>
+
+## Se tester
+
+1. Un échec d’authentification unique sur huit cents comptes en quatre minutes, aucun verrouillage.
+   Quelle attaque ?
+2. Le trafic réseau montre un processus qui communique, mais le gestionnaire de tâches ne le liste
+   pas. Quoi ?
+3. Un malware s’est propagé sur trois cents postes en une nuit, sans qu’aucun utilisateur n’ouvre
+   quoi que ce soit. Ver ou virus ?
+
+<KeyPoint>
+  (1) Une pulvérisation de mots de passe : un seul essai par compte évite le verrouillage. (2) Un
+  rootkit — l’incohérence entre ce que le système rapporte et ce qui se passe réellement est sa
+  signature. (3) Un ver : la propagation sans action de l’utilisateur est ce qui le définit.
+</KeyPoint>

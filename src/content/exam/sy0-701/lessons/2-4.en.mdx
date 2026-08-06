@@ -1,0 +1,135 @@
+## Why this objective matters
+
+This is the only objective in domain 2 phrased "given a scenario". It does not ask for definitions:
+it gives **symptoms** and expects the name of the attack.
+
+The exam puts you in the analyst's chair. A log, a user complaint, an alert — and the question is:
+what does this indicate?
+
+<KeyPoint>
+  Work backwards. Do not ask "which attacks do I know?" but **"which indicator is incompatible with
+  a benign explanation?"**. One locked account may be a forgotten password; two thousand locked
+  accounts in ten minutes cannot be.
+</KeyPoint>
+
+## Malware
+
+| Type       | The distinguishing sign                            |
+| ---------- | -------------------------------------------------- |
+| Ransomware | Files encrypted, ransom demanded                   |
+| Trojan     | A useful program that also does something else     |
+| Worm       | Spreads **by itself**, with no user action         |
+| Virus      | Attaches to a file, needs execution                |
+| Spyware    | Watches and reports                                |
+| Keylogger  | Captures keystrokes                                |
+| Rootkit    | Hides **from the operating system itself**         |
+| Logic bomb | Fires on a condition — a date, a departure         |
+| Bloatware  | Preinstalled, useless, enlarges the attack surface |
+
+<ExamTrap>
+  **Worm versus virus**: autonomous propagation. A worm crosses a network with nobody clicking; a
+  virus waits to be executed. "Spread to three hundred machines overnight" means a worm.
+</ExamTrap>
+
+<ExamTrap>
+  A rootkit is recognised by an **inconsistency**: the task manager does not show a process that
+  network traffic proves is running, or a file missing from the explorer but present on disk. It
+  lies to the operating system, and therefore to every tool that asks the operating system.
+</ExamTrap>
+
+## Physical attacks
+
+Only three, and they are concrete: physical brute force (forcing a door or an enclosure), RFID
+cloning, and environmental — cutting the air conditioning in a data centre is an attack on
+availability.
+
+## Network attacks
+
+| Attack            | The indicator                                             |
+| ----------------- | --------------------------------------------------------- |
+| DDoS              | Massive traffic from very many sources                    |
+| DNS attacks       | A name resolving to an unexpected address                 |
+| Wireless          | A twin access point, repeated deauthentication            |
+| On-path           | An unexpected certificate, an abnormal network path       |
+| Credential replay | The same successful authentication twice, from two places |
+| Malicious code    | Unexpected execution at the end of the chain              |
+
+<KeyPoint>
+  What used to be called "man-in-the-middle" is now the **on-path attack** in the objectives. Same
+  thing, current wording.
+</KeyPoint>
+
+## Application attacks
+
+| Attack               | What it exploits                                        |
+| -------------------- | ------------------------------------------------------- |
+| Injection            | Input interpreted as an instruction                     |
+| Buffer overflow      | A memory region that is too small                       |
+| Replay               | A valid request captured and sent again                 |
+| Privilege escalation | Legitimate access turned into higher access             |
+| Forgery              | A fabricated request that appears to come from the user |
+| Directory traversal  | `../` to climb out of the intended folder               |
+
+## Cryptographic attacks
+
+**Birthday** — exploits the probability of a collision, not the strength of the algorithm. Far
+easier than guessing one specific digest.
+
+**Downgrade** — forces both parties to negotiate a weaker protocol version. The defence is refusing
+weak versions, not merely preferring strong ones.
+
+**Collision** — two inputs producing the same digest, which breaks integrity.
+
+## Password attacks
+
+| Attack            | What characterises it                                               |
+| ----------------- | ------------------------------------------------------------------- |
+| Brute force       | Every combination against **one** account — noisy, triggers lockout |
+| Password spraying | **One** common password against **every** account — quiet           |
+| Dictionary        | A list of likely words                                              |
+
+<Mnemonic>
+  **Brute force: a thousand passwords against one account. Spraying: one password against a thousand
+  accounts.** Spraying exists precisely to stay under the lockout threshold, which is why it is
+  harder to detect.
+</Mnemonic>
+
+<ExamTrap>
+  The indicator of spraying: **a single failure against a very large number of different accounts,
+  in a short window**. No account locks out, so no lockout alert fires. You have to correlate across
+  accounts to see it at all.
+</ExamTrap>
+
+## Reading the indicators
+
+The official indicators are the vocabulary of the question, not of the answer.
+
+| Indicator                | What it typically suggests                     |
+| ------------------------ | ---------------------------------------------- |
+| Account lockout          | Brute force, or badly tuned spraying           |
+| Concurrent session usage | Stolen credentials, replay                     |
+| Impossible travel        | Two logins that geography cannot reconcile     |
+| Resource consumption     | Exfiltration, mining, denial of service        |
+| Resource inaccessibility | Ransomware, denial of service                  |
+| Out-of-cycle logging     | Activity at an hour when nobody works          |
+| Missing logs             | Track covering — an indicator in its own right |
+| Published/documented     | The data turns up online                       |
+
+<InPractice>
+  **Missing logs** is the most underrated indicator. A gap in a sequence is not an outage: it is
+  somebody tidying up after themselves. It is also why logs are shipped off the machine that
+  produces them.
+</InPractice>
+
+## Test yourself
+
+1. One authentication failure against eight hundred accounts in four minutes, no lockouts. Which
+   attack?
+2. Network traffic shows a process communicating, but the task manager does not list it. What?
+3. Malware spread to three hundred machines overnight with no user opening anything. Worm or virus?
+
+<KeyPoint>
+  (1) Password spraying: one attempt per account stays under the lockout threshold. (2) A rootkit —
+  the inconsistency between what the system reports and what is actually happening is its signature.
+  (3) A worm: spreading without user action is what defines one.
+</KeyPoint>
