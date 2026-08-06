@@ -1,4 +1,5 @@
 import { AlertTriangle, BrainCircuit, Lightbulb, Target } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/ui';
 
@@ -90,6 +91,32 @@ export function KeyPoint({ title, children }: CalloutProps) {
     >
       {children}
     </Callout>
+  );
+}
+
+/**
+ * A horizontally scrollable wrapper for a lesson table.
+ *
+ * `role="region"` plus a name plus `tabIndex` is the accessible form of a scroll container. A bare
+ * focusable `<div>` satisfies axe's `scrollable-region-focusable` but trips jsx-a11y, and rightly:
+ * a focus stop with no role and no name is announced as nothing at all. The region role is what
+ * makes the focus stop mean something.
+ *
+ * This only became a problem in CI. On a wide desktop viewport the tables do not overflow, so there
+ * is no scroll region to fail — it took the mobile viewport to surface it.
+ */
+export function ScrollableTable({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+
+  return (
+    <div
+      role="region"
+      aria-label={t('lesson.tableLabel')}
+      tabIndex={0}
+      className="border-edge focus-visible:outline-action my-5 overflow-x-auto rounded-2xl border focus-visible:outline-2 focus-visible:outline-offset-2"
+    >
+      {children}
+    </div>
   );
 }
 

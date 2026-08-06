@@ -29,7 +29,14 @@ export function RouteError() {
           <summary className="text-ink-secondary cursor-pointer text-sm font-semibold">
             {t('error.details')}
           </summary>
-          <pre className="text-ink-secondary mt-2 overflow-x-auto text-xs">{detail}</pre>
+          <pre
+            role="region"
+            aria-label={t('error.details')}
+            tabIndex={0}
+            className="text-ink-secondary focus-visible:outline-action mt-2 overflow-x-auto text-xs focus-visible:outline-2"
+          >
+            {detail}
+          </pre>
         </details>
       </Card>
     </div>

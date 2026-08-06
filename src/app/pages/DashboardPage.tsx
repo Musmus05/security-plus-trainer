@@ -117,7 +117,12 @@ export function DashboardPage() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-bold">{t('dashboard.activityTitle')}</h2>
-        <Card className="overflow-x-auto">
+        {/* Focusable for the same reason as the lesson tables: a scroll region that cannot be
+            focused is unreachable by keyboard. */}
+        <Card
+          tabIndex={0}
+          className="focus-visible:outline-action overflow-x-auto focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
           <ActivityHeatmap
             ledger={dashboard.ledger}
             today={dashboard.today}

@@ -54,6 +54,22 @@ export default tseslint.config(
     rules: {
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
+      /*
+       * axe and jsx-a11y genuinely disagree about scrollable regions.
+       *
+       * axe reports `scrollable-region-focusable` when a horizontally scrolling container cannot be
+       * focused — a keyboard user can see there is more table but has no way to reach it. The fix is
+       * `tabIndex={0}`, which this rule then rejects because a div is not interactive.
+       *
+       * A named `role="region"` is the WAI-ARIA answer, and the rule supports allowing exactly that
+       * rather than being switched off. Widening the allow-list by one role is the honest
+       * resolution; a blanket disable would lose every other case the rule catches.
+       */
+      'jsx-a11y/no-noninteractive-tabindex': [
+        'error',
+        { tags: [], roles: ['tabpanel', 'region'], allowExpressionValues: true },
+      ],
+
       // Explicit boundaries beat implicit ones in a codebase this content-heavy.
       '@typescript-eslint/consistent-type-imports': [
         'error',

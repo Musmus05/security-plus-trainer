@@ -1,6 +1,6 @@
 import type { MDXComponents } from 'mdx/types';
 
-import { ExamTrap, InPractice, KeyPoint, Mnemonic, Term } from './callouts';
+import { ExamTrap, InPractice, KeyPoint, Mnemonic, ScrollableTable, Term } from './callouts';
 
 /**
  * Styling for the plain markdown a lesson is mostly made of, plus the callout components.
@@ -51,9 +51,9 @@ export const lessonComponents: MDXComponents = {
    * page sideways on a phone.
    */
   table: (props) => (
-    <div className="border-edge my-5 overflow-x-auto rounded-2xl border">
+    <ScrollableTable>
       <table {...props} className="w-full border-collapse text-left text-sm" />
-    </div>
+    </ScrollableTable>
   ),
   thead: (props) => <thead {...props} className="bg-sunken" />,
   th: (props) => (
