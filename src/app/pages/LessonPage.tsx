@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 
 import { findDomain, findObjective } from '@/content/exam/sy0-701/domains';
+import { LessonBody } from '@/features/lesson/LessonBody';
 import { ObjectiveMastery } from '@/features/path/ObjectiveMastery';
 import { Badge, ButtonLink, Card, domainAccent } from '@/ui';
 
@@ -21,7 +22,9 @@ export function LessonPage() {
   if (!objective) {
     return (
       <div className="mx-auto flex max-w-md flex-col items-start gap-4 py-12">
-        <h1 className="text-2xl font-extrabold tracking-tight">{t('lesson.unknownTitle')}</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-balance">
+          {t('lesson.unknownTitle')}
+        </h1>
         <p className="text-ink-secondary">{t('lesson.unknownBody', { id: objectiveId ?? '—' })}</p>
         <ButtonLink to="/path">{t('lesson.backToPath')}</ButtonLink>
       </div>
@@ -64,6 +67,9 @@ export function LessonPage() {
 
       <ObjectiveMastery objectiveId={objective.id} />
 
+      {/* Keyed by objective so navigating between lessons remounts rather than resetting. */}
+      <LessonBody key={objective.id} objectiveId={objective.id} />
+
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-bold">{t('lesson.scopeTitle')}</h2>
         <p className="text-ink-secondary text-sm">{t('lesson.scopeHelp')}</p>
@@ -82,8 +88,6 @@ export function LessonPage() {
           ))}
         </Card>
       </section>
-
-      <Card className="text-ink-secondary text-sm">{t('page.lesson.placeholder')}</Card>
     </article>
   );
 }

@@ -1,0 +1,153 @@
+## Pourquoi cet objectif compte
+
+C’est le tout premier objectif de l’examen, et c’est aussi celui qui revient le plus souvent
+déguisé. Une question sur les pare-feux, une autre sur la formation du personnel, une troisième sur
+un sas d’entrée : dans les trois cas, ce qu’on te demande réellement est _de quelle nature est ce
+contrôle_.
+
+CompTIA classe chaque contrôle de sécurité sur **deux axes indépendants** :
+
+- la **catégorie** — _où_ vit le contrôle ;
+- le **type** — _ce qu’il fait_.
+
+Tout contrôle possède les deux. Un pare-feu est de catégorie technique et de type préventif. Une
+charte d’utilisation est managériale et directive. Confondre les deux axes est l’erreur numéro un
+sur cet objectif, et l’examen la teste directement.
+
+<KeyPoint>
+  Catégorie = **où**. Type = **ce que ça fait**. Ce sont deux questions séparées, et chaque contrôle
+  répond aux deux.
+</KeyPoint>
+
+## Les quatre catégories
+
+| Catégorie                                    | Où vit le contrôle                 | Exemples                                                                             |
+| -------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
+| <Term en="Technical">Technique</Term>        | Matériel, logiciel, firmware       | Règle de pare-feu, ACL, chiffrement de disque, MFA, antivirus                        |
+| <Term en="Managerial">Managériale</Term>     | Décisions, gouvernance, politiques | Charte d’utilisation, évaluation des risques, exigence de vérification d’antécédents |
+| <Term en="Operational">Opérationnelle</Term> | Activités menées par des personnes | Ronde de gardiennage, revue quotidienne des journaux, rotation des sauvegardes       |
+| <Term en="Physical">Physique</Term>          | Le monde tangible                  | Clôture, borne, serrure, sas, éclairage                                              |
+
+La catégorie managériale s’appelle aussi **administrative** dans une bonne partie de la littérature
+: les deux mots désignent la même chose.
+
+### La frontière managérial / opérationnel
+
+C’est la seule frontière de catégorie que l’examen exploite vraiment, parce qu’elle sépare deux
+choses qui portent le même nom dans le langage courant.
+
+> La **politique** qui exige une revue quotidienne des journaux est **managériale**. Le
+> **technicien** qui l’exécute chaque matin est **opérationnel**.
+
+Même sujet, deux contrôles distincts. Dès qu’une question mentionne une exigence _et_ son exécution,
+demande-toi laquelle des deux elle désigne.
+
+<ExamTrap>
+  « Formation de sensibilisation à la sécurité » est ambigu à dessein. Le *programme* de formation
+  et son exigence sont managériaux ; *animer* la session chaque trimestre est opérationnel. Lis
+  quelle partie la question nomme.
+</ExamTrap>
+
+## Les six types
+
+| Type                                         | Ce qu’il fait                   | Moment          | Exemple                                                                 |
+| -------------------------------------------- | ------------------------------- | --------------- | ----------------------------------------------------------------------- |
+| <Term en="Preventive">Préventif</Term>       | Empêche l’action                | Avant           | Serrure, règle de refus, chiffrement, formation                         |
+| <Term en="Deterrent">Dissuasif</Term>        | Décourage la tentative          | Avant           | Panneau « zone surveillée », agent visible, avertissement de poursuites |
+| <Term en="Detective">Détectif</Term>         | Signale ce qui s’est passé      | Pendant / après | Caméra, SIEM, revue de journaux, IDS                                    |
+| <Term en="Corrective">Correctif</Term>       | Rétablit l’état attendu         | Après           | Restauration de sauvegarde, mise en quarantaine, correctif appliqué     |
+| <Term en="Compensating">Compensatoire</Term> | Remplace un contrôle impossible | À la place      | Hôte de rebond devant une application sans MFA                          |
+| <Term en="Directive">Directif</Term>         | Indique ce qu’il faut faire     | Avant           | Procédure, norme, panneau « les visiteurs doivent s’enregistrer »       |
+
+### Préventif contre dissuasif
+
+Un contrôle **préventif** rend l’action impossible. Un contrôle **dissuasif** la rend peu
+attrayante. La question à se poser : _un attaquant déterminé peut-il simplement passer outre ?_
+
+- Une porte verrouillée : non → **préventif**.
+- Un panneau « zone sous vidéosurveillance » : oui, il passe devant → **dissuasif**.
+
+<Mnemonic>
+  **Dissuasif = dans la tête.** Ça n’arrête rien physiquement, ça fait changer d’avis. Si le
+  contrôle n’existe que pour être *vu*, il est dissuasif.
+</Mnemonic>
+
+### Directif contre dissuasif
+
+Les deux s’adressent à un humain, et c’est le couple le plus mal départagé après compensatoire /
+correctif.
+
+- « Toute intrusion sera poursuivie » → menace une conséquence → **dissuasif**.
+- « Les visiteurs doivent s’enregistrer à l’accueil » → énonce l’attente → **directif**.
+
+Un contrôle directif dit _quoi faire_. Un contrôle dissuasif dit _ce qui arrivera si tu ne le fais
+pas_.
+
+### Compensatoire contre correctif
+
+C’est **le** couple que l’examen exploite le plus sur cet objectif. La distinction ne porte pas sur
+la nature du contrôle mais sur **ce qui l’a déclenché**.
+
+|             | Compensatoire                                                                          | Correctif                                                               |
+| ----------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Déclencheur | « On ne peut pas faire ce qui est exigé »                                              | « Quelque chose s’est produit »                                         |
+| Moment      | À la place du contrôle manquant                                                        | Après l’incident                                                        |
+| Exemple     | MFA impossible sur une application héritée → hôte de rebond avec MFA et enregistrement | Serveur chiffré par un rançongiciel → restauration depuis la sauvegarde |
+
+<ExamTrap>
+  Un **constat d’audit n’est pas un incident**. Trouver une faiblesse et la contourner donne un
+  contrôle **compensatoire**. Réparer les dégâts après une compromission donne un contrôle
+  **correctif**. Beaucoup de candidats répondent « correctif » dès qu’ils voient le mot « après ».
+</ExamTrap>
+
+Un contrôle compensatoire a toujours un contrôle précis auquel il se substitue. Si tu ne peux pas
+nommer ce contrôle manquant, ce n’en est pas un.
+
+## Les deux axes se combinent librement
+
+C’est le point que les questions difficiles vérifient : n’importe quel type peut apparaître dans
+n’importe quelle catégorie.
+
+| Contrôle                                      | Catégorie      | Type          |
+| --------------------------------------------- | -------------- | ------------- |
+| Chiffrement intégral du disque                | Technique      | Préventif     |
+| Panneau « zone surveillée »                   | Physique       | Dissuasif     |
+| Revue quotidienne des journaux                | Opérationnelle | Détectif      |
+| Charte d’utilisation signée                   | Managériale    | Directif      |
+| Restauration depuis sauvegarde                | Opérationnelle | Correctif     |
+| Segmentation réseau à la place du chiffrement | Technique      | Compensatoire |
+
+<InPractice>
+  Une seule situation contient presque toujours plusieurs contrôles de types différents. Une entrée
+  de centre de données avec bornes, sas, badge et caméras réunit du préventif (sas), du dissuasif
+  (présence visible), du détectif (caméras) — tous de catégorie physique. Quand une question décrit
+  une scène entière, repère **quel élément** elle interroge.
+</InPractice>
+
+## Formation de sensibilisation : préventif, pas détectif
+
+Un cas particulier qui tombe souvent. La formation de sensibilisation à la sécurité est un contrôle
+**préventif** — elle vise à éviter l’erreur avant qu’elle ne survienne — et c’est l’exemple
+canonique d’un contrôle préventif qui n’est **pas** technique.
+
+Mais le moment change la réponse :
+
+- Formation obligatoire **avant** l’activation du compte → **préventif**.
+- Formation de rattrapage imposée **après** un échec à un test de hameçonnage → **correctif**.
+- Simulation de hameçonnage qui **mesure** qui clique → **détectif**.
+
+## Se tester
+
+Avant de passer au quiz, réponds à ces trois questions à voix haute :
+
+1. Un SIEM lève une alerte sans rien bloquer. Catégorie ? Type ?
+2. Un éditeur ne peut pas ajouter le chiffrement au repos ; on isole le système sur un segment
+   réseau dédié. Type ?
+3. Une entreprise exige une vérification d’antécédents pour les nouveaux employés. Catégorie du
+   _document d’exigence_ ? Catégorie de la _vérification elle-même_ ?
+
+<KeyPoint>
+  Les réponses : (1) technique, détectif. (2) compensatoire — un contrôle exigé est impossible, on
+  lui substitue autre chose. (3) l’exigence est managériale, son exécution par les RH est
+  opérationnelle.
+</KeyPoint>

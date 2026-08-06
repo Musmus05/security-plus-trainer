@@ -113,7 +113,9 @@
     "domainMastery": "Maîtrise du domaine {{domain}}",
     "weight": "{{percent}} % de l’examen",
     "topicCount_one": "{{count}} point officiel",
-    "topicCount_other": "{{count}} points officiels"
+    "topicCount_other": "{{count}} points officiels",
+    "youAreHere": "ici",
+    "lessonAvailable": "Leçon"
   },
   "lesson": {
     "backToPath": "Retour au parcours",
@@ -131,7 +133,10 @@
       "nothing": "Totalement maîtrisé."
     },
     "crowns_one": "{{count}} couronne sur {{max}}",
-    "crowns_other": "{{count}} couronnes sur {{max}}"
+    "crowns_other": "{{count}} couronnes sur {{max}}",
+    "notWrittenYet": "La leçon de cet objectif n’est pas encore rédigée. Les points officiels ci-dessous sont le périmètre exact sur lequel l’examen t’interroge.",
+    "shownInOtherLanguage": "Affichée en {{language}} — pas encore traduite",
+    "tableLabel": "Tableau, défilement horizontal"
   },
   "dashboard": {
     "rank": "{{rank}} · niveau {{level}}",

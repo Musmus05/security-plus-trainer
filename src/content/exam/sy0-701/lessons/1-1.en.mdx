@@ -1,0 +1,149 @@
+## Why this objective matters
+
+It is the first objective on the exam, and it is also the one that turns up most often in disguise.
+A question about firewalls, another about staff training, a third about an access vestibule — in all
+three cases what you are really being asked is _what kind of control is this_.
+
+CompTIA classifies every security control on **two independent axes**:
+
+- the **category** — _where_ the control lives;
+- the **type** — _what it does_.
+
+Every control has both. A firewall is technical in category and preventive in type. An acceptable
+use policy is managerial and directive. Confusing the two axes is the single most common mistake on
+this objective, and the exam tests it directly.
+
+<KeyPoint>
+  Category = **where**. Type = **what it does**. Two separate questions, and every control answers
+  both.
+</KeyPoint>
+
+## The four categories
+
+| Category    | Where the control lives       | Examples                                                             |
+| ----------- | ----------------------------- | -------------------------------------------------------------------- |
+| Technical   | Hardware, software, firmware  | Firewall rule, ACL, disk encryption, MFA, antivirus                  |
+| Managerial  | Decisions, governance, policy | Acceptable use policy, risk assessment, background-check requirement |
+| Operational | Activities people carry out   | Guard patrol, daily log review, backup rotation                      |
+| Physical    | The tangible world            | Fence, bollard, lock, access vestibule, lighting                     |
+
+The managerial category is also called **administrative** in much of the literature; the two words
+mean the same thing.
+
+### The managerial / operational boundary
+
+This is the one category boundary the exam genuinely exploits, because it separates two things that
+share a name in ordinary speech.
+
+> The **policy** requiring daily log review is **managerial**. The **technician** who performs it
+> each morning is **operational**.
+
+Same subject, two distinct controls. Whenever a question mentions a requirement _and_ its execution,
+work out which of the two it names.
+
+<ExamTrap>
+  "Security awareness training" is ambiguous on purpose. The training *programme* and its
+  requirement are managerial; *delivering* the session each quarter is operational. Read which part
+  the question names.
+</ExamTrap>
+
+## The six types
+
+| Type         | What it does                                         | When           | Example                                                            |
+| ------------ | ---------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
+| Preventive   | Stops the action                                     | Before         | Lock, deny rule, encryption, training                              |
+| Deterrent    | Discourages the attempt                              | Before         | "Area under surveillance" sign, visible guard, prosecution warning |
+| Detective    | Reports what happened                                | During / after | Camera, SIEM, log review, IDS                                      |
+| Corrective   | Restores the expected state                          | After          | Backup restore, quarantine, patch applied                          |
+| Compensating | Substitutes for a control that cannot be implemented | Instead of     | Jump host in front of an application that cannot do MFA            |
+| Directive    | States what should be done                           | Before         | Procedure, standard, "Visitors must sign in" sign                  |
+
+### Preventive versus deterrent
+
+A **preventive** control makes the action impossible. A **deterrent** makes it unattractive. The
+question to ask: _can a determined attacker simply walk past it?_
+
+- A locked door: no → **preventive**.
+- An "Area under video surveillance" sign: yes, they walk straight past → **deterrent**.
+
+<Mnemonic>
+  **Deterrent lives in the head.** It stops nothing physically; it changes a mind. If a control
+  exists only in order to be *seen*, it is a deterrent.
+</Mnemonic>
+
+### Directive versus deterrent
+
+Both address a human, and after compensating/corrective this is the most confused pair.
+
+- "Trespassers will be prosecuted" → threatens a consequence → **deterrent**.
+- "Visitors must sign in at reception" → states the expectation → **directive**.
+
+A directive control says _what to do_. A deterrent says _what will happen if you do not_.
+
+### Compensating versus corrective
+
+This is **the** pair the exam leans on hardest here. The distinction is not what the control is, but
+**what triggered it**.
+
+|         | Compensating                                                              | Corrective                                         |
+| ------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
+| Trigger | "We cannot do the required thing"                                         | "Something has gone wrong"                         |
+| Timing  | Instead of the missing control                                            | After the incident                                 |
+| Example | MFA impossible on a legacy app → jump host with MFA and session recording | Ransomware encrypts a server → restore from backup |
+
+<ExamTrap>
+  An **audit finding is not an incident**. Finding a weakness and working around it gives you a
+  **compensating** control. Repairing damage after a breach gives you a **corrective** one. Many
+  candidates answer "corrective" the moment they see the word "after".
+</ExamTrap>
+
+A compensating control always has a specific control it substitutes for. If you cannot name that
+missing control, it is not one.
+
+## The two axes combine freely
+
+This is what the harder questions check: any type can appear in any category.
+
+| Control                                    | Category    | Type         |
+| ------------------------------------------ | ----------- | ------------ |
+| Full-disk encryption                       | Technical   | Preventive   |
+| "Area under surveillance" sign             | Physical    | Deterrent    |
+| Daily log review                           | Operational | Detective    |
+| Signed acceptable use policy               | Managerial  | Directive    |
+| Restore from backup                        | Operational | Corrective   |
+| Network segmentation instead of encryption | Technical   | Compensating |
+
+<InPractice>
+  One situation almost always contains several controls of different types. A data centre entrance
+  with bollards, a vestibule, a badge reader and cameras combines preventive (the vestibule),
+  deterrent (visible presence) and detective (the cameras) — all in the physical category. When a
+  question describes a whole scene, find **which element** it is asking about.
+</InPractice>
+
+## Awareness training is preventive, not detective
+
+A specific case that comes up often. Security awareness training is a **preventive** control — it
+aims to stop mistakes before they happen — and it is the canonical example of a preventive control
+that is **not** technical.
+
+But timing changes the answer:
+
+- Mandatory training **before** an account is enabled → **preventive**.
+- Remedial training assigned **after** somebody fails a phishing test → **corrective**.
+- A phishing simulation that **measures** who clicks → **detective**.
+
+## Test yourself
+
+Before moving to the quiz, answer these out loud:
+
+1. A SIEM raises an alert and blocks nothing. Category? Type?
+2. A vendor cannot add encryption at rest, so the system is isolated on a dedicated network segment.
+   Type?
+3. A company requires background checks for new hires. Category of the _requirement document_?
+   Category of the _check itself_?
+
+<KeyPoint>
+  Answers: (1) technical, detective. (2) compensating — a required control is impossible, so
+  something else stands in for it. (3) the requirement is managerial; HR performing it is
+  operational.
+</KeyPoint>

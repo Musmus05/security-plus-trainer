@@ -68,6 +68,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   extended to validate banks (schema, unique ids, id/objective agreement, a minimum of 15 questions,
   and a minimum explanation length on every option).
 
+- Real lesson content: the MDX pipeline, with `Term`, `ExamTrap`, `Mnemonic`, `KeyPoint` and
+  `InPractice` callouts, and a full bilingual lesson for objective 1.1.
+- A visual pass on the learning path: a winding node trail with per-domain accent strips, crown pips,
+  and a marker on the objective the dashboard is pointing at.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

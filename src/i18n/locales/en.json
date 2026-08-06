@@ -113,7 +113,9 @@
     "domainMastery": "Domain {{domain}} mastery",
     "weight": "{{percent}}% of the exam",
     "topicCount_one": "{{count}} official topic",
-    "topicCount_other": "{{count}} official topics"
+    "topicCount_other": "{{count}} official topics",
+    "youAreHere": "here",
+    "lessonAvailable": "Lesson"
   },
   "lesson": {
     "backToPath": "Back to the learning path",
@@ -131,7 +133,10 @@
       "nothing": "Fully mastered."
     },
     "crowns_one": "{{count}} of {{max}} crowns",
-    "crowns_other": "{{count}} of {{max}} crowns"
+    "crowns_other": "{{count}} of {{max}} crowns",
+    "notWrittenYet": "The lesson for this objective has not been written yet. The official topics below are the exact scope the exam holds it to.",
+    "shownInOtherLanguage": "Shown in {{language}} — not yet translated",
+    "tableLabel": "Table, scrollable sideways"
   },
   "dashboard": {
     "rank": "{{rank}} · level {{level}}",

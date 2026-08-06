@@ -3,14 +3,24 @@ import { expect, type Page, test } from '@playwright/test';
 
 const WCAG = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
-/** Map to something readable: a raw axe node dump is unusable in CI output. */
+/**
+ * Map to something readable — but keep enough to act on.
+ *
+ * An earlier version returned only the rule id and a node count. A raw axe dump is unusable in CI
+ * output, but that summary was undiagnosable: a contrast failure said nothing about which colours on
+ * which element, so fixing one meant reproducing it by hand. The colours and the offending selector
+ * *are* the diagnosis, so they stay.
+ */
 async function accessibilityViolations(page: Page) {
   const results = await new AxeBuilder({ page }).withTags(WCAG).analyze();
 
   return results.violations.map((violation) => ({
     id: violation.id,
-    nodes: violation.nodes.length,
     help: violation.help,
+    nodes: violation.nodes.map((node) => ({
+      target: node.target.join(' '),
+      detail: node.any.map((check) => check.message).join(' | '),
+    })),
   }));
 }
 

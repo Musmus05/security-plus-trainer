@@ -10,6 +10,8 @@
  * Every new content type must arrive with its own schema and its own checks in the same pull
  * request. The rule is in CONTRIBUTING.md and enforced in review.
  */
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+
 import type { z } from 'zod';
 
 import { EXAM_META } from '../src/content/exam-meta.ts';
@@ -187,6 +189,86 @@ for (const bank of BANKS) {
           );
         }
       }
+    }
+  }
+}
+
+/* --------------------------------------------------------------------- lessons */
+
+/**
+ * Lesson files, checked as text.
+ *
+ * Two of these checks exist because I got them wrong first.
+ *
+ * The French apostrophe rule was already enforced for the interface catalogue and the objective
+ * titles, but not for lesson prose — so the first lesson shipped 55 ASCII apostrophes into the one
+ * place a reader spends minutes rather than seconds. Enforcing it per file rather than per content
+ * type is the fix.
+ *
+ * The `<Term>` requirement is ADR-0004's rule: a French lesson that introduces technical vocabulary
+ * without the official English wording leaves a learner fluent in terms the exam never uses.
+ */
+const LESSON_DIRECTORY = 'src/content/exam/sy0-701/lessons';
+const MIN_LESSON_WORDS = 700;
+
+const lessonFiles = existsSync(LESSON_DIRECTORY)
+  ? readdirSync(LESSON_DIRECTORY).filter((name) => name.endsWith('.mdx'))
+  : [];
+
+const lessonsByObjective = new Map<string, Set<string>>();
+
+for (const file of lessonFiles) {
+  const source = `lessons/${file}`;
+  sourcesChecked += 1;
+
+  const match = /^(\d)-(\d)\.(en|fr)\.mdx$/.exec(file);
+  if (match === null) {
+    fail(source, 'filename', 'must be named like "4-6.fr.mdx"');
+    continue;
+  }
+
+  const [, domain, objective, locale] = match as unknown as [string, string, string, string];
+  const objectiveId = `${domain}.${objective}`;
+
+  if (findObjective(objectiveId) === undefined) {
+    fail(source, 'objective', `no such objective: ${objectiveId}`);
+  }
+
+  const locales = lessonsByObjective.get(objectiveId) ?? new Set<string>();
+  locales.add(locale);
+  lessonsByObjective.set(objectiveId, locales);
+
+  const text = readFileSync(`${LESSON_DIRECTORY}/${file}`, 'utf8');
+
+  const words = text.split(/\s+/).filter((word) => /\w/.test(word)).length;
+  if (words < MIN_LESSON_WORDS) {
+    fail(
+      source,
+      'length',
+      `${String(words)} words, below the ${String(MIN_LESSON_WORDS)}-word floor for a lesson`,
+    );
+  }
+
+  if (locale === 'fr') {
+    if (text.includes("'")) {
+      fail(source, 'apostrophes', 'French prose must use ’ rather than the ASCII apostrophe');
+    }
+    if (!text.includes('<Term en=')) {
+      fail(
+        source,
+        'terminology',
+        'a French lesson must attach official English terms with <Term en="…">',
+      );
+    }
+  }
+}
+
+// Both languages, or neither — a half-translated lesson gives the learner an unpredictable mixture
+// with no way to tell what is missing from what is deliberately in English.
+for (const [objectiveId, locales] of lessonsByObjective) {
+  for (const required of ['en', 'fr']) {
+    if (!locales.has(required)) {
+      fail('lessons', objectiveId, `has no ${required} lesson; both languages are required`);
     }
   }
 }
