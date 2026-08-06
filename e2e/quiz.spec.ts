@@ -107,7 +107,15 @@ test.describe('objective quiz', () => {
     await page.goto('/objective/1.1/quiz');
     await answerCurrent(page, 'first');
 
-    await expect(page.getByLabel('Bonne réponse')).toBeVisible();
+    /*
+     * `.first()`, because the number of markers depends on which question was drawn. The session
+     * shuffles, and the bank contains a multi-select question with two correct options — so a bare
+     * `getByLabel` fails strict mode roughly one run in ten with "resolved to 2 elements".
+     *
+     * This is what was previously mistaken for a load-related flake. It is not timing at all: the
+     * assertion was wrong for a question shape that already existed in the bank.
+     */
+    await expect(page.getByLabel('Bonne réponse').first()).toBeVisible();
   });
 
   test('refuses to change the answer after revealing', async ({ page }) => {
