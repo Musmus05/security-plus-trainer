@@ -1,0 +1,133 @@
+## Why this objective matters
+
+Almost every outage, and a good share of exploitable vulnerabilities, is born from a change: a patch
+applied without testing, a firewall rule added "temporarily", a service restarted on a Friday
+evening. Change management is not bureaucracy — it is the control that keeps a system
+comprehensible.
+
+This objective is almost entirely conceptual. The exam does not ask you to configure anything here:
+it describes a situation and asks **which step of the process was skipped**.
+
+<KeyPoint>
+  The archetypal question on this objective is "what is missing?". A change fails and nobody knows
+  how to undo it → the backout plan was missing. A change breaks a neighbouring application → the
+  impact analysis was missing.
+</KeyPoint>
+
+## The business process
+
+Seven steps, and the exam tests them by function rather than by name.
+
+| Step                         | What it produces                                                                 |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| Approval process             | A formal decision, often by a committee (CAB)                                    |
+| Ownership                    | A named person, accountable for the change from start to finish                  |
+| Stakeholders                 | The list of who is affected and must be told                                     |
+| Impact analysis              | What breaks if the change goes wrong — and what breaks if it works               |
+| Test results                 | Evidence that the change works somewhere other than production                   |
+| Backout plan                 | The procedure for returning to the previous state, written **before** the change |
+| Maintenance window           | The agreed slot, chosen to limit business impact                                 |
+| Standard operating procedure | The written method, so the change is repeatable                                  |
+
+<ExamTrap>
+  The **backout plan** is written before the change, never during the incident. As soon as a stem
+  contains "what if the change fails?" or "how do we return to the previous state?", that is the
+  answer. Do not confuse it with a backup: a backup is data, a plan is a procedure.
+</ExamTrap>
+
+<ExamTrap>
+  The approval committee **decides**; it does not execute. A question describing a committee
+  applying a patch is describing a broken process, not a CAB.
+</ExamTrap>
+
+### Emergency change
+
+A critical security patch cannot wait for the next committee. So an emergency path exists: reduced
+approval, immediate execution, and **then** review by the committee after the fact.
+
+<InPractice>
+  The emergency path is the favourite back door of teams under pressure. An organisation where half
+  the changes are "emergencies" no longer has change management at all — it has a form.
+</InPractice>
+
+## Technical implications
+
+This is the part the exam ties explicitly to security.
+
+### Allow lists and deny lists
+
+| Mechanism  | Default behaviour    | Consequence                                    |
+| ---------- | -------------------- | ---------------------------------------------- |
+| Allow list | Everything denied    | Safer, but breaks whatever was not anticipated |
+| Deny list  | Everything permitted | More flexible, but only blocks known threats   |
+
+<Mnemonic>
+  **Allow list means deny by default.** It is safer precisely because it is more inconvenient:
+  anything not explicitly anticipated does not get through. Inverting the two is the most common
+  error on this objective.
+</Mnemonic>
+
+### What a change costs
+
+**Restricted activities** — an approved change is only approved within its scope. Touching something
+else "while we are in there" is an unapproved change.
+
+**Downtime** — even planned, it has to be announced to stakeholders.
+
+**Service restart or application restart** — a patch applied without a restart is often not active.
+A server reports the fixed version on disk while still running the old code in memory, and the
+vulnerability scanner declares it healthy.
+
+**Legacy applications** — a system the vendor no longer patches cannot be updated. You do not always
+remove it: you isolate it, segment it, add compensating controls. That is the direct link back to
+objective 1.1.
+
+**Dependencies** — changing A breaks B. That is what impact analysis looks for, and what an
+up-to-date inventory makes findable.
+
+<ExamTrap>
+  A patch installed but not restarted is not applied. If a scenario describes a vulnerability still
+  being detected after a "successful" patch, the missing restart is the first hypothesis.
+</ExamTrap>
+
+## Documentation
+
+Two artefacts, and the exam stresses updating them rather than creating them.
+
+**Updating diagrams** — a wrong network diagram is worse than no diagram: during an incident, the
+response team follows a map that no longer matches the terrain.
+
+**Updating policies and procedures** — a technical change that makes a procedure wrong has created
+invisible debt. The procedure will be followed anyway, by somebody who was not there.
+
+## Version control
+
+Version control is not only for code. Configuration, infrastructure described as files, firewall
+rules, deployment templates: anything that is text can be versioned.
+
+It gives security three things:
+
+- **Knowing what changed** — the difference between two states, exactly.
+- **Going back** — rollback becomes an operation rather than a reconstruction.
+- **Knowing who changed what** — every modification is attributed, which connects to the accounting
+  and non-repudiation seen in 1.2.
+
+<InPractice>
+  A firewall rule added by hand one evening during a crisis exists in no diff. Six months later
+  nobody knows why it is there, so nobody dares remove it. That is how rule sets become sieves: not
+  through one mistake, but through the accumulation of untracked changes.
+</InPractice>
+
+## Test yourself
+
+1. An approved change breaks billing, and the team takes six hours to restore service. Which step
+   was missing?
+2. Allow list or deny list: which one denies by default?
+3. The scanner still detects the vulnerability after the patch was applied. What is the first
+   hypothesis?
+
+<KeyPoint>
+  (1) The backout plan — it should have been written beforehand, not improvised during. (2) The
+  allow list: anything not on it is denied. (3) The service or application was not restarted, so the
+  old code is still running in memory.
+</KeyPoint>

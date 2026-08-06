@@ -24,10 +24,27 @@ const answerOptions = (page: Page): Locator =>
 /** Answer the current question, then submit. */
 async function answerCurrent(page: Page, strategy: 'first' | 'last'): Promise<void> {
   const options = answerOptions(page);
+
+  /*
+   * Wait for the question before counting. `count()` is the one locator method that does not retry,
+   * so calling it while the lazily-imported question bank is still loading returns 0 — which turns
+   * `nth(count - 1)` into `nth(-1)`. That happens to mean "last" in Playwright, so the helper works
+   * by accident rather than by design, and it front-loads the entire render wait onto whichever
+   * assertion comes next.
+   */
+  await expect(options.first()).toBeVisible();
   const count = await options.count();
 
   await options.nth(strategy === 'first' ? 0 : count - 1).check();
-  await page.getByRole('button', { name: 'Vérifier' }).click();
+
+  /*
+   * Asserting the button is enabled is not redundant with clicking it. If a selection somehow fails
+   * to reach React state, the failure reads "submit never became enabled" here, instead of surfacing
+   * later as a missing explanation and sending the reader after the wrong bug.
+   */
+  const submit = page.getByRole('button', { name: 'Vérifier' });
+  await expect(submit).toBeEnabled();
+  await submit.click();
 }
 
 /** Walk a whole quiz, answering every question the same way. */
