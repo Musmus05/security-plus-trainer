@@ -30,6 +30,10 @@ const LESSONS: Partial<Record<string, Partial<Record<Locale, LessonLoader>>>> = 
     fr: async () => (await import('./exam/sy0-701/lessons/1-3.fr.mdx')).default,
     en: async () => (await import('./exam/sy0-701/lessons/1-3.en.mdx')).default,
   },
+  '1.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/1-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/1-4.en.mdx')).default,
+  },
 };
 
 export function hasLesson(objectiveId: string, locale: Locale): boolean {

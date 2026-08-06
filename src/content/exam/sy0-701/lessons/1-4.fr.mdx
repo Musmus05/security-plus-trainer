@@ -1,0 +1,165 @@
+## Pourquoi cet objectif compte
+
+C’est le plus gros objectif du domaine 1, et le plus dense de l’examen en vocabulaire. Onze sujets
+officiels, dont la PKI et les certificats qui reviennent ensuite dans tout le domaine 4.
+
+Bonne nouvelle : l’examen ne demande pas de faire de la cryptographie. Il demande de **choisir le
+bon outil**. Personne ne t’interrogera sur le fonctionnement interne d’AES ; on te demandera si le
+problème décrit appelle du chiffrement, du hachage ou de la tokenisation.
+
+<KeyPoint>
+  La question fondatrice de cet objectif : **le résultat doit-il pouvoir redevenir la donnée
+  d’origine ?** Oui → chiffrement. Non, jamais → hachage. Oui, mais seulement via une table de
+  correspondance → tokenisation.
+</KeyPoint>
+
+## Symétrique et asymétrique
+
+| Critère       | Symétrique                    | Asymétrique                     |
+| ------------- | ----------------------------- | ------------------------------- |
+| Clés          | Une seule, partagée           | Une paire : publique et privée  |
+| Vitesse       | Rapide                        | Lente                           |
+| Usage typique | Chiffrer le volume de données | Échanger une clé, signer        |
+| Problème      | Comment transmettre la clé ?  | Trop lente pour de gros volumes |
+| Exemples      | AES, ChaCha20                 | RSA, ECC, Diffie-Hellman        |
+
+Les deux ne sont pas concurrents : ils sont **combinés**. TLS utilise l’asymétrique pour convenir
+d’une clé de session, puis le symétrique pour tout le reste de la conversation. C’est
+l’<Term en="Key exchange">échange de clés</Term>.
+
+<Mnemonic>
+  **Chiffrer avec la clé publique, déchiffrer avec la privée** → confidentialité, seul le
+  destinataire lit. **Signer avec la clé privée, vérifier avec la publique** → non-répudiation, tout
+  le monde vérifie que c’est bien toi.
+</Mnemonic>
+
+<ExamTrap>
+  Une <Term en="Key length">longueur de clé</Term> ne se compare pas entre familles. Une clé ECC de
+  256 bits offre à peu près la sécurité d’une clé RSA de 3072 bits. « Plus long = plus sûr » n’est
+  vrai qu’à l’intérieur d’un même algorithme.
+</ExamTrap>
+
+## Les niveaux de chiffrement
+
+L’examen teste le choix du niveau par ce qu’il protège **et par ce qu’il ne protège pas**.
+
+| Niveau                                     | Protège contre                    | Ne protège pas contre                |
+| ------------------------------------------ | --------------------------------- | ------------------------------------ |
+| <Term en="Full-disk">Disque entier</Term>  | Le vol du portable, éteint        | Un attaquant sur la machine démarrée |
+| <Term en="Partition">Partition</Term>      | Idem, sur une partition           | Le reste du disque                   |
+| <Term en="Volume">Volume</Term>            | Un conteneur logique              | Ce qui en sort                       |
+| <Term en="File">Fichier</Term>             | Un fichier précis, où qu’il aille | Les métadonnées, le nom du fichier   |
+| <Term en="Database">Base de données</Term> | Les fichiers de la base au repos  | Une requête SQL légitime             |
+| <Term en="Record">Enregistrement</Term>    | Une ligne, un champ               | Le reste de la table                 |
+
+<ExamTrap>
+  Le chiffrement de disque entier ne protège **rien** sur une machine allumée et déverrouillée : le
+  système déchiffre à la volée pour tout processus autorisé. Il protège un portable volé dans un
+  train, pas contre un logiciel malveillant qui tourne dessus.
+</ExamTrap>
+
+**Chiffrement de transport** — TLS pour le web, IPsec pour les tunnels réseau. Il protège la donnée
+_en transit_ ; elle redevient lisible à l’arrivée.
+
+## Les outils matériels
+
+| Outil                                                              | Ce que c’est                                                                             |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| <Term en="TPM">TPM</Term>                                          | Une puce **soudée à une carte mère**, qui stocke les clés de cette machine               |
+| <Term en="HSM">HSM</Term>                                          | Un appareil **dédié**, souvent en rack, pour des clés partagées et beaucoup d’opérations |
+| <Term en="Key management system">Système de gestion de clés</Term> | Le logiciel qui gère le cycle de vie : création, rotation, révocation                    |
+| <Term en="Secure enclave">Enclave sécurisée</Term>                 | Une zone isolée **dans le processeur**, inaccessible au système d’exploitation           |
+
+<Mnemonic>
+  **TPM = une machine. HSM = plusieurs machines.** Le TPM est soudé et sert l’hôte qui le porte ; le
+  HSM est un équipement séparé au service de toute une infrastructure.
+</Mnemonic>
+
+## L’obscurcissement
+
+Trois techniques que l’examen oppose systématiquement.
+
+| Technique                                          | Ce qu’elle fait                                           | Réversible ?                      |
+| -------------------------------------------------- | --------------------------------------------------------- | --------------------------------- |
+| <Term en="Steganography">Stéganographie</Term>     | Cache une donnée **dans** un autre fichier                | Oui, si on sait qu’elle est là    |
+| <Term en="Tokenization">Tokenisation</Term>        | Remplace la donnée par un jeton sans valeur               | Oui, **via la table de jetons**   |
+| <Term en="Data masking">Masquage de données</Term> | Remplace une partie par des caractères — `**** **** 4242` | Non, la donnée masquée est perdue |
+
+<ExamTrap>
+  Tokenisation et chiffrement se ressemblent mais ne se remplacent pas. Un jeton n’a **aucune
+  relation mathématique** avec la donnée d’origine : sans la table, il est inutilisable même avec un
+  temps de calcul infini. Une donnée chiffrée redevient lisible avec la clé.
+</ExamTrap>
+
+## Hachage, salage, étirement de clé
+
+Le <Term en="Hashing">hachage</Term> est à sens unique : même entrée, même empreinte, et aucun
+chemin de retour.
+
+Le problème : deux utilisateurs avec le même mot de passe produisent la même empreinte, et un
+attaquant peut précalculer les empreintes des mots de passe courants.
+
+Le <Term en="Salting">salage</Term> résout cela en ajoutant une valeur aléatoire unique à chaque mot
+de passe avant hachage. Deux mots de passe identiques donnent alors deux empreintes différentes, et
+un précalcul global ne sert plus à rien.
+
+L’<Term en="Key stretching">étirement de clé</Term> résout l’autre moitié : rendre chaque tentative
+**lente**. En appliquant la fonction des milliers de fois, on rend une attaque par force brute
+coûteuse alors qu’une connexion légitime ne perd que quelques millisecondes.
+
+<KeyPoint>
+  Le sel casse les **tables précalculées**. L’étirement casse la **force brute**. Ce sont deux
+  problèmes distincts et deux réponses distinctes — une question qui parle de tables arc-en-ciel
+  attend le sel, une question qui parle de vitesse d’essai attend l’étirement.
+</KeyPoint>
+
+## La PKI et les certificats
+
+Une <Term en="Public key infrastructure">infrastructure à clés publiques</Term> répond à une seule
+question : **cette clé publique appartient-elle vraiment à qui elle prétend ?**
+
+| Élément                                                           | Rôle                                                               |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------ |
+| <Term en="Certificate authority">Autorité de certification</Term> | Signe les certificats et engage sa réputation                      |
+| <Term en="Root of trust">Racine de confiance</Term>               | L’autorité racine, préinstallée dans le système                    |
+| <Term en="CSR">CSR</Term>                                         | La demande de signature, contenant ta clé publique                 |
+| <Term en="Self-signed">Auto-signé</Term>                          | Signé par soi-même : valide techniquement, sans tiers de confiance |
+| <Term en="Wildcard">Certificat générique</Term>                   | Couvre `*.exemple.fr` — pratique, et un seul vol compromet tout    |
+| <Term en="Key escrow">Séquestre de clés</Term>                    | Une copie de la clé privée conservée par un tiers                  |
+
+### Vérifier qu’un certificat est toujours valable
+
+| Mécanisme                                 | Comment il fonctionne                                | Limite                                          |
+| ----------------------------------------- | ---------------------------------------------------- | ----------------------------------------------- |
+| <Term en="CRL">Liste de révocation</Term> | Le client télécharge la liste complète des révoqués  | Volumineuse, et périmée entre deux publications |
+| <Term en="OCSP">OCSP</Term>               | Le client interroge l’autorité sur **un** certificat | Révèle à l’autorité les sites visités           |
+
+<ExamTrap>
+  Un certificat auto-signé n’est pas « faux » : la cryptographie fonctionne exactement pareil. Ce
+  qui manque est la **vérification par un tiers**. Il est parfaitement acceptable en interne, et
+  inacceptable sur un site public — d’où l’avertissement du navigateur.
+</ExamTrap>
+
+## Chaîne de blocs et registre public
+
+Une <Term en="Blockchain">chaîne de blocs</Term> est un registre où chaque bloc contient l’empreinte
+du précédent. Modifier un bloc ancien invaliderait tous les suivants, ce qui rend l’altération
+détectable.
+
+Un <Term en="Open public ledger">registre public ouvert</Term> est la variante où tout le monde peut
+lire et vérifier le registre. C’est de l’**intégrité vérifiable publiquement**, pas de la
+confidentialité — une confusion que l’examen exploite.
+
+## Se tester
+
+1. Un numéro de carte doit être remplacé dans une base de test par une valeur sans aucun lien
+   mathématique avec l’original. Quelle technique ?
+2. Deux utilisateurs ont le même mot de passe et la même empreinte stockée. Que manque-t-il ?
+3. Un portable chiffré est volé alors qu’il était allumé et déverrouillé. Que protège le chiffrement
+   de disque entier dans ce cas ?
+
+<KeyPoint>
+  (1) La tokenisation — le chiffrement conserverait une relation mathématique. (2) Le sel : sans
+  lui, des entrées identiques donnent des empreintes identiques. (3) Rien. Le disque était déjà
+  déchiffré pour le système en cours d’exécution.
+</KeyPoint>

@@ -20,6 +20,7 @@ import { ALL_OBJECTIVES, DOMAINS, findObjective } from '../src/content/exam/sy0-
 import { QUESTIONS_1_1 } from '../src/content/exam/sy0-701/questions/1-1.ts';
 import { QUESTIONS_1_2 } from '../src/content/exam/sy0-701/questions/1-2.ts';
 import { QUESTIONS_1_3 } from '../src/content/exam/sy0-701/questions/1-3.ts';
+import { QUESTIONS_1_4 } from '../src/content/exam/sy0-701/questions/1-4.ts';
 import { examOutlineSchema, type Question, questionSchema } from '../src/content/schemas.ts';
 
 interface Violation {
@@ -125,6 +126,7 @@ const BANKS: { objective: string; questions: Question[] }[] = [
   { objective: '1.1', questions: QUESTIONS_1_1 },
   { objective: '1.2', questions: QUESTIONS_1_2 },
   { objective: '1.3', questions: QUESTIONS_1_3 },
+  { objective: '1.4', questions: QUESTIONS_1_4 },
 ];
 
 /** From docs/content-authoring.md. */
