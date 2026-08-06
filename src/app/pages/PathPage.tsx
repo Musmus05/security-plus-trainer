@@ -1,16 +1,12 @@
-import { BookOpen, Trophy } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { DOMAINS } from '@/content/exam/sy0-701/domains';
-import { hasLesson } from '@/content/lesson-bank';
 import { crownsFor } from '@/domain/gamification';
 import { toObjectiveProgress, useDashboard } from '@/features/dashboard/useDashboard';
-import { PathNode } from '@/features/path/PathNode';
+import { PathTrail } from '@/features/path/PathTrail';
 import { useAppStore } from '@/lib/store/store';
 import { Badge, Card, cn, domainAccent, ProgressBar } from '@/ui';
-
-/** Repeating zig-zag, so the trail winds rather than running straight down. */
-const OFFSETS = [0, 1, 0, -1] as const;
 
 export function PathPage() {
   const { t, i18n } = useTranslation();
@@ -79,37 +75,14 @@ export function PathPage() {
               </div>
             </Card>
 
-            {/*
-              The trail. A vertical rule behind the nodes connects them into a route; a flat list of
-              28 rows reads as a backlog, and a route reads as something with a position on it.
-            */}
-            <div className="relative flex flex-col items-center gap-7 py-1">
-              <span
-                aria-hidden
-                className="bg-track absolute inset-y-0 left-1/2 w-1 -translate-x-1/2 rounded-full"
-              />
-              {domain.objectives.map((objective, index) => (
-                <div key={objective.id} className="relative z-10 flex w-full flex-col items-center">
-                  <PathNode
-                    objectiveId={objective.id}
-                    domain={domain.id}
-                    crowns={crownsFor(toObjectiveProgress(progress[objective.id]))}
-                    isNext={dashboard.nextUp.objectiveId === objective.id}
-                    offset={OFFSETS[index % OFFSETS.length] ?? 0}
-                    label={`${objective.id} — ${french ? objective.title.fr : objective.title.en}`}
-                  />
-                  <p className="text-ink-secondary mt-2 max-w-[22rem] px-2 text-center text-xs leading-snug">
-                    {french ? objective.title.fr : objective.title.en}
-                  </p>
-                  {hasLesson(objective.id, locale) && (
-                    <Badge className="mt-1.5">
-                      <BookOpen aria-hidden className="size-3" />
-                      {t('path.lessonAvailable')}
-                    </Badge>
-                  )}
-                </div>
-              ))}
-            </div>
+            <PathTrail
+              objectives={domain.objectives}
+              domain={domain.id}
+              crownsFor={(objectiveId) => crownsFor(toObjectiveProgress(progress[objectiveId]))}
+              nextObjectiveId={dashboard.nextUp.objectiveId}
+              french={french}
+              locale={locale}
+            />
           </section>
         );
       })}

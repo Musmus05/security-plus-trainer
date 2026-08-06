@@ -115,7 +115,9 @@
     "topicCount_one": "{{count}} point officiel",
     "topicCount_other": "{{count}} points officiels",
     "youAreHere": "ici",
-    "lessonAvailable": "Leçon"
+    "lessonAvailable": "Leçon",
+    "trailLabel_one": "Un parcours de {{count}} objectif",
+    "trailLabel_other": "Un parcours de {{count}} objectifs"
   },
   "lesson": {
     "backToPath": "Retour au parcours",

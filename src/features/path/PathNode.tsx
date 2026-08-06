@@ -13,11 +13,7 @@ export interface PathNodeProps {
   isNext: boolean;
   domain: DomainId;
   label: string;
-  /** Offset from the centre of the trail, in a repeating zig-zag. */
-  offset: -1 | 0 | 1;
 }
-
-const OFFSET_CLASS = { '-1': '-translate-x-14', '0': '', '1': 'translate-x-14' } as const;
 
 /**
  * One objective on the learning path, as a circular node on a winding trail.
@@ -30,19 +26,14 @@ const OFFSET_CLASS = { '-1': '-translate-x-14', '0': '', '1': 'translate-x-14' }
  * ring that fills as crowns are earned. Colour never carries meaning alone (ADR-0006): the number is
  * always there.
  */
-export function PathNode({ objectiveId, crowns, isNext, domain, label, offset }: PathNodeProps) {
+export function PathNode({ objectiveId, crowns, isNext, domain, label }: PathNodeProps) {
   const { t } = useTranslation();
   const accent = domainAccent(domain);
   const complete = crowns >= MAX_CROWNS;
   const started = crowns > 0;
 
   return (
-    <div
-      className={cn(
-        'relative flex justify-center',
-        OFFSET_CLASS[String(offset) as '-1' | '0' | '1'],
-      )}
-    >
+    <div className="relative flex justify-center">
       <Link
         to={`/objective/${objectiveId}`}
         aria-label={label}
