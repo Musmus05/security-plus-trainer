@@ -1,0 +1,149 @@
+## Pourquoi cet objectif compte
+
+La sensibilisation à la sécurité est testée comme un contrôle opérationnel, pas comme une affiche
+dans une salle de pause. Dans un scénario, l’examen attend que vous reconnaissiez le comportement
+que l’organisation cherche à obtenir, que vous choisissiez une consigne qui le rend possible, puis
+que vous fermiez la boucle grâce au signalement et à la surveillance. La question utile n’est donc
+pas seulement de savoir si les employés ont suivi une formation, mais s’ils savent repérer une
+situation risquée et alerter rapidement les bonnes personnes.
+
+Cet objectif rassemble six idées : le <Term en="Phishing">hameçonnage</Term>, la
+
+<Term en="Anomalous behavior recognition">reconnaissance des comportements anormaux</Term>, les
+<Term en="User guidance and training">consignes et la formation des utilisateurs</Term>, le
+<Term en="Reporting and monitoring">signalement et la surveillance</Term>, ainsi que le
+<Term en="Development">développement</Term> et l’<Term en="Execution">exécution</Term> d’une
+pratique de sensibilisation. Les scénarios présentent souvent un signal vague, comme une demande
+inattendue ou une invite de connexion inhabituelle, puis demandent la réaction la plus utile.
+
+<KeyPoint>
+  La sensibilisation ne transforme pas chaque utilisateur en analyste de sécurité. Elle lui donne un
+  chemin sûr et reproductible : s’arrêter, reconnaître le signal, le signaler par le canal prévu,
+  puis laisser la surveillance et l’équipe sécurité enquêter.
+</KeyPoint>
+
+## Le hameçonnage : reconnaître la demande, pas seulement le courriel
+
+Le hameçonnage cherche à convaincre une personne de révéler une information, d’approuver une action,
+d’ouvrir un contenu ou de visiter un site utile à un attaquant. Le courriel est fréquent, mais la
+même persuasion peut arriver par SMS, outil collaboratif, appel téléphonique ou fausse page
+d’assistance. Une pratique de sensibilisation efficace enseigne donc le schéma de la demande, pas
+une simple liste d’adresses à éviter.
+
+| Signal dans le message                                 | Pourquoi il faut s’arrêter                                      | Réponse plus sûre                                                 |
+| ------------------------------------------------------ | --------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Demande inattendue d’identifiants ou d’approbation MFA | Elle peut chercher un secret ou une validation                  | Utiliser une adresse ou application connue, jamais le lien fourni |
+| Urgence ou secret                                      | La pression décourage la vérification                           | Ralentir et vérifier par un canal indépendant                     |
+| Modification de paiement ou de coordonnées bancaires   | Un compte fournisseur compromis peut rendre la demande crédible | Confirmer avec un moyen de contact déjà connu                     |
+| Pièce jointe ou lien hors contexte                     | Il peut livrer un contenu malveillant ou mener à une usurpation | Le signaler sans l’ouvrir « pour vérifier »                       |
+| Nom connu avec demande inhabituelle                    | Une identité peut être imitée ou un compte compromis            | Valider la demande, pas seulement le nom affiché                  |
+
+<ExamTrap>
+  Un message peut avoir une orthographe correcte, un vrai logo et un expéditeur déjà connu. Ces
+  détails ne prouvent pas qu’il est sûr. La distinction importante est de savoir si la demande est
+  attendue et vérifiée indépendamment.
+</ExamTrap>
+
+Les simulations de hameçonnage peuvent soutenir l’apprentissage, mais elles ne doivent pas servir à
+humilier les personnes. Leur intérêt est d’identifier un motif : une équipe a besoin d’une consigne
+plus claire, un processus crée de la confusion ou le canal de signalement est difficile à trouver.
+Le suivi explique le signal manqué et donne une réponse concrète pour le prochain message.
+
+## Reconnaître un comportement anormal
+
+La sensibilisation couvre aussi les événements qui ne sont pas des messages suspects. Les
+utilisateurs sont souvent les premiers à voir qu’une action ne correspond pas au travail habituel.
+Ils doivent reconnaître une anomalie sans devoir diagnostiquer un logiciel malveillant, attribuer
+une attaque ou modifier des éléments de preuve.
+
+| Observation                                          | Ce qui la rend anormale                                         | Action attendue de l’utilisateur                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Invitations MFA répétées sans action initiée         | Une authentification survient sans demande de la personne       | Refuser les invites et les signaler rapidement                             |
+| Demande de secret par un canal inhabituel            | La demande contourne le processus normal                        | Vérifier par un autre moyen, puis signaler le doute                        |
+| Fichiers renommés ou indisponibles sans raison       | Le comportement de fichier ou l’accès a changé                  | Cesser d’interagir avec le contenu et joindre le support ou la sécurité    |
+| Alerte de connexion, appareil ou emplacement inconnu | Elle diffère du schéma attendu du compte                        | Sécuriser le compte par le processus prévu et signaler l’alerte            |
+| Badge, visiteur ou appareil hors de sa place         | Le comportement physique ne correspond pas aux attentes d’accès | Suivre la procédure de signalement physique, sans confrontation dangereuse |
+
+<Mnemonic>
+  **Inattendu + important = vérifier et signaler.** Une invitation inattendue est une chose ; une
+  demande de paiement ou une approbation MFA est importante. La seconde ne doit jamais être traitée
+  comme une routine.
+</Mnemonic>
+
+## Des consignes et une formation utilisables
+
+Une consigne est une instruction courte, disponible au moment du travail. Une formation construit la
+compréhension et l’entraînement dans le temps. Elles se renforcent, mais ne sont pas
+interchangeables.
+
+| Pratique                 | Finalité principale                                        | Exemple                                                       |
+| ------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------- |
+| Consigne juste à temps   | Aider à prendre une décision sûre maintenant               | Bouton visible de signalement et instruction brève à côté     |
+| Formation par rôle       | Couvrir les risques propres à une fonction                 | Les finances s’exercent à valider les changements de paiement |
+| Sensibilisation générale | Donner des attentes communes à tous                        | Les nouveaux employés découvrent la voie de signalement       |
+| Exercice ou simulation   | Pratiquer la reconnaissance et la réponse                  | Simulation inoffensive suivie d’un retour                     |
+| Rappel ciblé             | Renforcer un comportement après un changement ou un risque | Avis sur une nouvelle fraude à la facture                     |
+
+La formation doit être accessible, pertinente et compréhensible pour son public. Un développeur a
+besoin de consignes sur le code source et une dépendance suspecte ; une personne à l’accueil a
+besoin d’un processus utilisable pour les visiteurs et appels. Une politique générale est moins
+forte qu’un exemple lié à la décision réelle de la personne.
+
+<InPractice>
+  Si signaler impose de chercher un intranet, rédiger un long courriel et deviner le destinataire,
+  les employés retarderont ou abandonneront. Un bouton visible, une boîte surveillée ou une voie de
+  support publiée fait de la réponse attendue la réponse la plus facile.
+</InPractice>
+
+## Signalement et surveillance : fermer la boucle
+
+Le signalement porte un événement possible à des personnes capables d’enquêter. La surveillance
+permet à l’organisation de détecter les tendances, de vérifier que le canal fonctionne et
+d’améliorer la pratique. Aucun des deux ne demande aux utilisateurs de recueillir des preuves en
+cliquant sur un lien suspect ou en transférant un fichier malveillant vers une adresse personnelle.
+
+Un signalement utile inclut le message initial ou des détails pertinents, l’heure, le compte ou
+l’appareil concerné, et les actions déjà réalisées. La personne utilise la méthode approuvée, qui
+peut conserver le contexte automatiquement. L’équipe sécurité peut alors trier le rapport,
+rechercher des messages ou activités similaires, et décider si un confinement plus large est
+nécessaire.
+
+La surveillance fournit des mesures utiles, mais une mesure doit guider une décision. Le volume de
+rapports ne prouve pas seul une réussite : une hausse peut signifier que les utilisateurs repèrent
+et signalent mieux les activités suspectes. Il faut l’interpréter avec les résultats de simulation,
+le délai de réponse, les thèmes répétés et la connaissance du canal. Les mesures servent à améliorer
+le programme, pas à classer ou punir les personnes.
+
+## Développement et exécution
+
+Développer une pratique de sensibilisation consiste à définir le public, le comportement à
+améliorer, le contenu, les modes de diffusion, la voie de signalement et les mesures de succès. Il
+faut aussi aligner le contenu sur les risques actuels et les politiques de l’organisation. Une
+campagne sur un outil obsolète ne prépare pas les employés à un nouveau flux collaboratif.
+
+Exécuter la pratique signifie la diffuser, rendre la participation possible, répondre aux questions,
+suivre les réalisations lorsque nécessaire et utiliser les retours pour améliorer le cycle suivant.
+Un registre peut prouver qu’une formation a été attribuée ou terminée ; il ne prouve pas qu’une
+personne applique le bon comportement. C’est pourquoi les exercices, les tendances de signalement et
+les rappels ciblés comptent.
+
+<ExamTrap>
+  La fin de formation est une mesure administrative. Elle ne prouve pas que le risque de hameçonnage
+  a disparu et ne remplace pas la surveillance. Dans un scénario, la meilleure réponse ajoute
+  souvent un canal de signalement et un retour, plutôt que d’attribuer la même formation annuelle.
+</ExamTrap>
+
+## Se tester
+
+1. Une personne reçoit une invite MFA inattendue. Quelle est sa première action ?
+2. Pourquoi un canal de signalement approuvé est-il préférable à un transfert vers une adresse
+   personnelle ?
+3. Une campagne a un fort taux de réalisation, mais les demandes de changement de paiement sont
+   encore mal traitées. Que doit changer le programme ?
+
+<KeyPoint>
+  (1) Refuser l’invite non demandée et la signaler par la voie approuvée. (2) Cette voie conserve le
+  contexte et transmet le rapport aux personnes qui surveillent et enquêtent. (3) Ajouter des
+  consignes et exercices adaptés au rôle pour vérifier indépendamment les changements de paiement,
+  puis utiliser les résultats pour améliorer le programme.
+</KeyPoint>

@@ -1,0 +1,173 @@
+## Pourquoi cet objectif compte
+
+Cet objectif vérifie la capacité à choisir une protection adaptée à une ressource informatique dans
+un scénario opérationnel bref. Il ne demande ni une commande propre à un fournisseur ni une
+architecture parfaite. Il faut repérer la ressource, son exposition probable, puis le contrôle qui
+améliore réellement sa posture. Une configuration de référence ne vaut que si elle est appliquée à
+la bonne cible et contrôlée dans le temps.
+
+Le schéma de question est volontairement précis : un ordinateur portable, un point d’accès, un
+téléphone, un serveur ou une application présente une faiblesse. La meilleure réponse réduit cette
+faiblesse sans créer un nouveau problème d’exploitation. Plusieurs choix peuvent sembler sûrs, mais
+un seul correspond à la cible décrite.
+
+<KeyPoint>
+  Partir de l’actif : serveur, poste de travail, appareil sans fil, appareil mobile ou application.
+  Identifier ensuite le réglage ou le comportement exposé. Choisir le contrôle qui réduit cette
+  exposition et peut être maintenu, plutôt qu’un contrôle voisin ayant une autre fonction.
+</KeyPoint>
+
+## La configuration de référence sécurisée
+
+Une <Term en="Secure baseline">configuration de référence sécurisée</Term> est une configuration
+documentée et approuvée pour une catégorie de systèmes. Elle précise les services, comptes,
+réglages, logiciels et protections qui doivent être présents. Un nouveau serveur web ne devrait pas
+partir d’une installation de système d’exploitation sans contrainte : il devrait commencer avec la
+référence renforcée de l’organisation pour les serveurs.
+
+Les références créent de la cohérence. Elles accélèrent le déploiement, rendent les écarts visibles
+et donnent à l’équipe un point de comparaison concret lors d’un audit ou d’une investigation. Elles
+ne sont pas immuables : correctifs, besoins métier justifiés et nouvelles menaces peuvent imposer
+une mise à jour revue de la référence.
+
+| Notion                                                                 | Question principale                                                            | Ce que cela ne signifie pas                                     |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| <Term en="Secure baseline">Configuration de référence sécurisée</Term> | Quelle configuration approuvée doit servir de point de départ à cet actif ?    | Que chaque appareil doit être identique, quel que soit son rôle |
+| <Term en="Hardening">Renforcement</Term>                               | Quelle exposition inutile peut être retirée ou rendue plus sûre ?              | Installer tous les produits de sécurité disponibles             |
+| <Term en="Configuration drift">Dérive de configuration</Term>          | L’actif s’est-il écarté de son état approuvé ?                                 | Une exception volontaire et documentée                          |
+| <Term en="Monitoring">Surveillance</Term>                              | La ressource se comporte-t-elle ou est-elle configurée de façon préoccupante ? | Une revue unique à la construction                              |
+
+<ExamTrap>
+  La référence est l’état attendu ; la surveillance et le contrôle de configuration révèlent si un
+  actif y correspond encore. Ne pas choisir la surveillance lorsque le scénario demande quelle
+  configuration doit être déployée dès le départ.
+</ExamTrap>
+
+## Renforcer la bonne cible
+
+Le <Term en="Hardening">renforcement</Term> réduit la surface d’attaque en supprimant ou en
+restreignant les fonctions dont une cible n’a pas besoin. L’action exacte dépend de la cible.
+Désactiver un service inutilisé convient à un serveur ; retirer une application superflue peut
+convenir à un poste de travail ; modifier les identifiants d’administration par défaut importe sur
+un appareil sans fil. La <Term en="Least functionality">fonctionnalité minimale</Term> est le
+réflexe central : ne conserver que ce que le rôle exige.
+
+| Cible                          | Axe de renforcement courant                                                                            | Pourquoi cet axe convient                                                            |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| Serveur                        | Désactiver les services inutilisés, restreindre l’administration, appliquer les correctifs             | Les serveurs exposent des charges réseau et des chemins d’administration privilégiés |
+| Poste de travail               | Retirer les logiciels non approuvés, limiter l’administration locale, appliquer les réglages du poste  | Un poste utilisateur reçoit navigation, fichiers et identifiants au quotidien        |
+| Appareil réseau                | Modifier les valeurs par défaut, restreindre les interfaces de gestion, mettre à jour le micrologiciel | Son administration peut contrôler le trafic de nombreux autres systèmes              |
+| Machine virtuelle ou conteneur | Employer une image minimale et retirer les paquets inutiles                                            | Les composants supplémentaires ajoutent des vulnérabilités sans aider la charge      |
+
+Le renforcement n’est pas un événement unique. Un appareil peut dériver lorsqu’un logiciel est
+installé, qu’un réglage local est changé ou qu’une exception temporaire n’est jamais retirée. Un
+processus de gestion de configuration peut comparer la cible à sa référence et signaler ou corriger
+une dérive non autorisée. Avant de forcer une correction, vérifier qu’une exception documentée n’est
+pas confondue avec une attaque.
+
+<InPractice>
+  Un processus de construction utile prépare un ordinateur portable depuis la référence approuvée,
+  applique les mises à jour, l’inscrit dans la gestion et vérifie le chiffrement ainsi que la
+  protection du point de terminaison avant de le remettre à l’utilisateur. Cette méthode est plus
+  fiable qu’une longue liste mémorisée par chaque technicien.
+</InPractice>
+
+## Appareils sans fil et réglages sans fil
+
+Les <Term en="Wireless devices">appareils sans fil</Term> méritent une attention distincte car les
+ondes radio peuvent dépasser les murs du bureau. Il faut sécuriser le point d’accès lui-même et le
+réseau sans fil qu’il fournit. Modifier les identifiants par défaut, maintenir le micrologiciel et
+restreindre la gestion aux personnes autorisées sont des mesures de base.
+
+Pour le réseau sans fil, choisir un chiffrement et une authentification robustes, utiliser un nom de
+réseau approprié et désactiver les fonctions héritées non nécessaires. Un réseau invité devrait être
+séparé des ressources internes ; donner aux visiteurs le même accès qu’aux appareils gérés des
+employés transforme la commodité en chemin d’accès interne.
+
+| Réglage ou contrôle                                                                  | Finalité de sécurité                                         | Idée voisine à écarter                                           |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------- |
+| <Term en="WPA3">WPA3</Term> ou WPA2 avec authentification robuste                    | Protège l’accès sans fil avec des réglages modernes          | Masquer le nom du réseau, qui ne remplace pas l’authentification |
+| <Term en="Passphrase">Phrase secrète</Term> robuste ou authentification d’entreprise | Limite les personnes pouvant rejoindre le réseau             | Un mot de passe partagé par défaut inscrit sur le point d’accès  |
+| <Term en="Wi-Fi Protected Setup (WPS)">WPS</Term> désactivé lorsqu’il est inutile    | Retire une fonction pratique pouvant affaiblir l’inscription | Désactiver uniquement la diffusion du SSID                       |
+| <Term en="Guest network segmentation">Segmentation du réseau invité</Term>           | Écarte le trafic invité des actifs internes                  | Mettre les invités sur le réseau employé sous un autre nom       |
+
+<Mnemonic>
+  **La radio dépasse la pièce** : protéger à la fois le réseau radio et l’appareil qui le gère.
+</Mnemonic>
+
+## Solutions mobiles : gérer les données autant que l’appareil
+
+Les <Term en="Mobile solutions">solutions mobiles</Term> apportent portabilité, réseaux
+intermittents, modèles de propriété personnelle et risque accru de perte. Une solution de
+
+<Term
+  en="Mobile device
+management (MDM)"
+>
+  gestion des appareils mobiles
+</Term>
+peut appliquer des règles comme le verrouillage, le chiffrement, les réglages d’applications
+approuvées et des actions à distance. Dans un contexte
+
+<Term en="Bring your own device (BYOD)">BYOD</Term>, un conteneur professionnel distinct peut
+protéger les données de l’organisation tout en préservant une frontière autour des contenus
+personnels.
+
+| Contrôle mobile                                                              | Résultat principal                                               | Limite importante                                                 |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Verrouillage d’écran et chiffrement de l’appareil                            | Réduit l’exposition lors de la perte                             | Ne décide pas quelle application cloud un utilisateur peut ouvrir |
+| <Term en="Remote wipe">Effacement à distance</Term>                          | Retire les données d’un appareil perdu ou retiré du service      | Dépend de la reconnexion de l’appareil pour recevoir la commande  |
+| <Term en="Work container">Conteneur professionnel</Term>                     | Sépare les données gérées des applications personnelles          | Ne remplace pas l’authentification aux services de l’entreprise   |
+| <Term en="Application allow list">Liste d’autorisation d’applications</Term> | Limite aux applications approuvées l’installation ou l’exécution | Peut gêner le travail si le catalogue approuvé est incomplet      |
+
+Le scénario distingue souvent une action sur tout l’appareil d’une action sélective. Si
+l’organisation possède le téléphone, effacer l’appareil entier peut convenir. S’il appartient à
+l’employé, retirer seulement les données professionnelles gérées peut satisfaire le même besoin avec
+moins d’impact.
+
+## Sécurité des applications et bac à sable
+
+La <Term en="Application security">sécurité des applications</Term> applique des contrôles au
+logiciel qui traite les données : mises à jour rapides, configuration sûre, privilèges minimaux des
+comptes de service et restriction des fonctions accessibles à l’application. La bonne réponse suit
+la couche nommée dans le scénario : un problème d’autorisation de base de données ne se corrige pas
+en changeant un mot de passe sans fil.
+
+Un <Term en="Sandboxing">bac à sable</Term> est un environnement isolé dans lequel du code, une
+pièce jointe ou un processus risqué peut s’exécuter avec un accès contraint. Il est particulièrement
+utile lorsqu’il faut observer un fichier suspect sans le laisser atteindre les postes ordinaires ou
+les données de production. L’isolement réduit les conséquences d’une action malveillante ; il ne
+prouve pas que le contenu est sûr.
+
+<ExamTrap>
+  Le bac à sable contient un objet incertain. La liste d’autorisation d’applications empêche au
+  contraire un objet non approuvé de démarrer. S’il faut exécuter ou analyser prudemment un élément
+  suspect, choisir le bac à sable ; si seuls les logiciels approuvés peuvent fonctionner, choisir la
+  liste d’autorisation.
+</ExamTrap>
+
+## La surveillance ferme la boucle
+
+La <Term en="Monitoring">surveillance</Term> collecte des signaux provenant des ressources
+informatiques pour identifier violations de règles, dérive de configuration, pannes et activités
+suspectes. Les journaux de postes, d’applications, d’appareils mobiles et de réseaux sans fil
+peuvent tous contribuer. Une alerte est un signal à investiguer, pas une preuve automatique de
+compromission.
+
+Une bonne surveillance est liée à un état attendu : la référence indique quel service devrait être
+désactivé ; la surveillance peut révéler qu’il est devenu actif. Une règle mobile exige le
+chiffrement ; le rapport de gestion peut identifier l’appareil non conforme. Ce retour transforme le
+renforcement, d’un projet ponctuel, en pratique opérationnelle.
+
+## Se tester
+
+1. Qu’est-ce qui distingue une configuration de référence sécurisée d’un scan de sécurité unique ?
+2. Pourquoi masquer le nom d’un réseau sans fil ne suffit-il pas ?
+3. Quand le bac à sable convient-il mieux qu’une liste d’autorisation d’applications ?
+
+<KeyPoint>
+  1. La référence définit la configuration approuvée ; le scan observe un système à la recherche de
+  problèmes. 2. Un nom masqué n’authentifie pas les utilisateurs et ne chiffre pas le trafic. 3.
+  Employer le bac à sable lorsqu’un contenu non fiable doit être exécuté ou étudié sous isolement ;
+  employer la liste d’autorisation pour empêcher les logiciels non approuvés de démarrer.
+</KeyPoint>

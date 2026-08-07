@@ -1,0 +1,144 @@
+## Why this objective matters
+
+Risk management is how a security programme turns an intimidating list of possible failures into
+decisions that leaders can fund, own, and revisit. On the exam, this objective does not ask for a
+perfectly safe system. It asks whether you can tell the stages apart: identify a risk, assess and
+analyse it, record it, decide how much is acceptable, select a treatment, communicate it, and
+understand the business consequence of disruption.
+
+A scenario may deliberately give several true security actions. Choose the one that answers the
+question at that point in the process. Finding an exposed database is identification; estimating the
+chance and consequence of compromise is assessment; deciding whether to isolate it, insure it, or
+live with it is treatment.
+
+<KeyPoint>
+  Risk is not the same thing as a vulnerability. A vulnerability is a weakness; risk is the
+  possibility that a threat will exploit that weakness and cause an unwanted business outcome.
+</KeyPoint>
+
+## Identify, assess, analyse
+
+### Risk identification
+
+Risk identification makes the candidate list. Teams examine assets and business processes, threats,
+vulnerabilities, dependencies, prior incidents, suppliers, and control gaps. The output should be
+specific enough to act on: “a stolen administrator token could permit changes to payroll records” is
+more useful than “authentication is risky.” A risk can arise from a malicious actor, an error, a
+failed service, or a natural event; its source does not change the need to manage it.
+
+Identification is not a fix. Discovering that a public storage bucket contains customer files does
+not yet say how likely misuse is, how serious it would be, or who has accepted the decision. It only
+ensures that the exposure is visible to the process.
+
+### Risk assessment and risk analysis
+
+Assessment gathers the evidence needed to judge a risk. It normally considers likelihood, impact,
+the affected asset or process, and existing controls. Analysis uses that information to compare and
+prioritise risks. Organisations may use descriptive ratings such as low, medium, and high, or use
+numbers and financial estimates. The exam concern is the decision support, not a particular
+calculation method.
+
+| Activity            | The question it answers                      | Typical result                                 |
+| ------------------- | -------------------------------------------- | ---------------------------------------------- |
+| Risk identification | What could go wrong, and why?                | A stated risk with a source and affected asset |
+| Risk assessment     | How likely is it and how severe could it be? | Likelihood and impact evidence or ratings      |
+| Risk analysis       | Which risks deserve attention first?         | A prioritised view for decision-makers         |
+
+<ExamTrap>
+  Do not treat assessment and analysis as synonyms for remediation. A high rating is evidence for a
+  decision; applying a control is a later response. Likewise, a vulnerability scan is an input to
+  identification and assessment, not a complete risk-management process.
+</ExamTrap>
+
+## Make the risk visible
+
+### The risk register
+
+A risk register is the working record of identified risks. It makes ownership and follow-up
+possible. Exact fields differ by organisation, but a useful entry connects the description to the
+asset or process, likelihood and impact, the chosen treatment, a named owner, status, due dates, and
+the remaining or residual risk. It is not merely a ticket queue: it is the shared record that allows
+leadership to see what the organisation has decided to carry.
+
+Updating the register matters as much as creating it. A mitigated risk may remain significant, a new
+control may reduce likelihood, or a changing business service may increase impact. Closing an entry
+because a team is tired of seeing it is neither acceptance nor mitigation; it hides evidence.
+
+### Risk reporting
+
+Risk reporting communicates the register and its trends to the people able to act. A system owner
+may need the technical cause and next control, whereas executives need business impact, the amount
+of remaining exposure, required funding, and decisions awaiting approval. Good reporting is timely,
+clear about uncertainty, and proportionate to the audience. It should highlight changes: a risk that
+exceeded its threshold, an overdue treatment, or a dependency that changed the impact.
+
+<InPractice>
+  A dashboard showing “twelve high risks” is incomplete if it omits the owners, the affected
+  business services, and the requested decisions. Reporting creates accountability; it is not a
+  substitute for implementing the selected treatment.
+</InPractice>
+
+## Appetite, tolerance, and treatment
+
+These related terms are common distractors because all concern acceptance, but they answer different
+questions.
+
+| Term           | Meaning                                                                                       | Exam clue                                 |
+| -------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Risk appetite  | The broad amount and type of risk the organisation is willing to pursue or retain             | Direction set by leadership               |
+| Risk tolerance | The permitted variation or limit around that appetite for a particular objective or situation | A threshold that triggers action          |
+| Residual risk  | The exposure that remains after controls or treatment                                         | What still needs acceptance or monitoring |
+
+For example, an organisation might have little appetite for loss of regulated personal data. Its
+tolerance could state that an internet-facing service cannot have unresolved critical findings past
+a defined deadline. Appetite is the strategic stance; tolerance is the usable boundary. Neither
+means that every possible loss is eliminated.
+
+Risk management strategies are the choices made after analysis:
+
+| Strategy | What it means                                                      | Example                                                               |
+| -------- | ------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Avoid    | Stop the activity or change the plan so the risk no longer applies | Do not store a sensitive dataset in the proposed service              |
+| Mitigate | Reduce likelihood, impact, or both with controls                   | Add MFA, segmentation, and monitoring to reduce account takeover harm |
+| Transfer | Move some financial or contractual consequence to another party    | Use insurance or assign defined liability by contract                 |
+| Accept   | Deliberately retain the risk within approved bounds                | Record an approved low-impact risk and monitor it                     |
+
+Transfer does not make the technical threat disappear. An insurer may bear a financial loss, while
+the organisation still suffers an outage and must meet its response obligations. Acceptance is an
+informed decision by an authorised owner, backed by a recorded residual risk; it is not neglect.
+
+<Mnemonic>
+  **AMTA: Avoid, Mitigate, Transfer, Accept.** Ask what happened to the activity, the likelihood or
+  impact, the consequence, or the decision to retain it.
+</Mnemonic>
+
+## Business impact analysis
+
+A business impact analysis (BIA) starts with business operations rather than a particular threat. It
+identifies critical processes, dependencies, and the consequences if they are unavailable or
+impaired. Those consequences can include lost revenue, contractual penalties, safety concerns,
+regulatory obligations, damaged reputation, or delayed work. The BIA helps establish recovery
+priorities and gives risk analysis a business basis for impact ratings.
+
+Do not confuse a BIA with a technical vulnerability assessment. A vulnerability assessment looks for
+weaknesses in systems. A BIA asks which business capability matters, how long disruption can be
+tolerated, and what depends on it. Both can inform risk decisions, but they begin from opposite ends
+of the problem.
+
+<ExamTrap>
+  A BIA does not predict the next attack. When a stem asks which payroll, ordering, or emergency
+  process must recover first and what its outage costs, it is describing business impact analysis.
+</ExamTrap>
+
+## Test yourself
+
+1. A team discovers an exposed administrative interface but has not yet estimated its effect. Which
+   risk stage has it completed?
+2. Which strategy is being used when a company stops offering a risky feature entirely?
+3. What distinguishes risk tolerance from risk appetite?
+
+<KeyPoint>
+  (1) Risk identification. (2) Avoidance: the activity is changed or stopped. (3) Appetite is the
+  broad strategic willingness to take risk; tolerance is the measurable or situational limit that
+  prompts action.
+</KeyPoint>

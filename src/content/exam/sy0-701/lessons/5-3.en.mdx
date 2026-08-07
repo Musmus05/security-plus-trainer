@@ -1,0 +1,147 @@
+## Why this objective matters
+
+Third parties can process customer records, operate a hosted application, support a critical device,
+or connect directly to an organisation’s network. The organisation may delegate work, but it does
+not delegate the consequences of a security failure. A capable supplier with weak controls can turn
+an otherwise well-designed security programme into an exposed dependency.
+
+The exam tests whether you can place a third-party control in the right part of its life cycle. A
+scenario may describe a prospective cloud provider, a contract about to be signed, a supplier whose
+access has changed, or a sanctioned security test. The useful question is: **are we assessing,
+selecting, setting expectations, monitoring, or authorising work?** The neighbouring answers are
+often all sensible activities, just at the wrong time.
+
+<KeyPoint>
+  Third-party risk management is continuous. Due diligence before selection establishes a baseline;
+  agreements make obligations enforceable; monitoring checks whether the baseline still holds. A
+  questionnaire is evidence collection, not evidence by itself.
+</KeyPoint>
+
+## Start with vendor assessment
+
+A vendor assessment asks whether a specific relationship creates risk the organisation understands
+and can accept. It is not merely a purchasing checklist. Start with what the vendor will do: the
+data it will receive, the systems it will reach, the service it will provide, and the operational
+impact if it fails. A supplier that prints public brochures deserves a different assessment from one
+that hosts payroll data or administers production infrastructure.
+
+| Assessment area        | Question to answer                                               | Useful evidence                              |
+| ---------------------- | ---------------------------------------------------------------- | -------------------------------------------- |
+| Data handling          | What data will be stored, processed, or transmitted?             | Data-flow description and retention practice |
+| Access                 | Which accounts, interfaces, or facilities will the vendor reach? | Access design and least-privilege plan       |
+| Security controls      | How does the vendor protect the service?                         | Policies, independent reports, test results  |
+| Resilience             | What happens during an outage or incident?                       | Recovery arrangements and incident process   |
+| Legal and business fit | Which obligations apply to this relationship?                    | Contract terms and applicable requirements   |
+
+The depth of review should reflect the risk. This is not permission to skip assessment for a small
+vendor; it means effort is proportionate. An inventory tool with no confidential data and no network
+connection has a narrower risk profile than a payment processor. Assessment records let the owner
+explain that judgement later and identify gaps needing remediation or acceptance.
+
+<ExamTrap>
+  A completed questionnaire does not prove that a control exists or works. It is the vendor’s
+  statement about its environment. When the risk is material, ask for supporting evidence or use
+  appropriate verification. Do not confuse a claim with assurance.
+</ExamTrap>
+
+## Select a vendor, not just a product
+
+Vendor selection compares candidates against stated business and security requirements. Price,
+features, delivery capacity, and security posture all matter. Selecting the cheapest supplier first
+and discovering later that it cannot meet required controls reverses the process.
+
+| Decision          | What it means                                             | Common wrong substitute                       |
+| ----------------- | --------------------------------------------------------- | --------------------------------------------- |
+| Vendor assessment | Identify a candidate’s risks and control gaps             | Signing terms before understanding exposure   |
+| Vendor selection  | Choose the candidate that best meets defined requirements | Treating lowest cost as the only criterion    |
+| Risk acceptance   | Formally retain a known risk                              | Pretending an unaddressed gap disappeared     |
+| Remediation       | Require a gap to be corrected                             | Monitoring a gap without an owner or deadline |
+
+Selection should document why the chosen vendor is acceptable and what conditions remain. For
+example, a candidate may be selected only after enabling multifactor authentication for support
+access. The assessment identifies the gap; the selection decision and agreement establish the path
+to address it. Security staff advise on risk, while the appropriate business owner accepts a
+remaining business risk.
+
+<InPractice>
+  Procurement can make security review easier by involving it before a preferred supplier is
+  announced. A late review tends to become a request to approve a decision already made, when the
+  useful outcome may be comparing another candidate or changing the service design.
+</InPractice>
+
+## Agreements turn expectations into obligations
+
+An agreement specifies what both parties owe one another. Exact names and clauses vary by
+organisation and jurisdiction, so on the exam focus on the purpose of the document in the stem.
+
+| Agreement type                    | Primary purpose                                                                | It does not replace                                              |
+| --------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| Service level agreement (SLA)     | Defines measurable service expectations, such as availability or response time | Security requirements for handling sensitive data                |
+| Master service agreement (MSA)    | Sets broad commercial and legal terms for an ongoing relationship              | A detailed description of a particular piece of work             |
+| Statement of work (SOW)           | Defines the specific work, deliverables, schedule, and responsibilities        | The overall contractual framework                                |
+| Non-disclosure agreement (NDA)    | Limits disclosure of confidential information                                  | A complete service or security agreement                         |
+| Memorandum of understanding (MOU) | Records a shared understanding between parties                                 | A detailed, enforceable operational contract where one is needed |
+
+Security obligations can include notification of an incident, protection of data, limits on
+subcontracting, audit or assessment rights, and return or destruction of data at the end of the
+relationship. The key is that a requirement someone cannot be held to is only a preference. A
+contract does not operate the controls for the vendor, but it establishes responsibility and a
+remedy when expectations are missed.
+
+<Mnemonic>
+  **SLA = level of service; SOW = scope of work.** One says how the delivered service will be
+  measured; the other says what work will be performed.
+</Mnemonic>
+
+## Monitor throughout the relationship
+
+Risk changes after onboarding. The vendor may add a subcontractor, gain new access, move data to a
+new region, suffer an incident, or let a certification lapse. Vendor monitoring is the recurring
+process that looks for these changes and confirms that agreed controls and service obligations still
+hold.
+
+Monitoring can include periodic reassessments, review of assurance reports, performance against an
+SLA, review of reported incidents, and confirmation that access remains appropriate. Frequency
+should depend on criticality: a vendor with privileged production access needs more attention than a
+low-impact office supplier. If monitoring finds a problem, follow the agreed escalation and
+remediation process; simply collecting a report is not management.
+
+<ExamTrap>
+  Monitoring is not a one-time selection task. A question that says “the vendor was approved two
+  years ago” but describes changed services, expired evidence, or recurring failures is asking for
+  ongoing monitoring or reassessment.
+</ExamTrap>
+
+## Questionnaires and rules of engagement
+
+A questionnaire makes assessment repeatable. It asks comparable questions about data handling,
+access control, incident response, resilience, and other relevant practices. It helps screen many
+vendors and identify where deeper investigation is needed. A generic questionnaire copied to every
+vendor can miss the relationship’s actual risk, so tailor it to the service and use the answers to
+drive follow-up.
+
+Rules of engagement are different. They authorise and bound an activity such as a penetration test
+or other security assessment. Before testing, the parties agree on target systems, permitted
+techniques, timing, points of contact, data handling, emergency stop conditions, and how findings
+will be reported. Those limits protect both sides: a tester needs clear permission, and the vendor
+needs to know when unusual activity is legitimate.
+
+| If the scenario says…                                                 | Best concept        |
+| --------------------------------------------------------------------- | ------------------- |
+| “How do we gather comparable security information from bidders?”      | Questionnaire       |
+| “Who may scan these systems, when, and how far may they go?”          | Rules of engagement |
+| “How quickly must the provider restore its service?”                  | SLA                 |
+| “Does the provider still meet our requirements after a major change?” | Vendor monitoring   |
+
+## Test yourself
+
+1. A provider says it has encryption and incident response. What makes that claim useful in a
+   high-risk assessment?
+2. Which agreement most directly defines a measurable service availability target: an SLA or an SOW?
+3. Before an authorised test of a vendor-hosted application, what document defines targets,
+   permitted actions, and stop conditions?
+
+<KeyPoint>
+  (1) Supporting evidence or appropriate verification; a questionnaire answer alone is a claim. (2)
+  An SLA. (3) Rules of engagement.
+</KeyPoint>

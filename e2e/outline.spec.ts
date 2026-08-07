@@ -42,7 +42,12 @@ test.describe('the exam outline', () => {
 
     // Official sub-topics, in CompTIA's own wording, untranslated.
     await expect(page.getByText('Privileged access management tools')).toBeVisible();
-    await expect(page.getByText('Single sign-on (SSO)')).toBeVisible();
+    /*
+     * `exact`, because 4.6's lesson now introduces the same wording through `<Term en="…">` and the
+     * default substring match resolves to two elements. The exact match pins this to the official
+     * sub-topic chip rather than to whichever of the two the DOM happens to order first.
+     */
+    await expect(page.getByText('Single sign-on (SSO)', { exact: true })).toBeVisible();
   });
 
   test('shows only the English title when the interface is English', async ({ page }) => {

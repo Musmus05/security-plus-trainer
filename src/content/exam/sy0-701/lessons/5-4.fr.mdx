@@ -1,0 +1,186 @@
+## Pourquoi cet objectif compte
+
+La <Term en="Security compliance">conformité de sécurité</Term> permet à une organisation de
+démontrer que son programme de sécurité respecte les exigences qui lui sont applicables. Celles-ci
+peuvent venir du droit, d’une réglementation, d’un contrat, de règles sectorielles ou de ses propres
+engagements. À l’examen, il ne faut pas mémoriser un texte juridique particulier : il faut
+reconnaître si une situation exige une preuve et un compte rendu, une surveillance continue, une
+réponse à un écart, ou la protection de la vie privée.
+
+La réponse piège est souvent une activité voisine. Un audit peut examiner des preuves, mais le
+
+<Term en="Compliance reporting">reporting de conformité</Term> communique un état ou un résultat.
+Une politique énonce une attente, mais la
+<Term en="Compliance monitoring">surveillance de conformité</Term> vérifie que la pratique la
+respecte encore. La <Term en="Privacy">vie privée</Term>
+protège les informations relatives aux personnes ; elle ne se confond pas avec chaque contrôle de
+sécurité. Lire le résultat recherché dans le scénario aide à choisir le bon mécanisme.
+
+<KeyPoint>
+  Une conformité efficace suit un cycle : identifier les exigences applicables, les traduire en
+  attentes observables, les surveiller, communiquer le résultat au bon public, puis traiter les
+  écarts. Un rapport n’est utile que s’il soutient une décision ou une action.
+</KeyPoint>
+
+## Le reporting transforme les preuves en décision
+
+Le reporting de conformité présente une vue claire de la position de conformité de l’organisation.
+Il peut montrer quels systèmes respectent une configuration requise, si une formation obligatoire
+est terminée, où subsistent des exceptions, ou si une action corrective est en retard. Le rapport
+n’est pas le contrôle lui-même : il rend l’état des contrôles visible aux personnes qui en portent
+la responsabilité.
+
+| Élément du rapport                | Question traitée                                                                    | Intérêt                                                                               |
+| --------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Périmètre                         | Quels systèmes, personnes, données ou quelle période sont couverts ?                | Évite de confondre un bon résultat local avec une assurance globale                   |
+| Exigence                          | Quelle règle, obligation ou promesse est mesurée ?                                  | Relie le résultat à une attente réelle plutôt qu’à une affirmation vague              |
+| <Term en="Evidence">Preuve</Term> | Quelles observations soutiennent le résultat ?                                      | Rend la conclusion traçable et défendable                                             |
+| État                              | L’exigence est-elle respectée, non respectée ou soumise à une exception approuvée ? | Donne au lecteur un point de décision utile                                           |
+| Responsable et date               | Qui répond du sujet et quand l’information était-elle actuelle ?                    | Soutient la responsabilité et évite de traiter une information périmée comme actuelle |
+| Action                            | Quelle correction, acceptation ou escalade doit suivre ?                            | Transforme une constatation en gestion du risque plutôt qu’en archivage passif        |
+
+Le public détermine le niveau de détail. Un responsable technique peut avoir besoin des hôtes
+affectés et des paramètres défaillants. La direction a généralement besoin de la tendance, de
+l’impact métier, des exceptions importantes et des décisions attendues. Un régulateur ou un client
+peut exiger un format prescrit et une attestation d’une personne habilitée. Donner à tous une
+exportation brute de journaux n’est pas automatiquement plus transparent : cela peut masquer le
+résultat, divulguer des données inutiles et ne pas répondre à la vraie question du destinataire.
+
+<ExamTrap>
+  Un tableau de bord indiquant qu’un contrôle a échoué relève de la surveillance. Un résumé qui
+  expose au comité de risque le taux d’échec, le périmètre, le responsable et la correction prévue
+  relève du reporting de conformité. La même source peut servir aux deux, mais leur finalité
+  diffère.
+</ExamTrap>
+
+## Surveiller en continu, pas une seule fois par an
+
+La surveillance de conformité consiste à vérifier régulièrement que les exigences sont respectées.
+Elle peut utiliser des vérifications de configuration, des revues d’accès, des traces d’achèvement
+de formation, des contrôles de conservation, des journaux système ou des confirmations des
+responsables de contrôle. Le mécanisme précis varie, mais la même question demeure : l’état actuel
+respecte-t-il l’exigence applicable ?
+
+| Activité                                  | Finalité principale                                             | Confusion fréquente                                                            |
+| ----------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Surveillance de conformité                | Détecter si la pratique respecte actuellement une exigence      | Elle est continue, pas seulement une opinion à un instant donné                |
+| Reporting de conformité                   | Communiquer l’état et l’action nécessaire                       | Il organise les résultats ; il ne collecte pas chaque observation lui-même     |
+| <Term en="Audit">Audit</Term>             | Examiner des preuves de manière indépendante selon des critères | Il peut exploiter la surveillance, mais ne remplace pas ce processus           |
+| <Term en="Assessment">Évaluation</Term>   | Évaluer un état, un risque ou un contrôle dans un périmètre     | Elle informe la conformité sans remplacer les vérifications continues          |
+| <Term en="Remediation">Remédiation</Term> | Corriger un écart identifié                                     | Elle suit une constatation ; elle ne prouve pas comment celle-ci a été trouvée |
+
+La surveillance doit être proportionnée au risque et au changement. Un contrôle protégeant des
+dossiers sensibles ou un processus fortement réglementé mérite en général une observation plus
+fréquente qu’un processus interne peu critique. La fréquence seule ne garantit rien. Une
+vérification mensuelle qui couvre le mauvais système, se fonde sur un inventaire incomplet ou n’a
+pas de responsable peut produire un chiffre rassurant tout en manquant l’exigence réelle.
+
+<InPractice>
+  Une mesure utile est assez précise pour agir : « 98 % des comptes administrateurs du périmètre ont
+  terminé la revue requise avant l’échéance ; les six comptes restants appartiennent à telles
+  équipes et disposent de tickets dus la semaine prochaine. » « La conformité est plutôt bonne » ne
+  fournit ni preuve comparable, ni périmètre, ni action.
+</InPractice>
+
+Lorsqu’un contrôle révèle un écart, conserver les éléments justificatifs et consigner la décision.
+L’organisation peut corriger le problème, accepter un risque résiduel selon le processus approuvé,
+compenser avec un autre contrôle adapté, ou arrêter l’activité non conforme. Faire passer
+silencieusement un état du rouge au vert sans justification détruit la valeur de la surveillance et
+du reporting.
+
+## Les conséquences dépassent une amende
+
+La <Term en="Non-compliance">non-conformité</Term> signifie qu’une exigence applicable n’est pas
+respectée. Sa conséquence dépend de la source de l’exigence et des faits, mais les questions
+d’examen distinguent souvent les sanctions directes des effets opérationnels et de confiance qui
+suivent.
+
+| Conséquence                       | Manifestation                                                                  | Ce que ce n’est pas                                                |
+| --------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Pénalité financière               | Un régulateur, un contrat ou un accord impose un coût monétaire                | Une correction technique à elle seule                              |
+| Action juridique ou réglementaire | Une autorité impose une action, limite une activité ou enquête                 | Un simple rappel de politique interne                              |
+| Conséquence contractuelle         | Un client exerce un recours, retient un paiement ou met fin au service         | La preuve que toutes les lois ont été enfreintes                   |
+| Atteinte à la réputation          | Clients, partenaires ou public perdent confiance                               | Un résultat de contrôle mesurable, même si l’effet peut être grave |
+| Perturbation opérationnelle       | Un service doit s’arrêter, être redessiné ou mobiliser des ressources urgentes | La même chose que la cause racine d’un incident                    |
+| Risque accru                      | Une protection manquante expose davantage données, systèmes ou personnes       | La preuve qu’une compromission s’est déjà produite                 |
+
+La meilleure réponse commence par contenir toute exposition immédiate et déterminer précisément
+l’écart. Il faut ensuite attribuer un responsable, définir l’action corrective, fixer une échéance
+et vérifier que la correction traite réellement l’exigence. Réécrire une politique peut aider, mais
+ne remplace pas la correction d’un système mal configuré. De même, un correctif technique ne clôt
+pas un défaut de reporting si l’organisation ne peut toujours pas démontrer que l’exigence est
+respectée.
+
+<Mnemonic>
+  **Trouver, corriger, vérifier, rapporter.** La surveillance trouve l’écart ; la remédiation le
+  corrige ; la validation confirme que la correction fonctionne ; le reporting donne le résultat et
+  la décision restante aux personnes responsables.
+</Mnemonic>
+
+## La vie privée concerne les personnes et leurs données
+
+La vie privée concerne la collecte, l’utilisation, le partage, la conservation et la destruction
+appropriés des <Term en="Personal information">informations personnelles</Term>. La sécurité aide à
+la vie privée en empêchant l’accès ou l’altération non autorisés, mais la vie privée demande aussi
+si l’organisation devrait collecter ou utiliser une information d’une certaine façon. Une base
+chiffrée peut résister aux accès non autorisés tout en contenant davantage de données personnelles
+que la finalité annoncée ne le justifie.
+
+| Principe de vie privée dans un scénario                                      | Réponse adaptée                                                                                                                     |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Ne collecter que ce dont un service annoncé a besoin                         | Appliquer la <Term en="Data minimization">minimisation des données</Term> ; ne pas demander de champs supplémentaires par commodité |
+| Utiliser les données seulement pour la finalité communiquée                  | Limiter un nouvel usage jusqu’à ce qu’il soit autorisé et approprié                                                                 |
+| Ne pas conserver les informations personnelles plus longtemps que nécessaire | Suivre les exigences de conservation et de destruction                                                                              |
+| Partager des données avec un tiers                                           | Confirmer une base appropriée, des garanties et des attentes contractuelles                                                         |
+| Une personne demande comment ses informations sont traitées                  | Donner une information exacte et approuvée selon le processus prévu                                                                 |
+
+Les exigences de vie privée varient selon le pays et l’organisation ; il ne faut donc pas inventer
+une échéance universelle à partir d’un énoncé imprécis. Identifier plutôt le problème : collecte
+inutile, utilisation non approuvée, conservation excessive, divulgation inappropriée ou défaut de
+protection des informations personnelles. Choisir ensuite le contrôle ou processus qui répond à ce
+problème.
+
+<ExamTrap>
+  Le <Term en="Encryption">chiffrement</Term> protège la confidentialité, mais ne démontre pas à lui
+  seul la conformité en matière de vie privée. Si une équipe veut collecter une nouvelle catégorie
+  de données personnelles « au cas où », la meilleure réponse concerne la minimisation ou la
+  limitation de finalité, non un chiffrement plus fort.
+</ExamTrap>
+
+La vie privée influence aussi le reporting. Les rapports doivent contenir assez d’information pour
+établir l’état et permettre une action, tout en limitant les données personnelles inutiles. Par
+exemple, un rapport à la direction peut indiquer le nombre de revues d’accès en retard sans diffuser
+une liste complète de détails sur les employés à des personnes qui n’en ont pas besoin. Il ne s’agit
+pas de cacher le problème, mais d’appliquer le besoin d’en connaître au processus de reporting
+lui-même.
+
+## Relier les éléments du cycle
+
+Prenons une exigence imposant la revue trimestrielle des comptes privilégiés. La surveillance
+collecte les réalisations et repère les comptes sans revue. Le reporting indique au propriétaire et
+à la direction le périmètre, l’exception, le risque et l’échéance. Si l’exigence n’est pas
+respectée, l’organisation peut subir une exposition accrue et, selon ses obligations, des
+conséquences contractuelles ou réglementaires. La vie privée intervient si le rapport contient des
+informations sur des employés ou clients : ne diffuser que les détails nécessaires aux
+destinataires.
+
+Cette séquence montre pourquoi une conformité efficace ne se réduit pas à un document. Une politique
+donne un cadre à l’exigence. La surveillance teste l’état présent. Les preuves soutiennent la
+conclusion. Le reporting porte cette conclusion aux personnes qui doivent agir. L’action corrective
+traite l’écart et une nouvelle vérification confirme qu’il reste traité.
+
+## Se tester
+
+1. Une vérification continue de configuration détecte qu’un paramètre requis manque. S’agit-il de
+   surveillance de conformité ou de reporting de conformité ?
+2. Quel détail rend un résultat de non-conformité exploitable : un résumé vague et favorable, ou le
+   périmètre affecté, le responsable, l’échéance et l’action corrective ?
+3. Une équipe veut garder indéfiniment des informations personnelles car elles pourraient servir
+   plus tard. Quel principe de vie privée doit guider la décision ?
+
+<KeyPoint>
+  (1) La surveillance de conformité ; le reporting communique le résultat à un public. (2) Le
+  périmètre affecté, le responsable, l’échéance et l’action corrective. (3) La minimisation des
+  données et une conservation appropriée : ne garder les informations personnelles que le temps
+  exigé par la finalité annoncée et les obligations applicables.
+</KeyPoint>

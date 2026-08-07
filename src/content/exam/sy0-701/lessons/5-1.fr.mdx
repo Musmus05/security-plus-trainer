@@ -1,0 +1,170 @@
+## Pourquoi cet objectif compte
+
+La gouvernance de la sécurité rend les décisions répétables, défendables et reliées aux objectifs
+métier. À l’examen, cet objectif ne demande pas de configurer un contrôle. Il vérifie si vous savez
+choisir le document directeur adapté, identifier qui décide ou exécute, et expliquer comment une
+organisation maintient ses règles utiles lorsque le métier, la technologie et les obligations
+externes évoluent.
+
+Un contrôle peut être techniquement solide tout en échouant du point de vue de la gouvernance : les
+données n’ont pas de responsable, une règle n’a jamais été approuvée, ou une équipe suit une
+procédure devenue obsolète. Dans un scénario, cherchez donc la décision, l’autorité ou le cycle de
+révision manquant, plutôt que le produit technique cité.
+
+<KeyPoint>
+  La <Term en="Security governance">gouvernance de la sécurité</Term> fixe une direction et une
+  responsabilité. La gestion met cette direction en œuvre, et les opérations accomplissent le
+  travail quotidien. Une <Term en="Policy">politique</Term> dit ce qui doit être vrai ; une{' '}
+  <Term en="Procedure">procédure</Term> indique comment réaliser une tâche précise.
+</KeyPoint>
+
+## La hiérarchie des documents
+
+Les quatre types de documents sont voisins, ce qui permet à l’examen de proposer des réponses toutes
+plausibles. Appuyez-vous sur le niveau de détail de l’énoncé. Une direction large et obligatoire
+renvoie à une politique ; une base technique obligatoire et reproductible renvoie à une norme ; des
+actions ordonnées renvoient à une procédure.
+
+| Document                                     | Fonction                                                   | Formulation typique | Exemple                                                                    |
+| -------------------------------------------- | ---------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------- |
+| <Term en="Policy">Politique</Term>           | Direction générale approuvée par la direction              | « doit »            | Les données de l’entreprise doivent être classifiées et protégées.         |
+| <Term en="Standard">Norme</Term>             | Exigence précise et obligatoire qui applique une politique | « doit utiliser »   | Les accès administratifs doivent utiliser l’authentification multifacteur. |
+| <Term en="Procedure">Procédure</Term>        | Instructions ordonnées pour réaliser un travail            | « d’abord, puis »   | Étapes pour attribuer un compte administrateur.                            |
+| <Term en="Guideline">Ligne directrice</Term> | Pratique recommandée laissant place au jugement            | « devrait »         | Les développeurs devraient utiliser une liste de contrôle approuvée.       |
+
+Une politique n’est pas un mode d’emploi détaillé. Elle exprime une attente et une autorité, par
+exemple au moyen d’une politique d’utilisation acceptable ou de conservation des données. Les normes
+rendent cette attente uniforme entre équipes. Une procédure transforme une norme en action
+reproductible par une personne formée. Les lignes directrices sont utiles lorsque le contexte varie
+: elles orientent une bonne décision sans prétendre qu’une méthode unique convient partout.
+
+<ExamTrap>
+  Le mot « obligatoire » ne désigne pas automatiquement une politique. Politiques et normes peuvent
+  être obligatoires. Choisissez la politique pour une direction organisationnelle large ; choisissez
+  la norme pour une exigence mesurable ou technique qui concrétise cette direction.
+</ExamTrap>
+
+<Mnemonic>
+  Retenez **P-N-P-L** : la Politique fixe le but, la Norme fixe la spécification, la Procédure
+  fournit les pas, et la Ligne directrice oriente le jugement.
+</Mnemonic>
+
+## Les considérations externes sont des entrées obligatoires
+
+La gouvernance doit tenir compte de conditions extérieures à l’équipe de sécurité. Les lois et les
+réglementations peuvent imposer des garanties ou une notification. Les engagements contractuels
+peuvent imposer des exigences de sécurité à un fournisseur. Les normes sectorielles, les autorités
+de contrôle, les décisions de justice et les attentes des clients peuvent aussi modifier ce qui est
+raisonnable pour l’organisation. Une politique claire en interne mais aveugle à ces facteurs peut
+laisser l’entreprise non conforme ou exposée.
+
+Ne confondez pas les mots d’un énoncé. Une loi est imposée par l’État ; une réglementation est une
+règle d’autorité établie sous un cadre légal ; un contrat lie ses signataires ; un référentiel de
+l’industrie peut rester volontaire jusqu’à ce qu’un régulateur ou un contrat le rende obligatoire.
+La gouvernance consiste à identifier l’obligation applicable, à la traduire en politiques et normes
+internes, puis à conserver des éléments montrant que l’organisation les respecte.
+
+| Facteur externe                         | Réponse de gouvernance                                                               |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| Nouvelle obligation de confidentialité  | Mettre à jour politiques, normes, procédures et formation si nécessaire.             |
+| Clause de sécurité client               | Désigner un responsable, déployer les contrôles convenus et surveiller l’engagement. |
+| Menace ou technologie modifiée          | Réévaluer si les règles actuelles protègent toujours les actifs visés.               |
+| Constat d’<Term en="Audit">audit</Term> | Corriger l’écart, documenter la décision et vérifier la correction.                  |
+
+<InPractice>
+  Si le contrat d’un fournisseur exige le chiffrement des dossiers clients stockés, le responsable
+  sécurité ne devrait pas se limiter à écrire aux ingénieurs. La réponse durable relie l’obligation
+  à une politique, précise l’implémentation attendue dans une norme, actualise les procédures,
+  désigne des responsables et contrôle ensuite que l’exigence reste appliquée.
+</InPractice>
+
+## Le suivi et la révision maintiennent la gouvernance vivante
+
+Publier une politique est un début, pas la preuve de son efficacité. Le
+
+<Term en="Monitoring">suivi</Term> demande si les personnes respectent les règles, si les contrôles
+atteignent le résultat attendu et si les obligations externes ou les conditions métier ont changé.
+Ses sources peuvent comprendre des mesures, des demandes d’exception, des incidents, des résultats
+d’audit, des évaluations de risque, des retours utilisateurs et des mises à jour réglementaires.
+
+La <Term en="Revision">révision</Term> suit ces éléments. L’organisation devrait définir qui relit
+un document, à quelle fréquence, qui approuve sa modification, comment les personnes concernées en
+sont informées et comment la version précédente est conservée ou retirée. Un contrôle de version et
+une date de revue montrent qu’un document actuel est intentionnel plutôt qu’oublié. Une révision
+peut renforcer une norme après un incident, supprimer une exigence devenue inutile après le retrait
+d’un service, ou clarifier une procédure régulièrement mal appliquée.
+
+Le suivi n’est pas la même chose que l’<Term en="Enforcement">application</Term>. Le suivi mesure ou
+observe la conformité ; l’application impose une conséquence ou empêche un comportement non
+conforme. Les deux peuvent soutenir la gouvernance, mais un énoncé qui demande comment constater
+qu’une politique ne fonctionne plus vise le suivi et la revue.
+
+<ExamTrap>
+  Une <Term en="Exception">exception</Term> n’est pas une décision silencieuse d’ignorer une
+  politique. Une gouvernance efficace consigne le motif métier, le périmètre, le responsable, les
+  contrôles compensatoires, l’approbateur ainsi qu’une date d’expiration ou de revue. Sans cela, une
+  exception temporaire devient un risque permanent non documenté.
+</ExamTrap>
+
+## Structures de gouvernance et droits de décision
+
+Il n’existe pas d’organigramme unique correct. L’essentiel est que la structure donne aux bonnes
+personnes l’autorité, l’indépendance et la responsabilité adaptées. Un modèle
+
+<Term en="Centralized governance">centralisé</Term> place les décisions majeures et les normes
+communes dans une fonction d’entreprise. Il augmente la cohérence et la visibilité, mais peut
+répondre moins vite aux besoins locaux. Un modèle
+<Term en="Decentralized governance">décentralisé</Term> donne davantage de contrôle aux unités
+métier. Il s’adapte rapidement, mais risque de dupliquer ou de rendre incohérentes les pratiques.
+Une structure hybride ou <Term en="Federated governance">fédérée</Term> combine politique et
+supervision centrales avec une mise en œuvre locale.
+
+| Structure          | Atout                                     | Risque à surveiller                                                     |
+| ------------------ | ----------------------------------------- | ----------------------------------------------------------------------- |
+| Centralisée        | Politique cohérente et visibilité globale | Les décisions peuvent ignorer le contexte opérationnel local.           |
+| Décentralisée      | Appropriation locale et adaptation rapide | Les unités peuvent interpréter différemment les exigences.              |
+| Hybride ou fédérée | Garde-fous centraux et exécution locale   | Les droits de décision doivent être explicites pour éviter les lacunes. |
+
+Les conseils, comités, dirigeants et responsables sécurité désignés fixent couramment une direction
+et acceptent les risques importants. Les propriétaires de systèmes, propriétaires de données,
+gardiens, équipes de confidentialité, juristes et unités métier ont ensuite des rôles distincts. Le
+titre importe moins que la responsabilité décrite dans le scénario.
+
+## Systèmes, données et personnes responsables
+
+Une gouvernance efficace attribue une responsabilité nommée. Le <Term en="System owner">propriétaire
+de système</Term> répond de la finalité métier, du risque acceptable et des décisions de cycle de
+vie d’un système. Le <Term en="Data owner">propriétaire de données</Term> décide de la
+classification, de l’utilisation, du partage, de la conservation et de la protection des données. Le
+
+<Term en="Data custodian">gardien de données</Term> réalise le stockage, les sauvegardes,
+l’administration des accès ou l’exploitation, selon les exigences du propriétaire. Les utilisateurs
+doivent suivre les règles approuvées et signaler une anomalie ; ils ne redéfinissent pas seuls la
+classification des données.
+
+| Rôle                    | Responsabilité principale                             | Pas sa responsabilité principale                          |
+| ----------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
+| Propriétaire de données | Classifier les données et décider des protections     | Réaliser chaque sauvegarde ou chaque modification d’accès |
+| Gardien de données      | Mettre en œuvre et exploiter le traitement exigé      | Accepter le risque métier lié aux données                 |
+| Propriétaire de système | Répondre de la finalité, du risque et du cycle de vie | Fixer chaque politique à l’échelle de l’entreprise        |
+| Direction sécurité      | Conseiller, superviser et orienter le programme       | Posséder chaque jeu de données métier                     |
+
+<KeyPoint>
+  Dans une question de rôle, repérez la décision prise. La classification et l’usage permis relèvent
+  du propriétaire de données ; le soin opérationnel relève du gardien ; la responsabilité métier
+  d’un système relève de son propriétaire de système.
+</KeyPoint>
+
+## Se tester
+
+1. Un document impose un facteur matériel pour chaque compte privilégié. S’agit-il d’une politique,
+   d’une norme, d’une procédure ou d’une ligne directrice ?
+2. Qui décide de la classification d’un dossier client : le propriétaire de données ou le gardien ?
+3. Quelle activité révèle qu’une politique approuvée ne reflète plus une nouvelle obligation externe
+   ?
+
+<KeyPoint>
+  1. Une norme : elle fixe une exigence précise et obligatoire. 2. Le propriétaire de données
+  classifie les données ; le gardien applique leur traitement. 3. Le suivi et la révision, alimentés
+  notamment par les mises à jour réglementaires, les audits et les éléments de risque.
+</KeyPoint>

@@ -1,0 +1,152 @@
+## Why this objective matters
+
+Identity and access management questions are rarely acronym quizzes. The exam gives you a new
+employee, a transfer, an external partner, a privileged task, or a former worker and asks which
+access should exist, who should verify it, and what control enforces the decision. Work through the
+identity lifecycle: establish who the person is, give only the rights justified by the job, enforce
+those rights when they are used, review them, and remove them when the business reason ends.
+
+It is important to separate proofing, authentication, authorization, and accountability. A person
+may prove identity during enrolment, authenticate with a credential at sign-in, and still have no
+authorization to open a sensitive record. Similarly, a convenient login experience does not grant
+access to every application. Scenario answers should solve the stated IAM failure without adding a
+neighbouring control that addresses a different one.
+
+<KeyPoint>
+  IAM is a lifecycle: proof the identity, provision the approved access, enforce it at use, attest
+  that it remains appropriate, and de-provision it when the need ends.
+</KeyPoint>
+
+## Provision and de-provision accounts
+
+<Term>Provisioning</Term> creates an account and its initial entitlements when an employee,
+contractor, service, or partner needs access. A good request identifies the identity, the role, the
+systems, the approver, and the start date. An account must be connected to a business reason, not
+simply created because someone knows an administrator. Automated provisioning can consistently apply
+an approved role baseline, but automation does not replace approval or periodic review.
+
+<Term>De-provisioning</Term> removes or disables access when employment, a contract, a project, or a
+role ends. Departure is not the only trigger. During a transfer, old permissions should be removed
+before or alongside new ones. Keeping old access “just in case” leads to privilege accumulation and
+leaves a wider attack surface. In a scenario, urgent removal of a former worker’s access is
+de-provisioning; setting up a starter’s account is provisioning.
+
+| Event                    | IAM action                                        | Security result                              |
+| ------------------------ | ------------------------------------------------- | -------------------------------------------- |
+| New employee starts      | Provision identity and approved baseline rights   | Access is attributable from day one          |
+| Employee changes team    | Remove old rights and assign the new role         | Prevents accumulated privilege               |
+| Contractor term expires  | Disable accounts and revoke tokens or credentials | Ends access with the business relationship   |
+| Temporary project closes | Remove the project entitlement                    | Prevents temporary access becoming permanent |
+
+<ExamTrap>
+  Disabling an account is an access decision. Deleting its audit history is different: evidence may
+  need to remain available under the organization’s retention policy.
+</ExamTrap>
+
+## Assign permissions deliberately
+
+<Term>Authorization</Term> decides what an authenticated identity may do. Reading, modifying,
+approving, administering, and accessing a dataset are distinct permissions. Direct assignments can
+work for an exception, but groups and roles scale better and make access review understandable.
+Apply least privilege: grant no more capability than the task requires. Where one person could both
+initiate and approve a sensitive action, separate duties to reduce fraud and error risk.
+
+| Model                                 | How it decides                                                            | Typical cue                                           |
+| ------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Role-based access control (RBAC)      | Rights follow a job role                                                  | Many people with the same duties need the same access |
+| Attribute-based access control (ABAC) | Policy evaluates attributes such as department, device, time, or location | Access changes with contextual facts                  |
+| Discretionary access control (DAC)    | Resource owner grants access                                              | A creator shares with named users                     |
+| Mandatory access control (MAC)        | Central labels and clearances govern access                               | Classified data follows a fixed hierarchy             |
+
+<Mnemonic>
+  RBAC asks “what is your role?” ABAC asks “what facts describe this request?” A role can be an
+  attribute, but ABAC can also evaluate device posture, location, and time.
+</Mnemonic>
+
+## Establish, connect, and reuse identity
+
+<Term>Identity proofing</Term> happens before an organization accepts a claimed identity as trusted.
+It can validate documents, use an in-person process, rely on a trusted sponsor, or follow another
+approved method. It is not authentication. Proofing establishes who was enrolled; authentication
+checks that the current claimant controls an accepted credential.
+
+<Term>Federation</Term> lets separate organizations or security domains rely on assertions from a
+trusted identity provider. An application accepts that provider’s signed assertion rather than
+maintaining a separate local password for every external user. <Term>Single sign-on (SSO)</Term> is
+the experience of authenticating once and then opening several approved applications. Federation
+often enables SSO, but they answer different questions: federation describes a trust relationship;
+SSO describes the number of authentication prompts.
+
+<Term>Interoperability</Term> is the capability of IAM components to exchange usable identity and
+access information. Compatible standards and formats let a directory, an identity provider, and an
+application understand the same identity and attributes. Network connectivity alone is not
+interoperability if one system cannot consume the other system’s identity data.
+
+| Term              | Main question                                   | Not the same as                  |
+| ----------------- | ----------------------------------------------- | -------------------------------- |
+| Identity proofing | “Who was enrolled?”                             | A routine login check            |
+| Federation        | “Whose identity assertion do we trust?”         | A shared local password database |
+| SSO               | “How many times does the user authenticate?”    | Authorization everywhere         |
+| Interoperability  | “Can components exchange usable identity data?” | A friendly portal alone          |
+
+<InPractice>
+  A supplier signs in to its own organization. Your application accepts an assertion from that
+  organization’s identity provider: that is federation. If the supplier can then open several of
+  your approved applications without another prompt, that person also experiences SSO.
+</InPractice>
+
+## Review access and authenticate strongly
+
+<Term>Attestation</Term> is a formal confirmation, often by a manager or resource owner, that an
+existing account or entitlement remains appropriate. It is a review, not the initial request for
+access. A manager who periodically certifies a list of people with finance rights is performing
+attestation. The review should identify stale accounts, obsolete permissions, and exceptions that no
+longer have an owner.
+
+Access controls enforce authorization decisions. They include groups, ACLs, application roles,
+policy engines, conditional rules, administrative requirements, and physical measures. Select the
+control for the resource and risk. Authentication proves a claimant controls a credential; it does
+not by itself decide which files that claimant may read.
+
+<Term>Multifactor authentication (MFA)</Term> uses evidence from at least two different factor
+categories: something you know, have, or are. Two passwords are not MFA because both are knowledge
+factors. A password plus a hardware key, or a password plus an authenticator-app approval, uses
+different categories. MFA reduces the value of a stolen password but does not replace authorization
+or the review of inappropriate entitlements.
+
+| Method                              | Factor category    | Key distinction                             |
+| ----------------------------------- | ------------------ | ------------------------------------------- |
+| Password or PIN                     | Something you know | It can be guessed, reused, or phished       |
+| Hardware token or authenticator app | Something you have | Possession alone does not identify a person |
+| Fingerprint                         | Something you are  | Biometric matching has error considerations |
+| Password plus hardware key          | Two categories     | This is MFA                                 |
+
+Password concepts remain relevant where passwords exist. Use long, unique passphrases; prevent reuse
+where policy calls for it; store passwords with suitable salted password hashing; and make the reset
+process strong enough to re-establish confidence in the claimant. Complexity rules alone do not make
+a reused, disclosed, or phished password a strong factor.
+
+## Control privileged work separately
+
+<Term>Privileged access management (PAM)</Term> tools control and monitor elevated accounts, such as
+administrator, root, and powerful service accounts. They can vault credentials, require approval,
+provide just-in-time elevation, record sessions, and rotate privileged credentials. The purpose is
+not to stop administration. It is to ensure powerful access is temporary, authorized, monitored, and
+attributable to an individual rather than permanently shared.
+
+<ExamTrap>
+  MFA strengthens how an account authenticates. PAM governs how elevated access is requested,
+  issued, monitored, and removed. An administrator may need both, and neither replaces the other.
+</ExamTrap>
+
+## Test yourself
+
+1. A manager confirms quarterly that every person still needs a finance role. What activity is this?
+2. A user signs in once with a trusted identity provider and opens several applications. What
+   experience is this?
+3. Why should a transfer remove former permissions as well as add new ones?
+
+<KeyPoint>
+  1. Attestation. 2. Single sign-on. 3. To prevent privilege accumulation and maintain least
+  privilege as the person’s responsibilities change.
+</KeyPoint>

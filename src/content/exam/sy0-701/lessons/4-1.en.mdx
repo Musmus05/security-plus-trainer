@@ -1,0 +1,150 @@
+## Why this objective matters
+
+This objective tests whether you can choose a sensible protection for a computing resource in a
+short operational scenario. It is not asking for a vendor command or a perfect architecture. Read
+the resource, the likely exposure, and the control that changes its security posture. A secure
+baseline is useful only if it is applied to the right target and checked over time.
+
+The common exam pattern is deliberate: a laptop, access point, phone, server, or application has a
+specific weakness. The best answer narrows that weakness without creating a new operational problem.
+Similar answers may all sound secure, but only one fits the target described.
+
+<KeyPoint>
+  Start with the asset: server, workstation, wireless device, mobile device, or application. Then
+  identify the exposed setting or behaviour. Choose the control that reduces that exposure and can
+  be maintained, rather than a neighbouring control with a different job.
+</KeyPoint>
+
+## Secure baselines: the approved starting point
+
+A **secure baseline** is a documented, approved configuration for a class of systems. It specifies
+which services, accounts, settings, software, and protections should be present. A newly deployed
+web server should not begin as an unconstrained operating-system installation; it should begin from
+the organisation’s hardened server baseline.
+
+Baselines create consistency. They make deployment faster, make deviations visible, and give a team
+something concrete to compare against during an audit or investigation. They are not eternal:
+patches, justified business needs, and new threats may require a reviewed update to the baseline.
+
+| Concept             | Primary question it answers                                       | What it does not mean                             |
+| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------- |
+| Secure baseline     | What approved configuration should this type of asset start with? | Every device must be identical regardless of role |
+| Hardening           | What unnecessary exposure can be removed or made safer?           | Installing every security product available       |
+| Configuration drift | Has the running asset moved away from its approved state?         | A deliberate, documented exception                |
+| Monitoring          | Is the resource behaving or configured in a concerning way now?   | A one-time build review                           |
+
+<ExamTrap>
+  A baseline is the expected state; monitoring and configuration checking reveal whether an asset
+  still matches it. Do not select monitoring when the scenario asks for the configuration that
+  should be deployed in the first place.
+</ExamTrap>
+
+## Hardening the right target
+
+Hardening reduces attack surface by removing or restricting features that a target does not need.
+The exact action depends on the target. Disabling an unused service is appropriate on a server;
+removing an unneeded application may be appropriate on a workstation; changing default management
+credentials matters on a wireless device. Least functionality is the underlying habit: retain only
+what the role requires.
+
+| Target                       | Common hardening focus                                                          | Why the focus fits                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Server                       | Disable unused services, restrict administrative access, patch the platform     | Servers expose networked workloads and privileged management paths     |
+| Workstation                  | Remove unapproved software, limit local administration, apply endpoint settings | A user endpoint is exposed to routine browsing, files, and credentials |
+| Network device               | Change defaults, restrict management interfaces, update firmware                | Device administration can control traffic for many other systems       |
+| Virtual machine or container | Use a minimal image and remove unneeded packages                                | Extra components add vulnerabilities without helping the workload      |
+
+Hardening is not a single event. A device can drift when software is installed, a local setting is
+changed, or a temporary exception is never removed. A configuration-management process can compare
+the target to its baseline and report or correct unauthorised drift. Before enforcing a correction,
+make sure a documented exception is not being mistaken for an attack.
+
+<InPractice>
+  A useful build process images a laptop from the approved baseline, applies current updates, enrols
+  it in management, and verifies encryption and endpoint protection before it reaches the user. This
+  is more reliable than asking every technician to remember the same long checklist.
+</InPractice>
+
+## Wireless devices and wireless settings
+
+Wireless devices deserve separate attention because radio traffic can extend beyond the office
+walls. Secure the access point itself and the wireless network it provides. Change default device
+credentials, keep firmware current, and restrict administrative management to authorised staff.
+
+For the wireless network, select strong encryption and authentication, use an appropriate network
+name, and disable insecure legacy features when they are not required. A guest wireless network
+should be separated from internal resources; giving visitors the same access as managed employee
+devices turns convenience into an internal access path.
+
+| Setting or control                             | Security purpose                                        | Neighbouring idea to reject                                           |
+| ---------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------- |
+| WPA3 or WPA2 with strong authentication        | Protects wireless access with modern security settings  | Hiding the network name, which is not a substitute for authentication |
+| Strong passphrase or enterprise authentication | Limits who can join the network                         | A shared default password printed on the access point                 |
+| Disable WPS when not needed                    | Removes a convenience feature that can weaken enrolment | Disabling SSID broadcast as the only protection                       |
+| Guest network segmentation                     | Keeps guest traffic away from internal assets           | Putting guests on the employee network with a different name          |
+
+<Mnemonic>
+  **Radio reaches farther than the room**: secure both the radio network and the device that manages
+  it.
+</Mnemonic>
+
+## Mobile solutions: manage data, not just the handset
+
+Mobile solutions introduce portability, intermittent networks, personal ownership models, and a
+higher chance of loss. A mobile device management solution can apply policies such as screen locks,
+encryption, approved application settings, and remote actions. In a bring-your-own-device setting, a
+separate work container can protect organisational data while preserving a boundary around the
+user’s personal material.
+
+| Mobile control                    | Primary outcome                                           | Important limitation                                                |
+| --------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------- |
+| Screen lock and device encryption | Reduces exposure if a device is lost                      | Does not decide which cloud app a user may access                   |
+| Remote wipe                       | Removes organisational data from a lost or retired device | Requires the device to reconnect before it can receive the command  |
+| Work container                    | Separates managed business data from personal apps        | Does not replace authentication to company services                 |
+| Application allow list            | Limits installation or execution to approved apps         | Can disrupt legitimate work if the approved catalogue is incomplete |
+
+The scenario often distinguishes a full-device action from a selective action. If an organisation
+owns the phone, wiping the device may be appropriate. If it is employee-owned, selectively removing
+the managed work data may satisfy the same security need with less impact.
+
+## Application security and sandboxing
+
+Application security applies controls to the software that processes data. Examples include timely
+updates, secure configuration, least privilege for service accounts, and restricting the functions
+an application is allowed to use. The right answer follows the layer named in the scenario: a
+database permission issue is not fixed by changing a wireless password.
+
+A **sandbox** is an isolated environment in which untrusted code, attachments, or a risky process
+can run with constrained access. It is especially useful when an organisation needs to observe a
+suspicious file without allowing it to reach ordinary endpoints or production data. Isolation
+reduces the consequences of a malicious action; it does not prove that the content is safe.
+
+<ExamTrap>
+  Sandboxing contains an uncertain object. Application allow listing prevents an unapproved object
+  from running at all. If the question says the team must safely execute or analyse something
+  suspicious, choose sandboxing; if it says only approved software may run, choose allow listing.
+</ExamTrap>
+
+## Monitoring closes the loop
+
+Monitoring collects signals from computing resources so a team can identify policy violations,
+configuration drift, failures, and suspicious activity. Endpoint, application, mobile, and wireless
+logs may all contribute. An alert is a signal for investigation, not automatic proof of compromise.
+
+Good monitoring is tied to an expected state: a baseline says which service should be disabled;
+monitoring can reveal that it became active. A mobile policy says encryption is required; management
+reporting can identify the device that no longer complies. This feedback turns hardening from a
+one-time project into an operating practice.
+
+## Test yourself
+
+1. What makes a secure baseline different from a one-time security scan?
+2. Why is hiding a wireless network name not sufficient wireless security?
+3. When is sandboxing a better fit than an application allow list?
+
+<KeyPoint>
+  1. A baseline defines the approved configuration; a scan observes a system for issues. 2. A hidden
+  name does not authenticate users or encrypt traffic. 3. Use sandboxing when untrusted content must
+  be executed or examined under isolation; use allow listing to prevent unapproved software from
+  running.
+</KeyPoint>

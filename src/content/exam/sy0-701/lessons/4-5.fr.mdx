@@ -1,0 +1,161 @@
+## Pourquoi cet objectif compte
+
+Cet objectif vérifie la capacité à modifier un dispositif de sécurité déjà présent dans l’entreprise
+lorsqu’un scénario révèle une lacune précise. Il ne demande pas de réciter des noms d’équipements.
+Il faut repérer le symptôme, déterminer où l’activité indésirable peut être vue ou arrêtée, puis
+choisir le contrôle dont le point de décision correspond au problème. Un
+
+<Term en="Firewall">pare-feu</Term> qui autorise une connexion, un
+<Term en="IPS">système de prévention d’intrusion</Term> qui bloque une exploitation et un
+<Term en="Web filter">filtre web</Term> qui bloque une catégorie peuvent figurer dans le même
+scénario, mais ils ne résolvent pas la même difficulté.
+
+L’examen attend aussi des limites nettes. Certains dispositifs empêchent un événement, d’autres le
+détectent, et d’autres accélèrent la réponse. La bonne réponse modifie la capacité la plus proche du
+besoin sans prétendre qu’elle remplace toutes les autres couches.
+
+<KeyPoint>
+  Commence par l’élément à contrôler : connexion réseau, requête web, résolution de nom, message,
+  activité du poste, modification de fichier, donnée sensible, admission d’appareil ou habitude
+  utilisateur. Choisis ensuite la capacité qui observe cet élément.
+</KeyPoint>
+
+## Contrôler le chemin, pas seulement la destination
+
+Plusieurs contrôles limitent une activité qui passe par le réseau. La différence utile est la preuve
+qu’ils examinent et le moment où ils agissent.
+
+| Capacité                                               | Décision principale                           | Modification de sécurité typique                   |
+| ------------------------------------------------------ | --------------------------------------------- | -------------------------------------------------- |
+| Pare-feu                                               | Connexion ou paquet correspondant à une règle | Restreindre source, destination, port ou protocole |
+| <Term en="IDS">Système de détection d’intrusion</Term> | Trafic ou activité suspecte observée          | Alerter pour investigation                         |
+| Système de prévention d’intrusion                      | Trafic ou activité suspecte en ligne          | Bloquer avant la cible                             |
+| Filtre web                                             | Destination, catégorie ou requête web         | Bloquer les catégories risquées                    |
+| <Term en="DNS filtering">Filtrage DNS</Term>           | Résolution d’un nom                           | Refuser les domaines malveillants connus           |
+
+Le pare-feu applique des règles à une frontière réseau ou entre segments. Si une base de données ne
+doit recevoir que les connexions d’un niveau applicatif, une règle refuse les autres sources. C’est
+la bonne piste quand le scénario nomme des adresses, ports, protocoles ou segments. Il n’analyse pas
+à lui seul chaque pièce jointe et ne décide pas qu’un utilisateur se comporte anormalement.
+
+Un système de détection d’intrusion observe et alerte. Le système de prévention d’intrusion est
+placé en ligne et peut bloquer. Cette différence est décisive : alerter après une tentative
+d’exploitation n’équivaut pas à la prévenir. Une règle IPS peut convenir à une signature d’attaque
+précise, mais une signature trop large peut interrompre un trafic légitime. Il faut l’ajuster,
+tester l’effet et surveiller les faux positifs.
+
+<ExamTrap>
+  Un IDS détecte, il ne prévient pas. Si l’énoncé exige que le trafic soit arrêté avant d’atteindre
+  un serveur, la réponse est IPS ou un autre point d’application en ligne, pas une alerte IDS.
+</ExamTrap>
+
+Le filtre web applique une politique d’usage du web. Il peut bloquer une catégorie telle que les
+domaines nouvellement enregistrés, les sites de partage non approuvés ou une URL dangereuse connue.
+Le filtrage DNS agit plus tôt : il empêche un client de résoudre un nom interdit. Il est efficace
+contre un domaine malveillant connu, mais il n’inspecte pas le chemin complet d’une URL et ne bloque
+pas une connexion faite directement à une adresse IP. Ces limites expliquent l’emploi normal de
+couches complémentaires.
+
+## Renforcer le poste et ses communications
+
+La <Term en="Operating system security">sécurité du système d’exploitation</Term> regroupe la
+configuration sûre et la maintenance du poste ou du serveur : correctifs rapides, versions prises en
+charge, moindre privilège, réduction des services, accès administratifs protégés et journalisation.
+Dans un scénario, supprime ou désactive un service inutile au lieu de seulement le surveiller.
+Applique le correctif quand il existe et ajoute un contrôle compensatoire quand un système ancien ne
+peut plus être corrigé.
+
+La <Term en="Implementation of secure protocols">mise en œuvre de protocoles sécurisés</Term>
+consiste à remplacer une communication insuffisamment protégée par une alternative qui protège le
+flux. La question porte souvent sur la propriété menacée.
+
+| Besoin                                      | Bonne orientation                            | Réponse voisine mais insuffisante                        |
+| ------------------------------------------- | -------------------------------------------- | -------------------------------------------------------- |
+| Protéger des identifiants en transit        | Employer un protocole chiffré et authentifié | Chiffrer un disque ne protège pas le trafic              |
+| Éviter une administration distante en clair | Remplacer le protocole distant non sûr       | Changer le port du pare-feu ne sécurise pas le protocole |
+| Protéger une session web                    | Imposer HTTPS et valider les certificats     | Le filtrage DNS ne chiffre pas une session HTTP          |
+
+Les protocoles sécurisés protègent les données en transit. Ils ne décident pas à eux seuls si une
+personne est autorisée ni si un poste est déjà compromis. Il faut conserver ces objectifs de
+contrôle distincts.
+
+## Protéger les messages, les fichiers et les données
+
+La <Term en="Email security">sécurité de la messagerie</Term> peut authentifier les expéditeurs,
+filtrer les messages indésirables ou malveillants, examiner les pièces jointes et placer un contenu
+suspect en quarantaine. La meilleure modification dépend de la preuve. Un expéditeur usurpé appelle
+des contrôles contre l’usurpation. Une pièce jointe dangereuse appelle une inspection ou une mise en
+quarantaine. Bloquer une catégorie web n’est pas une réponse de messagerie, même si les deux voies
+peuvent livrer un logiciel malveillant.
+
+La <Term en="File integrity monitoring">surveillance de l’intégrité des fichiers</Term> (FIM)
+conserve une référence fiable pour des fichiers importants et alerte lorsqu’un fichier change sans
+raison attendue. Elle est utile pour les binaires système, fichiers de configuration et autres
+emplacements sensibles. La FIM indique qu’un fichier a changé ; elle ne prouve pas l’intention de la
+personne, ne bloque pas nécessairement chaque modification et ne restaure pas le fichier d’origine.
+Une mise à jour prévue doit actualiser la référence approuvée dans le cadre du changement, pas
+apprendre à l’équipe à ignorer les alertes.
+
+La <Term en="DLP">prévention des pertes de données</Term> repère les données sensibles et applique
+une politique pendant leur usage, leur déplacement ou leur stockage. Elle peut, par exemple,
+empêcher l’envoi externe d’un document contenant des identifiants réglementés. La DLP concerne la
+donnée et son mouvement autorisé. Ce n’est ni un détecteur général de logiciel malveillant ni un
+remplaçant du chiffrement ou du contrôle d’accès.
+
+<InPractice>
+  Une politique DLP qui bloque chaque tableur produit surtout du bruit. Une politique utile associe
+  une classification ou un motif de donnée à un contexte, tel qu’un destinataire externe, un support
+  amovible ou un service cloud non géré. Ajuste-la à partir des résultats réels avant d’élargir le
+  blocage.
+</InPractice>
+
+## Décider quels appareils et comportements méritent confiance
+
+Le <Term en="Network access control (NAC)">contrôle d’accès réseau</Term> (NAC) décide si un
+appareil peut rejoindre le réseau et, souvent, quel accès il reçoit. Il peut vérifier l’identité et
+l’état de sécurité, puis autoriser, restreindre, placer en quarantaine ou refuser l’appareil. Le NAC
+est le bon choix lorsqu’un ordinateur non géré ou non conforme tente de se connecter. Ce n’est pas
+un outil qui inspecte le contenu d’un message déjà présent dans une boîte aux lettres.
+
+La <Term en="Endpoint detection and response (EDR)">détection et réponse aux points de
+terminaison</Term> (EDR) collecte et corrèle la télémétrie des postes afin de détecter, examiner,
+contenir et traiter une activité suspecte. La
+
+<Term en="Extended detection and response (XDR)">détection et réponse étendue</Term> (XDR) élargit
+cette corrélation à des sources telles que le réseau, l’identité, la messagerie et le cloud. La
+différence essentielle est l’étendue : EDR est centré sur le poste, XDR relie des signaux de
+plusieurs couches. Aucun des deux n’est simplement une liste de signatures antivirus.
+
+L’<Term en="User behavior analytics">analyse du comportement utilisateur</Term> (UBA) établit des
+habitudes d’activité et met en évidence des écarts importants, comme une heure, un lieu, un volume
+de données ou un schéma d’accès inhabituel. Elle permet de prioriser une vérification ; elle ne
+prouve pas une intention malveillante parce qu’une personne agit différemment un jour donné.
+L’analyste doit tenir compte du contexte métier et des faux positifs.
+
+<Mnemonic>
+  **Le NAC admet les appareils ; l’EDR enquête sur les appareils ; l’UBA évalue des habitudes de
+  personnes.** Avant l’admission réseau, pense NAC. Face à une activité de poste, pense EDR. Face à
+  un schéma utilisateur inhabituel, pense UBA.
+</Mnemonic>
+
+## Modifier avec méthode
+
+Pour chaque scénario, formule d’abord le résultat : empêcher un accès, détecter un changement,
+protéger une donnée, restreindre un appareil ou enquêter sur un comportement. Choisis ensuite la
+capacité la plus proche, définis une règle ou une politique étroite, teste-la et surveille son
+effet. Un blocage temporaire pendant une campagne active peut être justifié, mais il doit aussi être
+revu pour qu’une règle d’urgence ne devienne pas une exception permanente inexpliquée.
+
+## Se tester
+
+1. Un poste ne doit pas résoudre un domaine d’hameçonnage connu. Quelle capacité est la plus proche
+   de la recherche de nom ?
+2. Un fichier de configuration protégé change en dehors d’un déploiement approuvé. Quelle capacité
+   fournit l’alerte la plus directe ?
+3. Un poste géré lance des processus suspects et contacte des hôtes inconnus. Quelle capacité
+   centrée sur le poste aide à enquêter et à contenir ?
+
+<KeyPoint>
+  (1) Le filtrage DNS. (2) La surveillance de l’intégrité des fichiers. (3) L’EDR. Chaque contrôle
+  est choisi pour son point de décision, pas parce qu’il est vaguement associé à la sécurité.
+</KeyPoint>

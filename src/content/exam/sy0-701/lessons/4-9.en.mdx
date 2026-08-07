@@ -1,0 +1,143 @@
+## Why this objective matters
+
+An investigation succeeds or fails on the quality of the evidence behind it. On the exam, this
+objective asks you to read a short incident scenario, identify the question the investigator must
+answer, and select the data source that can answer it. It is not a test of memorising every log
+format or operating a particular SIEM. The marks are in distinguishing nearby sources: a firewall
+can explain a connection decision, but not a process that started on an endpoint; a vulnerability
+scan can report an exposed weakness, but not prove that it was exploited.
+
+Good investigation is a process of joining observations. A suspicious sign-in, a DNS request, an
+endpoint process, and a cloud audit event may each be incomplete alone. Correlating their times,
+identities, host names, addresses, and hashes can turn them into a defensible timeline. Start with
+the investigation question, then choose data that records the event rather than data that merely
+describes a possible risk.
+
+<KeyPoint>
+  Ask: **what happened, where, when, and to whom?** Choose the source that was closest to that
+  event. Use intelligence and public information to add context, not to replace local evidence.
+</KeyPoint>
+
+## Log data: records of activity
+
+A log is a time-stamped record produced by a system, application, or security control. Its value
+depends on fields, coverage, clock accuracy, retention, and integrity. Before making a conclusion,
+check the relevant time zone and whether the source records the action at all. An absent event in a
+log is meaningful only when logging was enabled and the data is still retained.
+
+| Source                        | Best investigation question                                          | Common limitation                                                        |
+| ----------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Firewall log                  | Was this flow allowed, blocked, translated, or routed?               | It usually cannot identify the user or endpoint process behind the flow. |
+| Application log               | What did this application accept, reject, create, or error on?       | It does not show activity outside that application.                      |
+| Endpoint log                  | Which process, command, file, or account acted on this device?       | Coverage depends on the installed endpoint tooling and policy.           |
+| Operating-system security log | Who authenticated, changed privilege, or accessed a local service?   | Event names and useful fields vary by operating system.                  |
+| IDS/IPS log                   | Which signature, anomaly, or prevention rule fired?                  | A detection needs validation; it is not automatic proof of compromise.   |
+| Network log                   | Which systems communicated, over which protocol and ports, and when? | Flow-level records normally do not contain the full payload.             |
+
+Firewall logs commonly include source and destination addresses, ports, protocol, action, rule, and
+time. They are strong evidence for a network-control decision. If the question says an egress rule
+blocked traffic, begin with the firewall log. If it asks which executable attempted the connection,
+move to endpoint telemetry and correlate it with the same host and time.
+
+Application logs place activity in business context. A web application can record a login result,
+account action, request path, error, or application-specific transaction identifier. Database and
+mail services do the same for their own operations. They are especially useful when a network event
+must be tied to an action inside the service. Do not mistake an application error for proof of an
+attack: correlate it with authentication, endpoint, and network evidence.
+
+Endpoint and OS security logs are the closest sources when the question concerns a host. They may
+show logons, process creation, command lines, file writes, service changes, security-policy events,
+or local privilege use. Endpoint detection tooling often enriches those records with a process tree
+and file hash. The process tree is valuable because a suspicious command launched by a known office
+process tells a different story from one launched by an approved administrative tool.
+
+IDS and IPS logs record detections made from inspected traffic or behaviour. The distinction is
+operational: an IDS alerts, whereas an IPS can take a preventive action. In either case, the alert
+is a lead. Confirm scope in network, endpoint, or application data; a signature can match benign
+traffic, and blocked traffic may never have reached the destination.
+
+Network logs include flow records, DNS records, proxy records, DHCP assignments, and packet capture
+when available. DNS can connect a domain to an internal requester. DHCP can connect an address to a
+device at a particular time. A packet capture can provide far more detail than a flow record, but it
+is usually retained for a shorter period and may be unavailable. Select the least broad source that
+answers the question, then expand if the evidence warrants it.
+
+<ExamTrap>
+  A vulnerability scan reports that a system *could* be vulnerable. It does not establish that an
+  attacker used that weakness. Use logs or endpoint artefacts to investigate exploitation, and use
+  the scan output to assess exposure and remediation priority.
+</ExamTrap>
+
+### Metadata and automation records
+
+Metadata is data about an item rather than its visible content: a file hash, owner, creation time,
+sender, recipient, IP address, geolocation claim, or message header is metadata. It helps pivot an
+investigation without necessarily exposing the content itself. For example, email headers can show
+the path of a message, while a file hash lets the team search endpoint records for matching files.
+
+Automation and orchestration logs are equally important when a control took action automatically.
+They show which playbook ran, its inputs, the account or service that invoked it, each action, and
+its outcome. When an account was disabled unexpectedly, these logs distinguish an automated
+containment step from an attacker action or a human administrator change.
+
+## Data sources: context and direction
+
+Unlike event logs, many data sources tell an investigator what a finding means, what is known about
+it, or how to respond. They should be assessed for timeliness, relevance, source reliability, and
+sharing restrictions.
+
+| Data source                 | What it contributes                                     | What it does not prove                                      |
+| --------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
+| Vulnerability feed          | Newly disclosed weaknesses and affected products        | That a particular asset is vulnerable or exploited          |
+| Advisory or bulletin        | Vendor or authority guidance, mitigations, and urgency  | Activity inside the organisation                            |
+| Threat-intelligence feed    | Malicious indicators, actors, campaigns, and techniques | That every matching indicator is malicious in local context |
+| File or code repository     | Expected source, changes, owners, and software history  | Runtime behaviour on a deployed host                        |
+| Data-breach report          | Known exposure, notifications, and affected data        | The full scope of a current incident                        |
+| Security assessment report  | Identified gaps and recommended controls                | A time-stamped record of an attack                          |
+| Runbook or playbook         | Approved response steps and escalation guidance         | Evidence of who performed an action                         |
+| OSINT or dark-web reporting | Publicly available or underground context               | Verified attribution without corroboration                  |
+
+Vulnerability feeds, advisories, and bulletins help triage an alert. A vendor bulletin can say which
+versions are affected and which mitigation is available. A scan and asset inventory then tell the
+team whether those versions exist locally. This is a useful chain, but it has three distinct roles:
+the feed supplies knowledge, inventory supplies presence, and logs supply observed activity.
+
+Threat intelligence can contain indicators of compromise such as domains, addresses, URLs, hashes,
+email subjects, or behavioural patterns. Treat an indicator as a pivot and a hypothesis. Search it
+across relevant local data, check timestamps and context, and do not block or attribute solely
+because an unverified feed contains it. Indicators age: shared infrastructure can change ownership,
+and attackers can rotate infrastructure.
+
+Repositories and assessment reports establish expectations. A signed release and repository history
+can help determine whether a suspicious library was introduced through a documented change. A prior
+assessment can show that a missing control was already known. Neither replaces current evidence, but
+both guide root-cause work and remediation.
+
+OSINT means publicly obtainable information, such as vendor pages, public repositories, news, and
+domain-registration data. Dark-web sources may reveal offered credentials or claims of a breach.
+Both require careful validation. An attacker claim can be false, old, or a sample from another
+incident. Preserve the finding, assess it through authorised channels, and seek local confirmation.
+
+<InPractice>
+  Build a timeline with normalized timestamps, then pivot deliberately: an authentication event
+  identifies an account; endpoint records identify the process; DNS and proxy logs identify the
+  destination; intelligence explains whether that destination is suspicious. Record both the source
+  and the conclusion so another analyst can reproduce the path.
+</InPractice>
+
+<Mnemonic>
+  **Local logs show; external sources explain.** Logs show what the environment recorded. Feeds,
+  advisories, reports, and OSINT explain risk, reputation, history, or the next action.
+</Mnemonic>
+
+## Test yourself
+
+1. Which source best answers whether a firewall allowed an outbound connection?
+2. Why is a vulnerability scan insufficient to prove exploitation?
+3. What should an analyst do with a threat-intelligence indicator before treating it as a confirmed
+   compromise?
+
+<KeyPoint>
+  1. The firewall log. 2. It shows potential exposure, not an observed attacker action. 3. Pivot
+  through relevant local evidence and validate the time and context.
+</KeyPoint>

@@ -1,0 +1,149 @@
+## Why this objective matters
+
+Security operations cannot protect a resource they cannot see. On the exam, this objective is less
+about memorising a product name than about reading a symptom and choosing the right observation,
+activity, or tool. A login anomaly, an unavailable API, a suspicious file transfer, and a router
+fault all create different evidence. The useful answer is the one that collects, correlates, or acts
+on that evidence at the right point.
+
+Think in a chain: a computing resource produces telemetry; monitoring collects it; an activity turns
+it into a signal; an alert gives a person or process something to investigate. The exam often places
+two neighbours in the options, such as log collection and a SIEM, or a packet capture and NetFlow.
+Knowing what each one can and cannot show is more valuable than knowing a vendor console.
+
+<KeyPoint>
+  Monitoring is observation, alerting is notification, and response is the action taken after a
+  signal is judged meaningful. A tool may support more than one part of that chain, but the terms
+  are not interchangeable.
+</KeyPoint>
+
+## Monitor the resource that owns the evidence
+
+Computing resources include systems, applications, and infrastructure. They overlap in a real
+environment, but they answer different operational questions.
+
+| Resource being monitored | Typical evidence                                                          | Question it can answer                           |
+| ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------ |
+| System or endpoint       | Process starts, authentication events, file changes, CPU and memory use   | What happened on this host?                      |
+| Application              | Errors, transactions, API latency, failed requests                        | Is the service behaving correctly for its users? |
+| Infrastructure           | Interface status, bandwidth, device health, flows, DNS and routing events | Is the network path or shared platform healthy?  |
+
+System monitoring watches operating systems, servers, workstations, and endpoints. It is useful for
+detecting an unexpected process, repeated failed logins, a service stopping, or resource exhaustion.
+Endpoint antimalware may add another signal by identifying known malicious behaviour or files. That
+does not make it a replacement for central logging: its alert describes the endpoint, while other
+sources may explain how the endpoint was reached.
+
+Application monitoring follows the service from the application’s point of view. API monitoring can
+measure whether a defined API request succeeds, fails, or takes too long. Synthetic monitoring sends
+deliberate test transactions from a controlled probe; it is especially good at discovering an outage
+before a customer reports it. Real user monitoring observes actual user sessions and requests. It
+shows the experience users are having, but it cannot show a path that nobody is currently using.
+
+<ExamTrap>
+  Synthetic monitoring and real user monitoring are not rivals. A synthetic check proves whether a
+  known journey works on schedule; real user monitoring reveals how real journeys perform. If the
+  stem says "before users complain," prefer synthetic monitoring. If it says "experienced by actual
+  users," prefer real user monitoring.
+</ExamTrap>
+
+Infrastructure monitoring concerns the shared services around those workloads: switches, routers,
+firewalls, wireless infrastructure, links, and servers that supply common functions. SNMP polling
+asks a managed device for counters or state. An SNMP trap is different: the device sends an
+unsolicited notification when an event occurs. NetFlow records metadata about conversations, such as
+source, destination, protocol, ports, time, and volume. It is excellent for finding an unusual large
+transfer, but it is not the packet payload.
+
+## Turn telemetry into security operations
+
+Collecting data is only the beginning. The objective expects the activities that make monitoring
+operationally useful.
+
+| Activity                       | Purpose                                                           | Common mistake                                   |
+| ------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------ |
+| Log aggregation                | Bring records from many sources to a usable central place         | Treating collection as correlation               |
+| Alerting                       | Notify on a defined condition or threshold                        | Alerting on every event and creating noise       |
+| Scanning                       | Examine a target for a defined condition, such as vulnerabilities | Assuming a scanner proves exploitation occurred  |
+| Reporting                      | Communicate trends, status, or results to an audience             | Confusing a report with an immediate alert       |
+| Archiving                      | Retain records for later investigation, audit, or policy needs    | Assuming archived data is automatically analysed |
+| Alert response and remediation | Triage, investigate, contain, and correct a confirmed issue       | Treating every alert as a confirmed incident     |
+
+Log aggregation centralises records from systems, applications, and infrastructure. A log collector
+forwards or receives those records; syslog is a common message format and transport convention for
+logging. Centralisation helps investigators compare events with a common timeline and avoids losing
+evidence when a local system is rebuilt. It does not itself decide whether a combination of events
+is suspicious.
+
+A security information and event management (SIEM) platform aggregates security-relevant data and
+correlates events across sources. For example, it can relate an authentication event, endpoint
+alert, and firewall event into one investigation. A SIEM can generate alerts and reports, but an
+alert still needs triage. Thresholds that are too sensitive create alert fatigue; thresholds that
+are too loose leave meaningful activity unnoticed. The aim is actionable detection, not the largest
+possible number of notifications.
+
+Scanning is a deliberate inspection rather than continuous passive observation. A vulnerability
+scanner identifies potential weaknesses against known checks. Security Content Automation Protocol
+(SCAP) provides standardised security automation content and formats that can support configuration
+and compliance assessment. A scan result needs validation and prioritisation; it is evidence of a
+condition to address, not proof that an attacker used it.
+
+<InPractice>
+  An alert about an unusual outbound flow should lead to a scoped response: validate the asset and
+  destination, review nearby logs, contain if justified, then remediate the cause. Blocking every
+  high-volume connection without context can interrupt a legitimate backup, update, or business
+  transfer.
+</InPractice>
+
+## Choose a tool by the evidence it provides
+
+The same incident can justify several tools, but each answers a specific question.
+
+| Tool                       | Best use                                                      | Boundary to remember                                                  |
+| -------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------- |
+| SIEM                       | Correlating and alerting across many sources                  | It depends on data being collected and tuned                          |
+| Antimalware                | Detecting or blocking malicious software on an endpoint       | It does not replace network-wide visibility                           |
+| Data loss prevention (DLP) | Enforcing policy around sensitive data movement               | It focuses on data handling, not general availability                 |
+| SNMP traps                 | Receiving device-originated state or fault notifications      | A trap is pushed; polling is requested                                |
+| NetFlow                    | Seeing who communicated, how, and how much                    | It normally does not reveal packet contents                           |
+| Vulnerability scanner      | Identifying known weaknesses or configuration findings        | It is not an intrusion detector                                       |
+| SCAP                       | Standardising automated security and configuration assessment | It is content and a framework, not a live packet feed                 |
+| Protocol analyzer          | Inspecting packets and protocol details                       | It is more detailed than flow metadata and may need careful placement |
+
+DLP tools look for sensitive data moving through monitored channels and can alert, block, or apply
+policy depending on their configuration. They are the close neighbour of a SIEM: a SIEM brings
+events together for analysis, while DLP directly focuses on preventing or detecting prohibited data
+handling. A protocol analyzer captures and decodes packets, making it appropriate when the payload
+or a protocol exchange matters. NetFlow is lighter-weight metadata that is better suited to broad
+traffic patterns and volume over time.
+
+<Mnemonic>
+  **Flow tells the story’s outline; packets supply the dialogue.** Use NetFlow for the outline of
+  conversations and a protocol analyzer when the exam requires protocol or payload detail.
+</Mnemonic>
+
+## Build alerting that leads somewhere
+
+Good alerting starts with a clear condition, a known owner, enough context to investigate, and a
+response path. Severity should reflect impact and confidence, not merely whether a rule fired.
+Records should be retained according to organisational and legal needs, with access controls that
+protect their integrity. Reporting then turns the accumulated evidence into trends: recurring failed
+logins, remediated findings, noisy rules, or coverage gaps.
+
+The exam may describe a chain of events and ask for the first capability to add. If data is spread
+across hosts, start with collection or aggregation. If data exists but related events are missed,
+use correlation through a SIEM. If sensitive records are leaving by an approved channel, consider
+DLP. If a network device must announce an interface failure, choose an SNMP trap. Match the wording
+to the evidence, then choose the narrowest capable answer.
+
+## Test yourself
+
+1. What is the key difference between an SNMP trap and SNMP polling?
+2. When is NetFlow more suitable than a protocol analyzer?
+3. Why is a vulnerability scanner result not, by itself, proof of compromise?
+
+<KeyPoint>
+  1. A trap is sent by the device after an event, while polling requests status from the device. 2.
+  NetFlow is suited to broad conversation and volume metadata; packet analysis is for detailed
+  protocol or payload inspection. 3. A scanner identifies a possible weakness or configuration
+  finding; it does not show that an attacker exploited it.
+</KeyPoint>

@@ -1,0 +1,166 @@
+## Pourquoi cet objectif compte
+
+La <Term en="Vulnerability management">gestion des vulnérabilités</Term> ne se réduit pas au
+lancement d’un <Term en="Vulnerability scanner">scanner</Term>. À l’examen, un constat traverse un
+système opérationnel : le découvrir, décider de son importance dans ce contexte, choisir puis
+appliquer une réponse, prouver que cette réponse fonctionne et communiquer le risque restant. Les
+questions testent souvent la frontière entre ces activités. Un résultat de
+
+<Term en="Vulnerability scan">scan</Term> n’est pas encore une décision de
+<Term en="Remediation">correction</Term> ; un <Term en="Patch">correctif</Term> installé n’est pas
+encore une preuve que l’<Term en="Exposure">exposition</Term> a disparu.
+
+<KeyPoint>
+  Lis le verbe du scénario. **Trouver** une faiblesse relève des{' '}
+  <Term en="Identification methods">méthodes d’identification</Term>. Décider de son importance
+  relève de l’<Term en="Analysis">analyse</Term>. Modifier l’environnement est une correction.
+  Scanner ou tester à nouveau est une <Term en="Validation of remediation">validation</Term>. Donner
+  aux responsables les tendances, le risque et les exceptions est du{' '}
+  <Term en="Reporting">reporting</Term>.
+</KeyPoint>
+
+## Méthodes d’identification : produire une liste crédible
+
+Le processus a besoin d’un contexte d’actif avant d’avoir besoin d’un outil. Un rapport de
+vulnérabilité qui ne donne qu’une adresse IP est moins utile qu’un rapport qui identifie le
+propriétaire, le service, le système d’exploitation, la sensibilité des données et l’exposition à
+Internet. L’<Term en="Asset inventory">inventaire des actifs</Term> et leur responsabilité
+permettent de savoir si un résultat concerne un serveur de paiement en production, une machine de
+test inutilisée ou une adresse qui n’est plus attribuée.
+
+| Méthode d’identification                                            | Point fort                                                             | Limite importante                                            |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------ |
+| <Term en="Vulnerability scan">Scan de vulnérabilités</Term>         | Compare services et logiciels découverts à des faiblesses connues      | Le résultat peut être incomplet, ancien ou faux positif      |
+| <Term en="Authenticated scan">Scan authentifié</Term>               | Inspecte un hôte avec des identifiants approuvés                       | Nécessite des identifiants protégés et un accès à l’hôte     |
+| <Term en="Unauthenticated scan">Scan non authentifié</Term>         | Voit la cible comme un attaquant externe pourrait la voir              | Ne voit pas sûrement chaque composant ou réglage interne     |
+| <Term en="Manual review">Revue manuelle</Term>                      | Vérifie une configuration, une conception ou un contrôle compensatoire | Elle est plus lente et dépend des preuves du relecteur       |
+| <Term en="Penetration test">Test d’intrusion</Term>                 | Démontre si une faiblesse est exploitable selon des règles convenues   | Un test limité dans le temps n’est pas un inventaire complet |
+| <Term en="Threat intelligence">Renseignement sur les menaces</Term> | Ajoute les données sur l’exploitation active ou les acteurs            | Il ne remplace pas l’inspection des actifs                   |
+
+Un scan de vulnérabilités recherche systématiquement des conditions connues : services exposés,
+mises à jour manquantes, configurations faibles ou versions logicielles vulnérables. Il peut
+employer des sondes réseau, un agent ou des identifiants. Le scan authentifié inspecte des paquets
+installés et des politiques locales ; le scan non authentifié mesure ce qui est observable sans
+connexion. Aucun des deux n’est toujours supérieur : le premier apporte de la profondeur, le second
+une vue tournée vers l’attaquant.
+
+<ExamTrap>
+  N’appelle pas tout test de sécurité un test d’intrusion. Un scanner identifie des faiblesses
+  possibles ; un test d’intrusion tente une exploitation contrôlée pour établir l’impact. Ils se
+  complètent, mais un scan positif ne prouve pas une exploitation et un test sans succès ne prouve
+  pas l’absence de toute vulnérabilité.
+</ExamTrap>
+
+Les avis d’éditeurs, les signalements de bogues, les revues de configuration, l’investigation des
+journaux et le renseignement sur les menaces peuvent aussi déclencher une découverte. Ce dernier
+change la priorité lorsqu’il indique une exploitation active, une exposition Internet ou une
+technologie ciblée par des acteurs connus. Conserve avec le constat la source, l’horodatage, l’actif
+affecté et la preuve : l’étape suivante doit pouvoir l’évaluer.
+
+## Analyse : transformer un constat en décision
+
+L’analyse répond à deux questions distinctes : _le constat est-il réel ?_ et _que signifie-t-il dans
+cet environnement ?_ Un scanner peut mal identifier une version, ignorer un contrôle compensatoire
+ou signaler une condition déjà supprimée. Vérifier l’actif, la configuration, la version et
+l’exposition évite de provoquer une interruption pour un faux positif. Inversement, un résultat ne
+doit pas être écarté parce que le scanner ne démontre pas une exploitation.
+
+| Facteur                                                          | Pourquoi il change la priorité                                                           |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| <Term en="Severity">Gravité</Term>                               | Un impact technique plus élevé peut imposer une action rapide, sans être le seul facteur |
+| <Term en="Exploitability">Exploitabilité</Term>                  | Exploits publics, faible complexité ou exploitation active augmentent l’urgence          |
+| <Term en="Exposure">Exposition</Term>                            | Un service accessible depuis Internet offre plus d’occasions d’attaque                   |
+| <Term en="Asset criticality">Criticité de l’actif</Term>         | Données sensibles ou processus métier critique augmentent la conséquence                 |
+| <Term en="Compensating controls">Contrôles compensatoires</Term> | Segmentation, filtrage, surveillance ou accès restreint réduisent le risque pratique     |
+| <Term en="Dependencies">Dépendances</Term>                       | Une correction peut exiger redémarrage, changement coordonné ou tests voisins            |
+
+Les scores de gravité facilitent la comparaison de caractéristiques techniques, mais la gestion des
+vulnérabilités est un travail fondé sur le risque. Une faiblesse moyenne sur une interface
+d’administration publique peut passer avant une faiblesse critique sur un laboratoire isolé et
+retiré. Consigne le raisonnement : propriétaire, impact métier, exposition, preuve, échéance et
+personne qui accepte une exception temporaire. La file de travail devient alors défendable plutôt
+que seulement longue.
+
+<Mnemonic>
+  **Connu ne veut pas dire urgent ; exposé et exploitable veut dire urgent.** Pars de la faiblesse,
+  puis ajoute l’actif, le chemin vers lui, la conséquence métier et les contrôles qui l’entourent.
+</Mnemonic>
+
+## Réponse et correction des vulnérabilités
+
+Après l’analyse, l’équipe choisit une réponse. La correction retire ou répare la faiblesse :
+appliquer un correctif d’éditeur, modifier une configuration non sûre, remplacer un logiciel non
+pris en charge, renouveler un identifiant divulgué ou désactiver un service inutile. Le changement
+suit toujours le processus de changement : test si possible, fenêtre de maintenance, retour arrière
+documenté et information des propriétaires concernés.
+
+La correction immédiate est parfois impossible. Une application héritée peut ne plus avoir de patch,
+un service critique peut demander une longue campagne de tests, ou l’éditeur peut ne pas avoir livré
+de correctif. Un contrôle compensatoire réduit l’exposition sans prétendre supprimer la faiblesse.
+La <Term en="Network segmentation">segmentation réseau</Term>, un contrôle d’accès plus strict, un
+filtrage web, une liste d’autorisation, une surveillance supplémentaire ou l’isolement du système
+sont des exemples utiles. Ils traitent le risque, mais ne prouvent pas la disparition de la
+vulnérabilité.
+
+| Réponse                                              | Résultat approprié                                                                  |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Corriger                                             | La faiblesse racine est supprimée ou réparée                                        |
+| Atténuer par contrôle compensatoire                  | L’exposition ou la probabilité baisse alors que la faiblesse subsiste               |
+| <Term en="Risk acceptance">Accepter le risque</Term> | Un propriétaire autorisé accepte un risque résiduel documenté pour une durée donnée |
+| <Term en="Risk transfer">Transférer le risque</Term> | Contrat ou assurance déplace une conséquence financière, pas la faiblesse technique |
+| <Term en="Risk avoidance">Éviter le risque</Term>    | Le service ou l’activité vulnérable est retiré, désactivé ou remplacé               |
+
+<InPractice>
+  Une équipe découvre une bibliothèque vulnérable dans un service exposé à Internet. Elle confirme
+  la version déployée, vérifie si la fonction vulnérable est active et évalue l’exposition. Si le
+  correctif doit être testé, elle limite temporairement l’accès au proxy inverse et renforce la
+  surveillance. Le patch reste planifié : la règle de proxy ne fait pas oublier le constat.
+</InPractice>
+
+## Validation de la correction : prouver le résultat
+
+La validation de la correction demande si la condition attendue existe **après** le changement.
+Refaire le scan pertinent est courant, mais peut être insuffisant. Vérifie la version ou
+configuration mise à jour, confirme le redémarrage nécessaire, teste le contrôle depuis le chemin
+réseau concerné et vérifie que l’application fonctionne toujours. Un patch sur disque peut ne pas
+protéger un processus qui exécute encore l’ancien code en mémoire.
+
+La méthode de validation doit correspondre à la preuve initiale. Si un scan avec identifiants a
+trouvé une mise à jour de paquet manquante, répète une vérification authentifiée. Si le constat
+était une page d’administration exposée, confirme qu’elle n’est plus joignable depuis un réseau non
+autorisé. Si un contrôle compensatoire a été retenu, valide ce contrôle et laisse la vulnérabilité
+d’origine ouverte dans le suivi jusqu’à sa réelle correction ou à son acceptation formelle.
+
+<ExamTrap>
+  Fermer un ticket parce qu’un changement a eu lieu n’est pas une validation. Le ticket se ferme
+  lorsque la preuve montre que le constat est corrigé, atténué comme documenté ou accepté par le bon
+  propriétaire.
+</ExamTrap>
+
+## Reporting : rendre le risque exploitable
+
+Le reporting sert des lecteurs différents. Les ingénieurs ont besoin des actifs affectés, de la
+preuve, des propriétaires, des échéances et de l’état de validation. La direction a besoin des
+tendances, constats critiques en retard, expositions, exceptions et capacité de correction. Un bon
+rapport distingue les constats nouveaux, ouverts, corrigés, atténués, acceptés et faux positifs ;
+autrement, une baisse du total peut seulement signifier que des tickets ont été fermés sans preuve.
+
+Les métriques peuvent inclure le délai de correction par gravité, la part d’actifs couverts par
+scan, le nombre de constats en retard, les erreurs de configuration récurrentes et le taux de
+clôture validée. Elles ne remplacent pas le jugement. Elles révèlent si le programme trouve les
+actifs, réduit les expositions importantes et conserve une trace du risque résiduel.
+
+## Se tester
+
+1. Un scan affirme qu’un serveur est vulnérable, mais son propriétaire indique que le service a été
+   supprimé. Quelle activité précède la planification d’un patch ?
+2. Un correctif d’éditeur ne peut être posé que dans deux semaines. Quelle réponse réduit
+   l’exposition sans supprimer la vulnérabilité ?
+3. Qu’est-ce qui rend un ticket de correction prêt à être fermé ?
+
+<KeyPoint>
+  (1) L’analyse : vérifier le constat, l’état de l’actif et l’exposition. (2) Un contrôle
+  compensatoire, tel que segmentation ou filtrage plus strict, avec un suivi documenté. (3) Une
+  preuve de validation montrant que la faiblesse est corrigée ou que son traitement approuvé opère
+  comme prévu.
+</KeyPoint>

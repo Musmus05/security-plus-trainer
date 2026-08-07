@@ -1,0 +1,170 @@
+## Pourquoi cet objectif compte
+
+Un <Term en="Incident">incident</Term> n’est pas terminé lorsqu’une <Term en="Alert">alerte</Term>
+est fermée. À l’examen, cet objectif vérifie la capacité à choisir l’activité qui rend une réponse
+volontaire, répétable et utile après un événement. La distinction décisive est souvent le moment :
+la <Term en="Preparation">préparation</Term> précède l’incident, le
+
+<Term en="Containment">confinement</Term> et l’
+<Term en="Incident investigation">investigation</Term> se déroulent pendant celui-ci, puis le retour
+d’expérience améliore la suite. Une réponse séduisante peut être une vraie activité de sécurité,
+mais appartenir au mauvais moment.
+
+La <Term en="Incident response">réponse aux incidents</Term> dépasse aussi l’équipe technique qui
+retire un logiciel malveillant. Elle coordonne personnes, preuves, décisions, communications et
+reprise tout en protégeant l’activité. Une organisation capable de détecter une attaque, mais
+incapable de conserver les preuves, de joindre les bonnes personnes ou de restaurer un service de
+façon sûre, n’a résolu qu’une partie du problème.
+
+<KeyPoint>
+  Lis le scénario selon son but. Prépare-t-on les personnes, répète-t-on un plan, cherche-t-on la
+  cause, traque-t-on une activité cachée ou préserve-t-on une preuve ? Ce but désigne l’activité
+  évaluée.
+</KeyPoint>
+
+## Le processus de réponse aux incidents
+
+Les cadres emploient des noms légèrement différents, mais le processus garde la même forme. L’examen
+s’intéresse au résultat de chaque phase, non au schéma d’un éditeur particulier.
+
+| Phase                                                         | But principal                                         | Résultat attendu                                        |
+| ------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------- |
+| <Term en="Preparation">Préparation</Term>                     | Être prêt avant un événement                          | Plan, rôles, contacts, outils et procédures ciblées     |
+| <Term en="Detection and analysis">Détection et analyse</Term> | Confirmer l’incident et le comprendre                 | Périmètre, actifs touchés, gravité et preuves           |
+| <Term en="Containment">Confinement</Term>                     | Limiter les dégâts et la propagation                  | Hôtes isolés, indicateurs bloqués, accès préservés      |
+| <Term en="Eradication">Éradication</Term>                     | Retirer la cause et l’accès de l’attaquant            | Logiciel retiré, comptes désactivés, faiblesse corrigée |
+| <Term en="Recovery">Reprise</Term>                            | Rétablir un état de fonctionnement digne de confiance | Systèmes restaurés, surveillance et validation métier   |
+| <Term en="Lessons learned">Retour d’expérience</Term>         | Améliorer la prochaine réponse                        | Constats, actions attribuées et procédures mises à jour |
+
+Le confinement n’est pas l’éradication. Déconnecter un terminal infecté peut empêcher qu’il atteigne
+d’autres systèmes, mais ne prouve pas que le mécanisme de persistance malveillant a disparu.
+L’éradication peut imposer de reconstruire le terminal, de retirer un compte frauduleux, de
+réinitialiser des secrets ou de corriger la vulnérabilité ayant admis l’attaquant. La reprise
+intervient seulement lorsque l’organisation peut fonctionner avec une confiance justifiée, souvent
+sous une surveillance renforcée recherchant toute récidive.
+
+<ExamTrap>
+  « Éteindre le serveur compromis » correspond généralement au confinement, pas à la reprise. Cela
+  réduit l’exposition immédiate sans restaurer le service métier. Restaurer une sauvegarde sans
+  retirer la voie d’accès initiale peut, inversement, recréer l’incident.
+</ExamTrap>
+
+### Rôles et décisions
+
+Le <Term en="Incident response plan">plan de réponse aux incidents</Term> désigne un responsable
+d’incident, des intervenants techniques, des propriétaires de systèmes, des contacts juridiques ou
+de protection de la vie privée, une équipe de communication et des voies d’escalade. Chaque incident
+n’emploie pas tous ces rôles, mais décider pendant l’événement qui peut isoler un système critique
+ou avertir une partie externe gaspille un temps précieux. Le plan fixe aussi les critères de
+gravité, la documentation, les canaux de communication et l’autorité de décision.
+
+Un <Term en="Playbook">guide opératoire</Term> est une procédure ciblée et répétable pour un
+événement fréquent, tel que l’<Term en="Phishing">hameçonnage</Term>, le rançongiciel, un appareil
+perdu ou un accès infonuagique suspect. Il ne remplace pas le jugement : il fournit une séquence
+initiale sûre et une trace des décisions. Si l’énoncé demande des contacts, une autorité et des
+étapes connus avant une attaque, il vise la préparation par un plan ou un guide, non une revue après
+incident.
+
+## Formation et test ne sont pas la même chose
+
+La <Term en="Training">formation</Term> prépare les personnes ; le <Term en="Testing">test</Term>
+évalue le plan et révèle ses lacunes. Les deux précèdent un véritable incident, mais ne répondent
+pas à la même question.
+
+| Activité                                                              | Ce qu’elle développe ou démontre                                     | Exemple                                                                                    |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Formation                                                             | Compétence individuelle et connaissance du rôle                      | Une analyste apprend à classer un signalement d’hameçonnage                                |
+| <Term en="Tabletop exercise">Exercice sur table</Term>                | Décision et communication lors d’une discussion                      | Des responsables parcourent un scénario de rançongiciel sans modifier les systèmes         |
+| <Term en="Simulation">Simulation</Term>                               | Réponse à un événement réaliste et contrôlé                          | L’équipe enquête sur une activité malveillante mise en scène dans un environnement de test |
+| <Term en="Parallel test">Test parallèle</Term>                        | Fonctionnement d’une capacité alternative aux côtés de la production | La reprise exécute un processus de secours sans interrompre le système actif               |
+| <Term en="Full interruption test">Test d’interruption complète</Term> | Fonctionnement sous de vraies conditions de basculement              | Un exercice planifié transfère un service vers son site de reprise                         |
+
+L’exercice sur table est habituellement le test le moins perturbant. Il clarifie utilement qui
+appelle qui et qui possède l’autorité, mais ne démontre ni qu’un outil d’isolement fonctionne ni
+qu’une sauvegarde est restaurable. Un test d’interruption complète apporte une preuve opérationnelle
+plus forte, avec un risque métier plus élevé. Choisis le test dont le réalisme correspond au besoin
+décrit.
+
+<InPractice>
+  Après un exercice, consigne le résultat observable : liste d’astreinte périmée, accès impossible à
+  une console ou validation juridique trop lente. Attribue ensuite un propriétaire et une échéance.
+  Un exercice sans amélioration suivie est une répétition sans apprentissage.
+</InPractice>
+
+## Analyse de la cause racine
+
+L’<Term en="Root cause analysis">analyse de la cause racine</Term> demande pourquoi l’incident est
+devenu possible, pas seulement quelle alerte est apparue en premier. Effacer un courriel
+d’hameçonnage traite un symptôme. La cause racine peut être un contrôle de messagerie absent, un
+navigateur non corrigé, des autorisations excessives, une mauvaise revue d’un processus de paiement
+ou plusieurs défaillances liées. Les preuves peuvent montrer le vecteur d’accès initial, mais les
+intervenants ne doivent pas déclarer ce vecteur cause racine sans enquête suffisante.
+
+Les méthodes utiles incluent les questions successives « pourquoi », une chronologie et la
+comparaison entre contrôles attendus et réalité observée. Le résultat doit fournir des actions
+correctives qui empêchent ou réduisent la répétition. L’analyse de cause racine est rétrospective et
+orientée vers l’amélioration ; ce n’est pas la <Term en="Threat hunting">traque des menaces</Term>,
+qui cherche de manière proactive une activité malveillante encore inconnue.
+
+<Mnemonic>
+  **Confiner, nettoyer, reprendre, apprendre** : limite les dégâts ; retire l’accès ; rétablis un
+  fonctionnement fiable ; puis comprends pourquoi l’événement a eu lieu et améliore la réponse.
+</Mnemonic>
+
+## Traque des menaces
+
+La traque des menaces est une recherche proactive, guidée par une hypothèse, d’activité adverse que
+les alertes ordinaires n’ont pas révélée. Une analyste peut se demander si une technique récemment
+signalée apparaît dans l’environnement, puis interroger les données de terminaux, d’identité, de DNS
+et de réseau pour en trouver les traces. Ce n’est pas regarder un tableau de bord : la
+
+<Term en="Monitoring">surveillance</Term> attend des conditions configurées, tandis que la traque
+part d’une question et enquête dans plusieurs sources.
+
+La traque peut commencer après du renseignement, un incident ailleurs, un motif suspect ou selon un
+programme régulier. Elle peut ne découvrir aucune compromission ; ce résultat négatif bien délimité
+améliore tout de même la confiance et peut affiner les détections. Si elle trouve une activité, le
+constat entre dans le processus de réponse aux incidents, où l’équipe confirme le périmètre, confine
+et conserve les éléments pertinents.
+
+| Terme                                                             | Distinction essentielle                                                           |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Surveillance                                                      | Observe continuellement des signaux connus et déclenche des alertes configurées   |
+| Traque des menaces                                                | Recherche proactivement un comportement malveillant caché ou inconnu              |
+| <Term en="Incident investigation">Investigation d’incident</Term> | Établit les faits et le périmètre après un événement suspect ou confirmé          |
+| Analyse de la cause racine                                        | Explique les défaillances ayant permis l’événement une fois la réponse stabilisée |
+
+## Informatique légale
+
+L’<Term en="Digital forensics">informatique légale</Term> collecte, préserve, examine et rapporte
+les preuves numériques afin que les conclusions soient défendables. Les éléments peuvent inclure
+images de disque, mémoire volatile, journaux d’authentification, captures réseau, données d’audit
+infonuagiques et artefacts d’appareils mobiles. La collecte dépend du scénario, mais le principe
+central est l’intégrité : ne modifie pas inutilement la preuve et explique qui l’a manipulée.
+
+La <Term en="Chain of custody">chaîne de possession</Term> enregistre l’identifiant de la preuve,
+son collecteur, le moment et le lieu de la collecte, son stockage, chaque transfert et son
+destinataire. Les <Term en="Hash values">valeurs de hachage</Term> peuvent montrer qu’une image
+acquise n’a pas changé. Un système original peut être critique pour l’activité ; les enquêteurs
+travaillent donc souvent sur une copie vérifiée tout en conservant l’original selon la procédure.
+
+<ExamTrap>
+  Redémarrer un système peut détruire la mémoire volatile et modifier les journaux. Si le scénario
+  privilégie l’investigation ou la défendabilité juridique, préserve les preuves et documente les
+  actions avant les étapes qui les écrasent, tout en équilibrant les besoins urgents de confinement.
+</ExamTrap>
+
+L’informatique légale ne signifie pas automatiquement enquête pénale. Ses conclusions peuvent servir
+à la reprise technique, à une discipline interne, à l’assurance, à une réponse réglementaire ou à un
+litige. La même manipulation rigoureuse des preuves rend chacun de ces résultats plus fiable.
+
+## Se tester
+
+1. Pourquoi isoler un poste compromis relève-t-il du confinement plutôt que de l’éradication ?
+2. Quel exercice vérifie le mieux décision et communication avec le moins de risque opérationnel ?
+3. Quel document montre qui a manipulé une image informatique de la collecte à l’analyse ?
+
+<KeyPoint>
+  1. L’isolement limite la propagation sans retirer l’accès de l’attaquant. 2. Un exercice sur
+  table. 3. La chaîne de possession.
+</KeyPoint>

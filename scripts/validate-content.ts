@@ -18,18 +18,7 @@ import { EXAM_META } from '../src/content/exam-meta.ts';
 import { examMetaSchema } from '../src/content/exam-meta.schema.ts';
 import { ACRONYMS, FRENCH_GLOSS_KEYS } from '../src/content/exam/sy0-701/acronyms.ts';
 import { ALL_OBJECTIVES, DOMAINS, findObjective } from '../src/content/exam/sy0-701/domains.ts';
-import { QUESTIONS_1_1 } from '../src/content/exam/sy0-701/questions/1-1.ts';
-import { QUESTIONS_1_2 } from '../src/content/exam/sy0-701/questions/1-2.ts';
-import { QUESTIONS_1_3 } from '../src/content/exam/sy0-701/questions/1-3.ts';
-import { QUESTIONS_1_4 } from '../src/content/exam/sy0-701/questions/1-4.ts';
-import { QUESTIONS_2_1 } from '../src/content/exam/sy0-701/questions/2-1.ts';
-import { QUESTIONS_2_2 } from '../src/content/exam/sy0-701/questions/2-2.ts';
-import { QUESTIONS_2_3 } from '../src/content/exam/sy0-701/questions/2-3.ts';
-import { QUESTIONS_2_4 } from '../src/content/exam/sy0-701/questions/2-4.ts';
-import { QUESTIONS_2_5 } from '../src/content/exam/sy0-701/questions/2-5.ts';
-import { QUESTIONS_3_2 } from '../src/content/exam/sy0-701/questions/3-2.ts';
-import { QUESTIONS_3_3 } from '../src/content/exam/sy0-701/questions/3-3.ts';
-import { QUESTIONS_3_1 } from '../src/content/exam/sy0-701/questions/3-1.ts';
+import { loadQuestions, OBJECTIVES_WITH_QUESTIONS } from '../src/content/question-bank.ts';
 import {
   acronymListSchema,
   examOutlineSchema,
@@ -135,21 +124,24 @@ for (const domain of DOMAINS) {
 
 /* -------------------------------------------------------------- question banks */
 
-/** Every authored bank. New objectives are added here as their questions are written. */
-const BANKS: { objective: string; questions: Question[] }[] = [
-  { objective: '1.1', questions: QUESTIONS_1_1 },
-  { objective: '1.2', questions: QUESTIONS_1_2 },
-  { objective: '1.3', questions: QUESTIONS_1_3 },
-  { objective: '1.4', questions: QUESTIONS_1_4 },
-  { objective: '2.1', questions: QUESTIONS_2_1 },
-  { objective: '2.2', questions: QUESTIONS_2_2 },
-  { objective: '2.3', questions: QUESTIONS_2_3 },
-  { objective: '2.4', questions: QUESTIONS_2_4 },
-  { objective: '2.5', questions: QUESTIONS_2_5 },
-  { objective: '3.1', questions: QUESTIONS_3_1 },
-  { objective: '3.3', questions: QUESTIONS_3_3 },
-  { objective: '3.2', questions: QUESTIONS_3_2 },
-];
+/**
+ * Every authored bank, taken from **the app's own registry** rather than a list kept here.
+ *
+ * This used to be a third hand-maintained list, and it cost exactly what a third list costs. A bank
+ * is registered in `question-bank.ts` for the app, in `lesson-bank.ts` for the lesson, and used to
+ * be repeated here for the gate — and objectives 3.2 and 3.3 spent a week written, committed and
+ * invisible because one of the three was missed. Nothing failed; the app simply said the lesson had
+ * not been written yet.
+ *
+ * Reading the registry means registering a bank once registers it everywhere, and the gate now
+ * validates precisely the banks the application will actually load.
+ */
+const BANKS: { objective: string; questions: Question[] }[] = await Promise.all(
+  OBJECTIVES_WITH_QUESTIONS.map(async (objective) => ({
+    objective,
+    questions: await loadQuestions(objective),
+  })),
+);
 
 /** From docs/content-authoring.md. */
 const MIN_QUESTIONS_PER_OBJECTIVE = 15;
@@ -307,6 +299,50 @@ for (const [objectiveId, locales] of lessonsByObjective) {
     if (!locales.has(required)) {
       fail('lessons', objectiveId, `has no ${required} lesson; both languages are required`);
     }
+  }
+}
+
+/* ----------------------------------------------------- registration, both ways */
+
+/**
+ * Content on disk must be registered, and registrations must point at content that exists.
+ *
+ * **This is the check that was missing.** Objectives 3.2 and 3.3 were written, reviewed and
+ * committed, and the application said their lessons had not been written yet — because a lesson is
+ * only reachable once it appears in `lesson-bank.ts`, and that step was missed. Nothing failed. No
+ * test went red. The only symptom was an app that quietly under-reported its own content.
+ *
+ * The question-bank side of it can no longer drift, because the gate now reads that registry
+ * directly. The lesson side cannot be imported here — `lesson-bank.ts` pulls in MDX, which this
+ * script's runtime cannot compile — so it is checked as **text**: the import specifier for every
+ * lesson file on disk has to appear in the source. Crude, and exactly strong enough, because that
+ * literal specifier is also what the bundler needs to emit the chunk.
+ */
+sourcesChecked += 1;
+
+const LESSON_BANK = 'src/content/lesson-bank.ts';
+const lessonBankSource = existsSync(LESSON_BANK) ? readFileSync(LESSON_BANK, 'utf8') : '';
+
+for (const file of lessonFiles) {
+  if (!lessonBankSource.includes(`lessons/${file}`)) {
+    fail(
+      'lesson-bank',
+      file,
+      'the lesson exists on disk but is not registered, so the app will report it as unwritten',
+    );
+  }
+}
+
+for (const match of lessonBankSource.matchAll(/lessons\/([\w.-]+\.mdx)/g)) {
+  const file = match[1];
+  if (file !== undefined && !lessonFiles.includes(file)) {
+    fail('lesson-bank', file, 'registered but there is no such lesson file — the import will 404');
+  }
+}
+
+for (const objectiveId of OBJECTIVES_WITH_QUESTIONS) {
+  if (findObjective(objectiveId) === undefined) {
+    fail('question-bank', objectiveId, 'a bank is registered for an objective that does not exist');
   }
 }
 

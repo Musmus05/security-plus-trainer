@@ -1,0 +1,179 @@
+## Pourquoi cet objectif compte
+
+Les opérations de sécurité ont un problème de rythme. Les alertes, les changements de comptes, les
+contrôles de configuration et les demandes de preuves arrivent plus vite qu’une personne ne peut
+répéter les mêmes gestes avec soin. Cet objectif vérifie que vous savez reconnaître une opération
+répétable à automatiser, distinguer l’automatisation de l’orchestration, et conserver les contrôles
+de sécurité autour des deux. Ce n’est pas un examen de programmation. Un scénario peut citer un
+script ou un playbook, mais il demande surtout la cohérence, la rapidité, l’échelle, la traçabilité
+ou le risque d’accorder trop de droits à un processus.
+
+<KeyPoint>
+  L’<Term en="automation">automatisation</Term> exécute une tâche définie avec peu ou pas
+  d’intervention humaine. L’<Term en="orchestration">orchestration</Term> relie plusieurs tâches,
+  outils et décisions dans un flux coordonné. Elles sont liées, mais différentes.
+</KeyPoint>
+
+## Partir de l’opération, pas de l’outil
+
+Une opération est une bonne candidate à l’automatisation lorsqu’elle est fréquente, documentée,
+prévisible et possède des entrées ainsi que des résultats attendus clairs. Répéter une séquence sûre
+à la main provoque de la dérive : un analyste oublie une recherche, un administrateur emploie une
+ancienne commande, ou une équipe de nuit consigne un résultat différent. Un
+
+<Term en="script">script</Term> transforme cette séquence en procédure exécutable. Il ne décide pas
+si la procédure convient à une situation nouvelle.
+
+| Opération candidate       | Ce que l’automatisation peut faire                                                    | Ce qui exige encore une personne                                 |
+| ------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Demande de nouveau compte | Créer le compte depuis des données approuvées et attribuer le rôle standard           | Approuver un rôle exceptionnel ou résoudre un conflit d’identité |
+| Contrôle de configuration | Comparer l’état d’un appareil à la base de référence approuvée et signaler les écarts | Décider si une exception est légitime                            |
+| Enrichissement d’alerte   | Interroger les sources d’actifs, d’identité et de renseignements sur les menaces      | Évaluer des preuves ambiguës et choisir la suite de l’enquête    |
+| Déploiement de correctif  | Préparer, déployer et consigner une mise à jour testée sur les cibles choisies        | Approuver la portée, l’horaire et une exception critique         |
+| Collecte de preuves       | Recueillir les journaux indiqués et préserver une trace reproductible                 | Interpréter les preuves et protéger la portée de l’enquête       |
+
+Le mot important est **définie**. Un script applique très bien une règle déclarée ; il est moins bon
+pour découvrir si cette règle correspond à des circonstances inconnues. Automatiser un processus mal
+compris ne fait qu’accélérer et uniformiser son erreur.
+
+<ExamTrap>
+  « Automatisé » ne signifie pas « sans surveillance en toute circonstance ». La création de compte
+  peut automatiser les étapes courantes tout en exigeant une approbation avant un accès élevé. Ce
+  point de contrôle appartient au flux ; il ne prouve pas que l’automatisation a échoué.
+</ExamTrap>
+
+## Automatisation et scripts
+
+Un script est un ensemble d’instructions destiné à une tâche limitée. À l’examen, imaginez un script
+qui collecte les journaux de nombreux systèmes, vérifie les dates d’expiration de certificats,
+désactive un compte après une suppression approuvée, ou compare des paramètres à une
+
+<Term en="baseline">base de référence</Term>. Il peut s’exécuter selon un calendrier, être déclenché
+par un événement ou être lancé par un opérateur. Dans tous les cas, le système réalise l’action
+définie sans demander à une personne de la répéter.
+
+Les scripts peuvent rendre les opérations sûres plus auditables. Ils peuvent prendre une valeur
+d’une demande faisant autorité, en valider le format attendu, agir sur la cible approuvée et écrire
+un résultat dans un journal. Une succession de commandes improvisées peut produire le même travail
+une fois, mais elle est difficile à reproduire ou à examiner.
+
+| Terme                                            | Sens dans une question d’opérations                       | À ne pas confondre avec                       |
+| ------------------------------------------------ | --------------------------------------------------------- | --------------------------------------------- |
+| Script                                           | Instructions pour une tâche limitée                       | Un processus complet de réponse aux incidents |
+| Automatisation                                   | Exécution d’une tâche répétable par un système            | Une garantie que cette tâche est sûre         |
+| <Term en="scheduled task">tâche planifiée</Term> | Automatisation lancée à une heure ou un intervalle choisi | Une automatisation déclenchée par événement   |
+| Tâche déclenchée par événement                   | Automatisation lancée quand un événement défini arrive    | L’approbation humaine de l’action suivante    |
+| Base de référence                                | État approuvé utilisé pour comparer                       | L’état actuel, qui peut déjà avoir dérivé     |
+
+<Mnemonic>
+  **Script = une suite d’étapes ; automatisation = ces étapes s’exécutent pour vous.** Si le
+  scénario relie plusieurs systèmes et suit des branches selon les résultats, passez à
+  l’orchestration.
+</Mnemonic>
+
+## Orchestration : un flux à travers les outils
+
+L’orchestration coordonne plusieurs tâches automatisées dans un flux. Un flux de connexion suspecte
+peut recevoir une alerte, rechercher l’utilisateur et l’appareil, comparer un indicateur avec des
+renseignements sur les menaces, créer un dossier, avertir l’analyste d’astreinte, puis isoler un
+terminal lorsque les conditions définies et les approbations sont réunies. Les actions individuelles
+sont de l’automatisation ; leur connexion ordonnée est de l’orchestration.
+
+| Situation                                                                                                      | Meilleure description |
+| -------------------------------------------------------------------------------------------------------------- | --------------------- |
+| Une tâche vérifie chaque hôte géré pour un certificat expiré et envoie un rapport                              | Automatisation        |
+| Un flux reçoit ce rapport, crée des tickets pour les responsables, escalade les retards et consigne la clôture | Orchestration         |
+| Un analyste lit le rapport et décide quelle exception accorder à un hôte                                       | Jugement humain       |
+
+<InPractice>
+  Un bon <Term en="playbook">playbook</Term> consigne son déclencheur, les données utilisées, chaque
+  action et résultat, ainsi que le moment où une personne approuve une étape irréversible. La
+  réponse devient ainsi plus rapide et explicable après coup.
+</InPractice>
+
+## Les bénéfices à relier dans l’examen
+
+L’automatisation et l’orchestration rendent un processus cohérent parce que chaque exécution part
+des mêmes instructions. Elles accélèrent le travail répétitif et permettent à une petite équipe
+d’opérer à une échelle qui demanderait autrement de nombreuses répétitions manuelles. Elles
+améliorent aussi l’auditabilité lorsque le flux consigne son entrée, son action, son résultat et
+l’identité de l’opérateur ou du service.
+
+| Bénéfice            | Valeur pour la sécurité                                         | Limite à retenir                                                   |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Cohérence           | Réduit la dérive de configuration et les étapes oubliées        | Un script constamment erroné reste erroné                          |
+| Rapidité            | Raccourcit la réponse et l’administration répétitives           | Un mauvais déclencheur peut propager vite des dégâts               |
+| Passage à l’échelle | Applique un contrôle ou déploiement à de nombreux actifs inclus | La portée doit être exacte avant une exécution massive             |
+| Reproductibilité    | Produit des résultats comparables dans le temps                 | Les procédures demandent une revue lorsque les conditions changent |
+| Piste d’audit       | Montre ce qui a été exécuté, quand et avec quel résultat        | Les journaux doivent être protégés et conservés                    |
+
+Une réponse prétendant que l’automatisation élimine **toute** erreur humaine est trop absolue. Elle
+retire certaines variations manuelles, mais une personne peut écrire une condition dangereuse,
+approuver une mauvaise portée ou ne pas examiner une tâche échouée. Une bonne automatisation
+comporte validation et revue, précisément parce que des personnes la conçoivent.
+
+## Autres considérations : sécuriser l’automatisation
+
+Traitez l’automatisation comme un système de production. Elle a des identités, des droits, des
+entrées, des journaux, des changements et des dépendances. Ces éléments font partie des opérations
+sûres, et ne sont pas une réflexion ajoutée après coup.
+
+### Droits et identités
+
+Un processus automatisé a besoin de sa propre <Term en="service account">identité de service</Term>
+et seulement des droits nécessaires à sa tâche. Un flux qui lit des alertes n’a pas besoin du droit
+de supprimer des comptes. Un processus de déploiement peut exiger une action privilégiée sur des
+systèmes sélectionnés, mais pas une administration sans limite partout. C’est le
+
+<Term en="least privilege">moindre privilège</Term> appliqué à l’automatisation.
+
+N’intégrez pas un mot de passe ou jeton personnel d’administrateur dans un script. Les secrets
+exigent un stockage protégé, un accès restreint, une rotation et une piste d’audit. Un script qui
+s’exécute sans personne au clavier ne rend pas ses identifiants moins sensibles.
+
+### Entrées, erreurs et sûreté
+
+L’automatisation agit sur les données qu’elle reçoit. Validez les entrées, limitez les cibles et
+arrêtez-vous sûrement lorsqu’une condition préalable n’est pas satisfaite. Un flux auquel on demande
+de désactiver un compte doit vérifier l’identité et la portée avant un changement irréversible. Un
+travail de correctif qui ne peut joindre un hôte doit consigner un échec plutôt que signaler à tort
+une réussite.
+
+La <Term en="error handling">gestion des erreurs</Term> est essentielle. Une action échouée, un
+résultat inattendu ou une dépendance indisponible doit produire un résultat visible pour un
+opérateur. Un échec silencieux peut faire croire qu’un accès a été retiré, que des preuves ont été
+collectées ou qu’un appareil a été isolé, alors qu’aucune de ces actions n’a eu lieu.
+
+### Contrôle des changements, tests et surveillance
+
+Les scripts et les playbooks modifient l’environnement ; ils nécessitent donc le même contrôle
+rigoureux des changements que les autres opérations. Testez une modification dans un environnement
+adapté, faites-la examiner, gardez un historique versionné et prévoyez un retour arrière ou une
+méthode de désactivation. Un script efficace le mois dernier peut devenir dangereux après un
+changement d’API, de modèle de droits ou d’inventaire des actifs.
+
+Surveillez le flux lui-même : a-t-il démarré, s’est-il terminé, a-t-il agi sur la portée prévue et
+a-t-il produit des erreurs ? Surveiller le système cible seul ne prouve pas que l’automatisation
+s’est correctement exécutée.
+
+<ExamTrap>
+  Un compte administratif aux droits étendus peut rendre un flux commode, mais il viole le moindre
+  privilège et rend une compromission beaucoup plus dommageable. La meilleure réponse accorde les
+  droits les plus étroits permettant encore à la tâche approuvée de réussir.
+</ExamTrap>
+
+## Se tester
+
+1. Une tâche planifiée compare les configurations de pare-feu à la base de référence approuvée et
+   produit les écarts. Est-ce de l’automatisation ou de l’orchestration ?
+2. Un flux enrichit une alerte, ouvre un dossier, prévient un analyste et isole un appareil
+   seulement après approbation. Quel concept décrit l’ensemble du flux ?
+3. Pourquoi un script de suppression de compte doit-il employer une identité de service dédiée aux
+   droits minimaux ?
+
+<KeyPoint>
+  (1) Automatisation : la tâche effectue un contrôle et rapport répétables. (2) Orchestration : le
+  flux coordonne plusieurs actions et une décision humaine entre plusieurs systèmes. (3) Le moindre
+  privilège limite les dégâts en cas de compromission, tandis qu’une identité dédiée rend les
+  actions attribuables.
+</KeyPoint>

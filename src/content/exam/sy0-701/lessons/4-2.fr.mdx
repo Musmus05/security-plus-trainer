@@ -1,0 +1,174 @@
+## Pourquoi cet objectif compte
+
+Un attaquant n’a pas besoin d’un exploit sophistiqué lorsqu’une organisation ne peut pas dire quels
+
+<Term en="hardware assets">ordinateurs portables et serveurs</Term>,
+<Term en="software assets">applications</Term>, comptes,
+<Term en="data assets">jeux de données</Term>
+ou licences elle possède. La
+<Term en="asset management">gestion des actifs</Term> est un contrôle de sécurité parce qu’elle
+donne une cible à tous les contrôles suivants. Il est impossible de corriger un hôte inconnu, de
+retirer un logiciel que personne n’a enregistré, d’enquêter sur un appareil non attribué ou de
+prouver que des données sensibles ont été détruites à la fin d’un contrat.
+
+À l’examen, cet objectif porte moins sur le nom d’un outil d’inventaire que sur le parcours d’un
+actif. Un scénario peut commencer par une demande d’achat, la remise d’un appareil à un salarié, un
+poste manquant ou une baie de stockage retirée. La question demande quelle preuve ou action de
+sécurité appartient à ce moment. Les quatre thèmes officiels forment une chaîne :
+
+<Term en="acquisition/procurement process">acquisition et approvisionnement</Term>,
+<Term en="assignment/accounting">attribution et comptabilisation</Term>,
+<Term en="monitoring/asset tracking">surveillance et suivi des actifs</Term>, puis
+<Term en="disposal/decommissioning">mise au rebut et mise hors service</Term>.
+
+<KeyPoint>
+  La gestion des actifs rend visibles la responsabilité, l’emplacement, l’état et le cycle de vie.
+  Ces faits transforment les politiques de <Term en="patching">correctifs</Term>, de
+  <Term en="least privilege">moindre privilège</Term>, de traitement des données et de réponse aux
+  incidents en actions réellement exécutables.
+</KeyPoint>
+
+## Commencer en sécurité : acquisition et approvisionnement
+
+La sécurité commence avant la livraison. Le processus d’acquisition et d’approvisionnement est le
+moment où l’organisation décide de ce qu’elle pourra administrer plus tard. Une demande de nouvelle
+plateforme, d’abonnement logiciel, d’appareil mobile ou de service de données doit établir un usage
+approuvé et la partie responsable. Elle doit aussi éviter l’achat d’un élément impossible à prendre
+en charge, à mettre à jour, à inventorier ou à retirer correctement.
+
+L’approvisionnement ne consiste pas seulement à acheter. Il permet d’intégrer les exigences de
+sécurité à la décision : fournisseur approuvé, chemin de support et de mise à jour, informations de
+propriété et moyen d’enregistrer l’actif. Un appareil économique qui ne rejoint jamais
+l’<Term en="inventory">inventaire</Term> peut devenir un point d’entrée non géré. Un logiciel obtenu
+hors du processus approuvé peut être sans licence, non corrigé ou invisible pour l’équipe chargée de
+répondre aux incidents.
+
+| Question d’approvisionnement                               | Implication de sécurité                                                            |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Qui en a besoin et pour quel usage approuvé ?              | Établit un propriétaire métier et rend un usage inhabituel plus visible.           |
+| Peut-il être pris en charge et mis à jour ?                | Évite d’ajouter volontairement un actif qui sera exposé à la fin des correctifs.   |
+| Peut-il entrer dans le registre des actifs ?               | Garantit un identifiant utilisable pour la surveillance, les audits et la réponse. |
+| Traite-t-il ou stocke-t-il des données de l’organisation ? | Relie l’achat aux exigences de traitement et de mise au rebut.                     |
+
+<ExamTrap>
+  L’approbation d’un achat n’est pas une approbation d’accès. Acheter une application autorise
+  l’organisation à l’obtenir ; cela ne décide pas quel individu peut utiliser ses données ou ses
+  fonctions administratives. Il faut distinguer la gouvernance du cycle de vie des décisions
+  d’identité et d’accès.
+</ExamTrap>
+
+## Attribuer et comptabiliser
+
+Après son acquisition, un actif doit être attribué et comptabilisé.
+L’<Term en="asset assignment">attribution d’actif</Term> relie un actif à une personne, une équipe,
+un service ou un propriétaire. La
+
+<Term en="asset accounting">comptabilisation des actifs</Term> conserve les faits nécessaires :
+nature, identifiant unique, emplacement, responsable et état actuel. Le registre peut couvrir des
+actifs matériels, logiciels et de données. Les champs précis changent, mais la question de sécurité
+reste la même : l’organisation peut-elle identifier l’actif et la personne responsable ?
+
+Pour le matériel, le registre peut lier un numéro de série ou une étiquette à un détenteur et à un
+emplacement. Pour le logiciel, il peut lier produit, version, licence, déploiement et propriétaire.
+Pour les données, il peut nommer le système ou le propriétaire responsable de la collecte et
+indiquer où elles sont conservées. L’attribution ne signifie pas que le détenteur reçoit des droits
+illimités. Elle crée un point de responsabilité lorsqu’un appareil est perdu, qu’une application est
+vulnérable ou qu’un jeu de données doit être traité.
+
+| Terme                                 | Question à laquelle il répond                             | Ce qu’il ne prouve pas                                        |
+| ------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------- |
+| Attribution d’actif                   | Qui est responsable de cet actif maintenant ?             | Que cette personne possède tous les droits système possibles. |
+| Comptabilisation des actifs           | Quel actif existe, avec quels identifiants et quel état ? | Que l’actif est actuellement sécurisé ou en ligne.            |
+| Inventaire                            | Quels actifs sont connus de l’organisation ?              | Que chaque enregistrement reste exact sans révision.          |
+| <Term en="ownership">Propriété</Term> | Qui prend ou accepte les décisions de cycle de vie ?      | Qui utilise physiquement l’actif aujourd’hui.                 |
+
+<InPractice>
+  Un ordinateur portable remis à un nouvel employé n’est pas pleinement géré parce qu’il figure dans
+  un journal d’expédition. Son enregistrement doit être associé au destinataire ou à l’équipe
+  responsable, et son état doit indiquer qu’il a été attribué. Une perte, une récupération ou un
+  retrait ultérieur devient alors traçable.
+</InPractice>
+
+## Maintenir le registre : surveillance et suivi
+
+Un inventaire est un point de départ, pas un projet unique. La surveillance et le suivi des actifs
+comparent la population enregistrée aux actifs réellement présents et à leur état observé. Ils
+aident à révéler un <Term en="unmanaged endpoint">terminal non géré</Term>, un logiciel installé
+hors processus, un actif au mauvais emplacement ou un appareil qui aurait dû être restitué. Ils
+permettent aussi à la <Term en="vulnerability management">gestion des vulnérabilités</Term> et à la
+
+<Term en="incident response">réponse aux incidents</Term> de délimiter leur travail : quels systèmes
+exécutent le logiciel touché, qui les possède et où ils se trouvent.
+
+Le suivi peut être physique ou logique. Le suivi physique concerne la garde et l’emplacement :
+quelle salle, quel site, quel salarié ou quel espace de stockage détient l’actif. Le suivi logique
+concerne des faits comme une identité d’appareil, un logiciel installé, un service ou un dépôt de
+données. L’un ne remplace pas l’autre. Un serveur peut être visible sur un réseau mais avoir le
+mauvais propriétaire dans les registres. Un portable étiqueté peut être connu de la finance sans
+plus remonter aux outils de gestion.
+
+| Observation                                               | Réponse de gestion la plus utile                                                         |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Un appareil apparaît sur le réseau sans registre d’actif. | Enquêter sur l’actif inconnu, établir une propriété ou le retirer du service.            |
+| Un système inscrit ne communique plus.                    | Confirmer son état et son emplacement au lieu de supposer le registre correct.           |
+| Une faille logicielle critique est annoncée.              | Employer les registres logiciels pour repérer les déploiements et propriétaires touchés. |
+| Un prestataire part avec un appareil attribué.            | Employer les registres d’attribution pour récupérer ou transférer formellement l’actif.  |
+
+<Mnemonic>
+  Pensez **quoi, qui, où, état** : ce qu’est l’actif, qui le possède, où il est et dans quel état de
+  cycle de vie il se trouve. Le suivi est utile lorsqu’il répond rapidement aux quatre questions.
+</Mnemonic>
+
+## Terminer le cycle de vie délibérément
+
+La mise au rebut et la mise hors service constituent un événement de sécurité, pas une formalité
+administrative. Un ancien disque, un serveur retiré, un abonnement annulé ou une application
+obsolète peuvent conserver des données organisationnelles, des identifiants, des configurations, des
+licences et une confiance réseau. Les débrancher ou les enlever d’un bureau ne met pas fin à ces
+risques.
+
+La <Term en="decommissioning">mise hors service</Term> est le retrait contrôlé d’un actif du
+service. Elle doit apparaître dans le registre afin qu’un analyseur, un audit ou une équipe
+d’incident ne confondent pas un actif retiré avec un actif vivant. La <Term en="disposal">mise au
+rebut</Term> concerne le traitement final de l’actif physique ou numérique. La méthode adaptée
+dépend de l’actif et des exigences de l’organisation, mais le but de sécurité demeure : empêcher la
+récupération ou l’utilisation non autorisée de données et d’accès.
+
+| Action de cycle de vie                                | Résultat de sécurité principal                                                |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Retirer un actif du service actif                     | Il ne fournit plus de chemin inutile vers l’environnement.                    |
+| Mettre à jour son état dans le registre               | Les équipes ne s’appuient plus sur une propriété ou une surveillance périmée. |
+| Traiter les données organisationnelles avant le rebut | Les données ne sont pas transférées involontairement avec l’actif.            |
+| Rapprocher licences et abonnements                    | Des accès logiciels et des coûts inutiles ne subsistent pas.                  |
+
+<ExamTrap>
+  Supprimer un actif de l’inventaire ne prouve pas sa mise au rebut sécurisée. Le registre doit
+  montrer un état final approprié, et l’actif lui-même doit être traité afin que ses données et ses
+  accès ne survivent pas au cycle de vie.
+</ExamTrap>
+
+## Lire les scénarios de cycle de vie
+
+Devant un problème, identifiez d’abord son étape. Un outil cloud non approuvé renvoie à
+l’acquisition et à l’approvisionnement. Un portable sans détenteur nommé renvoie à l’attribution et
+à la comptabilisation. Une machine découverte pendant une analyse mais absente des registres renvoie
+à la surveillance et au suivi. Un disque retiré qui contient des données de l’entreprise renvoie à
+la mise au rebut et à la mise hors service. Choisissez ensuite la réponse qui crée la preuve ou le
+contrôle manquant à cette étape, non une activité de sécurité voisine qui paraît utile.
+
+L’objectif récompense aussi la compréhension des liens entre étapes. Un bon approvisionnement
+alimente l’inventaire. Une bonne attribution donne un sens au suivi. Un suivi exact indique ce qui
+doit être retiré. Une mise hors service sûre clôture le registre. Toute lacune réduit la capacité à
+protéger les actifs partout ailleurs.
+
+## Se tester
+
+1. Pourquoi un registre d’actifs est-il utile lorsqu’une nouvelle faille logicielle est annoncée ?
+2. En quoi l’attribution diffère-t-elle de l’autorisation d’accès à un actif ?
+3. Pourquoi la mise hors service doit-elle mettre à jour l’actif et son registre ?
+
+<KeyPoint>
+  1. Il identifie les déploiements touchés et leurs responsables. 2. L’attribution établit la
+  responsabilité ; le contrôle d’accès décide les actions permises. 3. L’actif doit cesser d’exposer
+  données ou accès, et le registre doit cesser d’induire les équipes en erreur.
+</KeyPoint>

@@ -1,0 +1,141 @@
+## Why this objective matters
+
+Security awareness is tested as an operational control, not as a poster in the break room. In a
+scenario, the exam expects you to recognise the behaviour an organisation wants, choose guidance
+that changes that behaviour, and close the loop through reporting and monitoring. The useful
+question is never simply whether employees attended training; it is whether they can spot a risky
+moment and get the right people involved quickly.
+
+This objective joins six ideas: phishing, anomalous-behaviour recognition, user guidance and
+training, reporting and monitoring, and the development and execution of an awareness practice. The
+stems commonly give an employee a vague signal, such as an unexpected request or an unusual login
+prompt, then ask for the most useful action.
+
+<KeyPoint>
+  Awareness does not make every user a security analyst. It gives people a safe, repeatable path:
+  pause, recognise the signal, report it by the approved channel, and let monitoring or the security
+  team investigate.
+</KeyPoint>
+
+## Phishing: recognise the request, not just the email
+
+Phishing is an attempt to persuade a person to disclose information, approve an action, open
+content, or visit a site that helps an attacker. Email is common, but the same persuasion can arrive
+by text message, collaboration platform, phone call, or a fake support page. A good awareness
+practice therefore teaches the pattern of the request rather than teaching a single sender address
+to avoid.
+
+| Signal in the message                   | Why it deserves a pause                                          | Safer response                                            |
+| --------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------- |
+| Unexpected credential or MFA request    | It may be trying to capture a secret or approval                 | Use a known address or application, not the supplied link |
+| Urgency or secrecy                      | Pressure discourages verification                                | Slow down and verify through an independent channel       |
+| Changed payment or bank details         | A compromised supplier account can make the request look genuine | Confirm using a previously known contact method           |
+| Attachment or link out of context       | It may deliver malicious content or lead to impersonation        | Report it; do not open it merely to investigate           |
+| A familiar name with an unusual request | Identity can be imitated or an account can be compromised        | Validate the request, not the display name                |
+
+<ExamTrap>
+  A message can have correct spelling, a real logo, and a sender the employee has seen before. Those
+  details do not prove it is safe. The important distinction is whether the request is expected and
+  independently verified.
+</ExamTrap>
+
+Phishing simulations can support learning, but a simulation is not an excuse to shame people. Its
+value is finding patterns: which group needs clearer guidance, which workflow creates confusion, or
+which reporting path is hard to find. The follow-up should explain the cue that was missed and give
+the learner a practical response for the next message.
+
+## Recognising anomalous behaviour
+
+Awareness includes events outside a suspicious message. Users are often the first people to notice
+that an action does not match normal work. They should recognise anomalies without being asked to
+diagnose malware, attribute an attacker, or alter evidence.
+
+| Observation                                              | What makes it anomalous                                         | Appropriate user action                                                           |
+| -------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Repeated MFA prompts not initiated by the user           | Authentication activity is occurring without the user’s request | Deny the prompts and report them promptly                                         |
+| A colleague requests a secret through an unusual channel | The request bypasses the normal process                         | Verify with that colleague independently, then report concern                     |
+| Files change names or become unavailable unexpectedly    | Normal access or file behaviour has changed                     | Stop interacting with the suspicious content and contact support or security      |
+| An unfamiliar sign-in, device, or location alert         | It differs from the account’s expected pattern                  | Secure the account through the approved process and report the alert              |
+| A badge, visitor, or device is where it should not be    | Physical behaviour conflicts with access expectations           | Follow the physical-security reporting procedure rather than confronting unsafely |
+
+<Mnemonic>
+  **Unexpected + consequential = verify and report.** An unexpected calendar invitation is one
+  thing; an unexpected payment request or MFA approval is consequential. The second must not be
+  treated as routine.
+</Mnemonic>
+
+## Guidance and training that people can use
+
+Guidance is the concise instruction available at the moment of work. Training builds understanding
+and practice over time. They reinforce each other, but they are not interchangeable.
+
+| Practice                | Primary purpose                                                | Example                                                          |
+| ----------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Just-in-time guidance   | Helps a person make one safe decision now                      | A clear report-phishing button and a short instruction beside it |
+| Role-based training     | Covers risks specific to a job                                 | Finance staff practise validating payment changes                |
+| General awareness       | Establishes common expectations for everyone                   | New employees learn the reporting route and password rules       |
+| Exercise or simulation  | Lets learners practise recognition and response                | A harmless phishing exercise followed by feedback                |
+| Refresher communication | Reinforces an existing behaviour after change or observed risk | A notice about a new invoice scam targeting suppliers            |
+
+Training should be accessible, relevant, and understandable to its audience. A developer needs
+guidance on protecting source code and reporting a suspicious dependency; a receptionist needs a
+usable process for visitors and phone requests. Broad policy language alone is weaker than an
+example tied to the decision the person must make.
+
+<InPractice>
+  If reporting means searching an intranet, writing a long email, and guessing the recipient,
+  employees will delay or abandon it. A visible reporting button, a monitored mailbox, or a
+  published service-desk route turns the expected response into the easy response.
+</InPractice>
+
+## Reporting and monitoring: complete the feedback loop
+
+Reporting is how a possible event reaches people who can investigate. Monitoring is how the
+organisation detects patterns, checks that the channel works, and improves the practice. Neither
+means asking users to collect evidence by clicking suspicious links or forwarding malicious files to
+personal accounts.
+
+An effective report includes the original message or relevant details, the time, the affected
+account or device, and what action has already happened. The user should use the organisation’s
+approved method, which might preserve useful context automatically. The security team can then
+triage the report, look for similar messages or activity, and decide whether broader containment is
+necessary.
+
+Monitoring produces useful measures, but a measure must guide a decision. Reporting volume alone
+does not prove success: a higher number can mean users now recognise and report more suspicious
+activity. Useful interpretation combines reports with simulation outcomes, response time, repeated
+themes, and whether people know where to report. Treat measurements as feedback for the programme,
+not as a leaderboard for punishment.
+
+## Development and execution
+
+Developing an awareness practice means defining the audience, the behaviour to improve, the content,
+delivery methods, reporting route, and measures of success. It also means aligning the material with
+current risks and organisational policies. A campaign about an obsolete tool cannot prepare staff
+for a newly adopted collaboration workflow.
+
+Executing the practice means delivering it, making participation possible, answering questions,
+tracking completion where required, and using feedback to refine the next cycle. A complete record
+can show that training was assigned or completed; it does not by itself show that a person can apply
+the behaviour. That is why exercises, reporting patterns, and targeted refreshers matter.
+
+<ExamTrap>
+  Training completion is an administrative measure. It is not proof that phishing risk disappeared,
+  nor does it replace monitoring. The best answer in a scenario often adds a reporting route and
+  feedback rather than simply assigning the same annual course again.
+</ExamTrap>
+
+## Test yourself
+
+1. An employee receives an unexpected MFA approval prompt. What should the employee do first?
+2. Why is an approved reporting channel better than forwarding a suspicious message to a personal
+   address?
+3. A campaign has a high completion rate but users still mishandle payment-change requests. What
+   should the programme change?
+
+<KeyPoint>
+  (1) Deny the unrequested prompt and report it through the approved route. (2) The approved route
+  preserves context and gets the report to people who monitor and investigate it. (3) Add relevant,
+  role-based guidance and practice for independently verifying payment changes, then use the results
+  to improve the programme.
+</KeyPoint>

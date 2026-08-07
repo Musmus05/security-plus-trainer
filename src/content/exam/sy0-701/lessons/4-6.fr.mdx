@@ -1,0 +1,170 @@
+## Pourquoi cet objectif compte
+
+Les questions de gestion des identités et des accès ne sont presque jamais des questions de sigles.
+L’examen décrit un nouvel arrivant, une mutation, un partenaire externe, une tâche privilégiée ou un
+ancien salarié et demande quel accès doit exister, qui doit le confirmer et quel contrôle applique
+la décision. Il faut suivre l’identité pendant son cycle de vie : établir qui est la personne, lui
+accorder seulement les droits que son travail justifie, appliquer ces droits à l’usage, les revoir,
+puis les retirer lorsque le besoin métier disparaît.
+
+Il faut surtout distinguer la preuve d’identité, l’authentification, l’autorisation et la
+traçabilité. Une personne peut prouver son identité à l’enrôlement, s’authentifier avec un
+identifiant lors de la connexion, puis ne pas être autorisée à ouvrir un dossier sensible. De même,
+une connexion pratique ne donne pas le droit d’accéder à toutes les applications. Dans un scénario,
+la meilleure réponse résout la défaillance IAM indiquée, sans ajouter un contrôle voisin qui traite
+un autre problème.
+
+<KeyPoint>
+  La gestion IAM est un cycle : vérifier l’identité, provisionner les droits approuvés, les
+  appliquer, attester qu’ils restent appropriés et les déprovisionner lorsque le besoin cesse.
+</KeyPoint>
+
+## Provisionner et déprovisionner les comptes
+
+Le <Term en="Provisioning">provisionnement</Term> crée un compte et ses droits initiaux quand un
+salarié, un prestataire, un service ou un partenaire a besoin d’une ressource. Une demande solide
+indique l’identité, le rôle, les systèmes, la personne qui approuve et la date de début. Un compte
+doit répondre à un besoin métier, et non être créé parce que quelqu’un connaît un administrateur. Le
+provisionnement automatisé peut appliquer un socle de rôle approuvé de façon cohérente, mais il ne
+remplace ni l’approbation ni la revue périodique.
+
+Le <Term en="De-provisioning">déprovisionnement</Term> retire ou désactive les accès lorsqu’un
+emploi, un contrat, un projet ou un rôle prend fin. Le départ n’est pas le seul déclencheur. Lors
+d’une mutation, il faut retirer les anciennes permissions avant ou en même temps que l’attribution
+du nouveau rôle. Garder les anciens accès « au cas où » provoque une accumulation de privilèges et
+agrandit la surface d’attaque. Dans un scénario, retirer sans délai l’accès d’un ancien salarié est
+du déprovisionnement ; créer l’accès d’un nouvel arrivant est du provisionnement.
+
+| Événement                | Action IAM                                              | Résultat de sécurité                             |
+| ------------------------ | ------------------------------------------------------- | ------------------------------------------------ |
+| Arrivée d’un salarié     | Créer l’identité et les droits de base approuvés        | L’accès est attribuable dès le premier jour      |
+| Changement d’équipe      | Retirer les anciens droits et attribuer le nouveau rôle | Empêche l’accumulation de privilèges             |
+| Fin de contrat           | Désactiver comptes, jetons et identifiants              | Termine l’accès avec la relation professionnelle |
+| Fin de projet temporaire | Retirer le droit lié au projet                          | Évite que le temporaire devienne permanent       |
+
+<ExamTrap>
+  Désactiver un compte est une décision d’accès. Supprimer son historique d’audit est différent :
+  des preuves peuvent devoir rester disponibles selon la politique de conservation de
+  l’organisation.
+</ExamTrap>
+
+## Attribuer les permissions avec intention
+
+L’<Term en="Authorization">autorisation</Term> décide ce qu’une identité authentifiée peut faire.
+Lire, modifier, approuver, administrer et accéder à un jeu de données sont des permissions
+différentes. Une attribution directe peut convenir à une exception, mais les groupes et rôles sont
+plus faciles à gérer et à revoir. Le moindre privilège accorde seulement la capacité requise par la
+tâche. Quand une même personne pourrait initier et approuver une action sensible, la séparation des
+tâches réduit les risques de fraude et d’erreur.
+
+| Modèle                                                                                          | Comment il décide                                        | Indice typique                                                      |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------- |
+| <Term en="Role-based access control (RBAC)">Contrôle d’accès basé sur les rôles</Term>          | Les droits suivent le poste                              | Beaucoup de personnes ayant les mêmes fonctions ont les mêmes accès |
+| <Term en="Attribute-based access control (ABAC)">Contrôle d’accès basé sur les attributs</Term> | Une règle évalue département, appareil, heure ou lieu    | L’accès varie selon le contexte                                     |
+| <Term en="Discretionary access control (DAC)">Contrôle d’accès discrétionnaire</Term>           | Le propriétaire accorde l’accès                          | Le créateur partage avec des utilisateurs nommés                    |
+| <Term en="Mandatory access control (MAC)">Contrôle d’accès obligatoire</Term>                   | Étiquettes et habilitations centrales gouvernent l’accès | Des données classifiées suivent une hiérarchie fixe                 |
+
+<Mnemonic>
+  RBAC demande « quel est votre rôle ? ». ABAC demande « quels faits décrivent cette demande ? ». Un
+  rôle peut être un attribut, mais ABAC peut aussi évaluer l’état de l’appareil, le lieu et l’heure.
+</Mnemonic>
+
+## Établir, relier et réutiliser l’identité
+
+La <Term en="Identity proofing">vérification de l’identité</Term> intervient avant que
+l’organisation accepte une identité déclarée comme fiable. Elle peut vérifier des documents,
+utiliser une rencontre en personne, s’appuyer sur un répondant de confiance ou suivre une autre
+méthode approuvée. Elle ne se confond pas avec l’<Term en="Authentication">authentification</Term>.
+La vérification établit qui a été enrôlé ; l’authentification vérifie qu’un demandeur actuel
+contrôle un identifiant accepté.
+
+La <Term en="Federation">fédération</Term> permet à des organisations ou domaines de sécurité
+distincts de s’appuyer sur les assertions d’un fournisseur d’identité approuvé. Une application
+accepte une assertion signée au lieu de maintenir un mot de passe local distinct pour chaque
+utilisateur externe. Le <Term en="Single sign-on (SSO)">single sign-on</Term> est l’expérience qui
+consiste à s’authentifier une fois puis à ouvrir plusieurs applications autorisées. La fédération
+soutient souvent le SSO, mais les notions répondent à des questions différentes : la fédération
+décrit une relation de confiance ; le SSO décrit le nombre de demandes d’authentification.
+
+L’<Term en="Interoperability">interopérabilité</Term> est la capacité de composants IAM à échanger
+des informations d’identité et d’accès utilisables. Des standards et formats compatibles permettent
+à un annuaire, un fournisseur d’identité et une application de comprendre la même identité et les
+mêmes attributs. Une connectivité réseau seule n’est pas de l’interopérabilité si un système ne peut
+pas exploiter les données d’identité de l’autre.
+
+| Terme                      | Question principale                                        | À ne pas confondre avec                   |
+| -------------------------- | ---------------------------------------------------------- | ----------------------------------------- |
+| Vérification de l’identité | « Qui a été enrôlé ? »                                     | Un contrôle de connexion courant          |
+| Fédération                 | « À quelle assertion d’identité faisons-nous confiance ? » | Une base locale de mots de passe partagés |
+| Single sign-on             | « Combien de fois la personne s’authentifie-t-elle ? »     | Une autorisation partout                  |
+| Interopérabilité           | « Les composants échangent-ils des données utiles ? »      | Un portail agréable seul                  |
+
+<InPractice>
+  Un fournisseur se connecte auprès de sa propre organisation. Votre application accepte une
+  assertion venant du fournisseur d’identité de cette organisation : c’est une fédération. Si cette
+  personne ouvre ensuite plusieurs de vos applications autorisées sans nouvelle demande, elle
+  utilise aussi le SSO.
+</InPractice>
+
+## Revoir les droits et authentifier fortement
+
+L’<Term en="Attestation">attestation</Term> est une confirmation formelle, souvent donnée par un
+manager ou un propriétaire de ressource, qu’un compte ou un droit existant reste approprié. C’est
+une revue, pas la demande initiale d’accès. Un manager qui certifie périodiquement la liste des
+personnes ayant des droits financiers réalise une attestation. La revue doit révéler les comptes
+inactifs, les permissions obsolètes et les exceptions sans responsable.
+
+Les <Term en="Access controls">contrôles d’accès</Term> appliquent les décisions d’autorisation. Ils
+comprennent les groupes, ACL, rôles applicatifs, moteurs de règles, conditions techniques,
+obligations administratives et mesures physiques. Il faut choisir le contrôle selon la ressource et
+le risque. L’authentification prouve qu’un demandeur contrôle un identifiant ; elle ne décide pas, à
+elle seule, quels fichiers cette personne peut lire.
+
+L’<Term en="Multifactor authentication (MFA)">authentification multifacteur</Term> utilise des
+preuves d’au moins deux catégories différentes : quelque chose que l’on sait, que l’on possède ou
+que l’on est. Deux mots de passe ne sont pas du MFA, car ce sont deux facteurs de connaissance. Un
+mot de passe associé à une clé matérielle, ou à une approbation d’application, utilise deux
+catégories. Le MFA réduit la valeur d’un mot de passe volé, mais ne remplace ni l’autorisation ni la
+revue de droits inappropriés.
+
+| Méthode                        | Catégorie           | Distinction importante                                    |
+| ------------------------------ | ------------------- | --------------------------------------------------------- |
+| Mot de passe ou PIN            | Ce que l’on sait    | Il peut être deviné, réutilisé ou hameçonné               |
+| Jeton matériel ou application  | Ce que l’on possède | La possession seule n’identifie pas une personne          |
+| Empreinte digitale             | Ce que l’on est     | La comparaison biométrique comporte des erreurs possibles |
+| Mot de passe et clé matérielle | Deux catégories     | C’est du MFA                                              |
+
+Les <Term en="Password concepts">notions relatives aux mots de passe</Term> restent importantes
+quand les mots de passe existent. Il faut préférer des phrases de passe longues et uniques, empêcher
+la réutilisation selon la politique, stocker les mots de passe par hachage salé approprié et
+sécuriser la réinitialisation pour rétablir la confiance dans le demandeur. Une règle de complexité
+seule ne rend pas fort un secret réutilisé, divulgué ou hameçonné.
+
+## Encadrer le travail privilégié
+
+Les outils de <Term en="Privileged access management (PAM)">gestion des accès privilégiés</Term>
+contrôlent et surveillent les comptes élevés, tels que les comptes administrateur, root ou de
+service puissants. Ils peuvent placer des identifiants dans un coffre, exiger une approbation,
+fournir une élévation juste à temps, enregistrer les sessions et faire tourner les identifiants
+privilégiés. Le but n’est pas d’empêcher l’administration. Il est de rendre l’accès puissant
+temporaire, approuvé, surveillé et attribuable à une personne, plutôt que durablement partagé.
+
+<ExamTrap>
+  Le MFA renforce la façon dont un compte s’authentifie. Le PAM gouverne comment un accès élevé est
+  demandé, attribué, surveillé et retiré. Un administrateur peut avoir besoin des deux ; aucun ne
+  remplace l’autre.
+</ExamTrap>
+
+## Se tester
+
+1. Un manager confirme chaque trimestre que chaque personne conserve un rôle financier nécessaire.
+   Quelle activité est décrite ?
+2. Une personne se connecte une fois auprès d’un fournisseur d’identité approuvé puis ouvre
+   plusieurs applications. Quelle expérience est décrite ?
+3. Pourquoi retirer les anciennes permissions pendant une mutation, en plus d’ajouter les nouvelles
+   ?
+
+<KeyPoint>
+  1. L’attestation. 2. Le single sign-on. 3. Pour empêcher l’accumulation de privilèges et maintenir
+  le moindre privilège quand les responsabilités de la personne changent.
+</KeyPoint>

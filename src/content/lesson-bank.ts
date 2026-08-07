@@ -54,6 +54,10 @@ const LESSONS: Partial<Record<string, Partial<Record<Locale, LessonLoader>>>> = 
     fr: async () => (await import('./exam/sy0-701/lessons/2-5.fr.mdx')).default,
     en: async () => (await import('./exam/sy0-701/lessons/2-5.en.mdx')).default,
   },
+  '3.1': {
+    fr: async () => (await import('./exam/sy0-701/lessons/3-1.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/3-1.en.mdx')).default,
+  },
   '3.2': {
     fr: async () => (await import('./exam/sy0-701/lessons/3-2.fr.mdx')).default,
     en: async () => (await import('./exam/sy0-701/lessons/3-2.en.mdx')).default,
@@ -62,9 +66,69 @@ const LESSONS: Partial<Record<string, Partial<Record<Locale, LessonLoader>>>> = 
     fr: async () => (await import('./exam/sy0-701/lessons/3-3.fr.mdx')).default,
     en: async () => (await import('./exam/sy0-701/lessons/3-3.en.mdx')).default,
   },
-  '3.1': {
-    fr: async () => (await import('./exam/sy0-701/lessons/3-1.fr.mdx')).default,
-    en: async () => (await import('./exam/sy0-701/lessons/3-1.en.mdx')).default,
+  '3.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/3-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/3-4.en.mdx')).default,
+  },
+  '4.1': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-1.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-1.en.mdx')).default,
+  },
+  '4.2': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-2.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-2.en.mdx')).default,
+  },
+  '4.3': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-3.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-3.en.mdx')).default,
+  },
+  '4.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-4.en.mdx')).default,
+  },
+  '4.5': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-5.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-5.en.mdx')).default,
+  },
+  '4.6': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-6.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-6.en.mdx')).default,
+  },
+  '4.7': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-7.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-7.en.mdx')).default,
+  },
+  '4.8': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-8.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-8.en.mdx')).default,
+  },
+  '4.9': {
+    fr: async () => (await import('./exam/sy0-701/lessons/4-9.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/4-9.en.mdx')).default,
+  },
+  '5.1': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-1.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-1.en.mdx')).default,
+  },
+  '5.2': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-2.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-2.en.mdx')).default,
+  },
+  '5.3': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-3.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-3.en.mdx')).default,
+  },
+  '5.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-4.en.mdx')).default,
+  },
+  '5.5': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-5.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-5.en.mdx')).default,
+  },
+  '5.6': {
+    fr: async () => (await import('./exam/sy0-701/lessons/5-6.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/5-6.en.mdx')).default,
   },
 };
 

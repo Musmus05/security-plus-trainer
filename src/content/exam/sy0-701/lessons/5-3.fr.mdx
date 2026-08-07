@@ -1,0 +1,159 @@
+## Pourquoi cet objectif compte
+
+Un <Term en="Third party">tiers</Term> peut traiter des dossiers clients, exploiter une application
+hébergée, maintenir un équipement critique ou se connecter au réseau de l’organisation. Celle-ci
+peut déléguer un travail, mais pas les conséquences d’une défaillance de sécurité. Un fournisseur
+compétent dont les contrôles sont faibles devient une dépendance exposée.
+
+L’examen vérifie surtout la capacité à placer une activité de gestion du risque tiers au bon moment
+de la relation. Un scénario peut décrire un prestataire envisagé, un contrat à signer, un accès qui
+a changé ou un test de sécurité autorisé. La bonne question est : **évalue-t-on, sélectionne-t-on,
+fixe-t-on des obligations, surveille-t-on ou autorise-t-on une action ?** Les réponses voisines sont
+souvent utiles, mais interviennent à un autre stade.
+
+<KeyPoint>
+  La <Term en="Third-party risk management">gestion du risque tiers</Term> est continue. La
+  vérification préalable établit un niveau initial, les accords rendent les obligations opposables,
+  puis la surveillance vérifie que ce niveau est toujours respecté. Un questionnaire collecte des
+  éléments, il ne constitue pas seul une preuve.
+</KeyPoint>
+
+## Commencer par l’évaluation du fournisseur
+
+L’<Term en="Vendor assessment">évaluation du fournisseur</Term> détermine si une relation donnée
+crée un risque que l’organisation comprend et peut accepter. Ce n’est pas une simple liste pour les
+achats. Il faut d’abord comprendre le service : quelles données le fournisseur recevra, quels
+systèmes ou interfaces il atteindra, et quel sera l’impact si son service échoue. Un imprimeur de
+brochures publiques ne mérite pas le même examen qu’un hébergeur de paie ou qu’un administrateur
+d’infrastructure de production.
+
+| Domaine d’évaluation | Question à résoudre                                                | Éléments utiles                                       |
+| -------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| Données              | Quelles données seront stockées, traitées ou transmises ?          | Description des flux et conservation                  |
+| Accès                | Quels comptes, systèmes, interfaces ou locaux seront accessibles ? | Conception des accès et principe du moindre privilège |
+| Contrôles            | Comment le fournisseur protège-t-il le service ?                   | Politiques, rapports indépendants, résultats de tests |
+| Résilience           | Que se passe-t-il pendant une panne ou un incident ?               | Dispositions de reprise et processus d’incident       |
+| Contexte             | Quelles obligations s’appliquent à cette relation ?                | Clauses contractuelles et exigences applicables       |
+
+L’effort doit être proportionné au risque. Cela ne permet pas d’ignorer un petit fournisseur : cela
+signifie qu’un outil sans données sensibles ni connexion réseau présente un profil plus étroit qu’un
+prestataire de paiement. Les résultats permettent au responsable de justifier le jugement, de noter
+les écarts et de décider d’une <Term en="Risk acceptance">acceptation du risque</Term> ou d’une
+correction.
+
+<ExamTrap>
+  Un <Term en="Questionnaire">questionnaire</Term> rempli ne prouve pas qu’un contrôle existe ni
+  qu’il fonctionne. Il représente la déclaration du fournisseur sur son environnement. Lorsque le
+  risque est important, il faut demander des éléments à l’appui ou procéder à une vérification
+  adaptée. Une affirmation n’est pas une assurance.
+</ExamTrap>
+
+## Sélectionner un fournisseur, pas seulement un produit
+
+La <Term en="Vendor selection">sélection du fournisseur</Term> compare des candidats selon des
+exigences métier et de sécurité définies. Le prix, les fonctionnalités, la capacité de livraison et
+la posture de sécurité comptent tous. Choisir le moins cher, puis découvrir qu’il ne peut pas
+respecter les contrôles requis, inverse le processus.
+
+| Décision              | Ce qu’elle signifie                                        | Confusion fréquente                           |
+| --------------------- | ---------------------------------------------------------- | --------------------------------------------- |
+| Évaluation            | Identifier les risques et écarts de contrôle d’un candidat | Signer avant de comprendre l’exposition       |
+| Sélection             | Choisir le candidat répondant le mieux aux exigences       | Ne retenir que le prix le plus bas            |
+| Acceptation du risque | Conserver officiellement un risque connu                   | Faire comme si un écart n’existait plus       |
+| Remédiation           | Exiger la correction d’un écart                            | Surveiller un écart sans responsable ni délai |
+
+La décision de sélection doit indiquer pourquoi le fournisseur est acceptable et quelles conditions
+restent ouvertes. Par exemple, un candidat peut être retenu sous réserve d’activer
+l’<Term en="Multifactor authentication">authentification multifacteur</Term> pour les accès de
+support. L’évaluation révèle l’écart ; la sélection et l’accord créent le chemin pour le traiter.
+L’équipe sécurité conseille sur le risque, tandis que le responsable métier approprié accepte le
+risque résiduel.
+
+<InPractice>
+  Impliquer la sécurité avant qu’un fournisseur préféré soit annoncé aide les achats. Une revue
+  tardive devient facilement une demande d’approbation d’une décision déjà prise, alors que la
+  réponse utile peut être de comparer un autre candidat ou de modifier le service.
+</InPractice>
+
+## Les accords rendent les attentes obligatoires
+
+Un <Term en="Agreement">accord</Term> précise ce que les parties se doivent. Les noms exacts et les
+clauses varient selon l’organisation et le droit applicable ; à l’examen, il faut reconnaître la
+fonction du document décrite dans le scénario.
+
+| Type d’accord                                                               | Objet principal                                                   | Ce qu’il ne remplace pas                             |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------- |
+| <Term en="Service level agreement (SLA)">Accord de niveau de service</Term> | Mesurer le service, par exemple disponibilité ou délai de réponse | Les exigences de sécurité des données sensibles      |
+| <Term en="Master service agreement (MSA)">Accord-cadre de services</Term>   | Fixer les conditions juridiques et commerciales générales         | La description détaillée d’une mission précise       |
+| <Term en="Statement of work (SOW)">Énoncé des travaux</Term>                | Définir travaux, livrables, calendrier et responsabilités         | Le cadre global de la relation contractuelle         |
+| <Term en="Non-disclosure agreement (NDA)">Accord de confidentialité</Term>  | Limiter la divulgation d’informations confidentielles             | Un accord complet de service ou de sécurité          |
+| <Term en="Memorandum of understanding (MOU)">Protocole d’accord</Term>      | Consigner une compréhension commune entre parties                 | Un contrat opérationnel détaillé quand il en faut un |
+
+Les obligations de sécurité peuvent imposer la notification d’incident, la protection des données,
+des limites à la sous-traitance, un droit d’audit et la restitution ou destruction des données à la
+fin de la relation. Une exigence sans moyen de tenir le fournisseur responsable n’est qu’une
+préférence. Le contrat ne fait pas fonctionner les contrôles, mais établit une responsabilité et un
+recours lorsque les attentes ne sont pas respectées.
+
+<Mnemonic>
+  **SLA = niveau de service ; SOW = périmètre du travail.** Le premier mesure le service fourni ; le
+  second décrit le travail à réaliser.
+</Mnemonic>
+
+## Surveiller pendant toute la relation
+
+Le risque évolue après l’intégration. Le fournisseur peut ajouter un sous-traitant, obtenir un
+nouvel accès, déplacer des données, subir un incident ou laisser expirer une preuve de conformité.
+La
+
+<Term en="Vendor monitoring">surveillance du fournisseur</Term> est le processus récurrent qui
+repère ces changements et confirme le maintien des contrôles et obligations convenus.
+
+Elle peut inclure des réévaluations périodiques, la revue de rapports d’assurance, le suivi des
+mesures d’un SLA, la revue des incidents signalés et la confirmation que les accès restent
+justifiés. Sa fréquence dépend de la criticité : un fournisseur doté d’un accès privilégié à la
+production exige plus d’attention qu’un fournisseur de fournitures de bureau. Lorsqu’un problème
+apparaît, il faut suivre l’escalade et la remédiation prévues ; collecter un rapport ne constitue
+pas une gestion.
+
+<ExamTrap>
+  La surveillance n’est pas une activité unique de sélection. Si le fournisseur a été approuvé il y
+  a deux ans, mais que le service a changé, que les preuves ont expiré ou que des échecs se
+  répètent, le scénario appelle une surveillance continue ou une réévaluation.
+</ExamTrap>
+
+## Questionnaires et règles d’engagement
+
+Le questionnaire rend l’évaluation reproductible. Il rassemble des réponses comparables sur la
+gestion des données, les contrôles d’accès, la réponse aux incidents et la résilience. Il aide à
+examiner plusieurs candidats et à repérer les sujets nécessitant une investigation plus poussée. Un
+même questionnaire générique peut manquer le risque réel de la relation : il faut l’adapter au
+service et utiliser les réponses pour guider les vérifications suivantes.
+
+Les <Term en="Rules of engagement">règles d’engagement</Term> ont une autre fonction. Elles
+autorisent et limitent une activité, telle qu’un <Term en="Penetration test">test d’intrusion</Term>
+ou une évaluation de sécurité. Avant le test, les parties conviennent des cibles, techniques
+permises, horaires, contacts, traitement des données, conditions d’arrêt d’urgence et mode de
+signalement. Ces limites protègent chacun : le testeur a une permission claire et le fournisseur
+sait quand une activité inhabituelle est légitime.
+
+| Le scénario demande…                                                     | Concept adapté              |
+| ------------------------------------------------------------------------ | --------------------------- |
+| Recueillir des informations de sécurité comparables auprès des candidats | Questionnaire               |
+| Définir qui peut tester, quand, et jusqu’où                              | Règles d’engagement         |
+| Fixer un objectif mesurable de disponibilité                             | SLA                         |
+| Vérifier les exigences après un changement important                     | Surveillance du fournisseur |
+
+## Se tester
+
+1. Un fournisseur affirme disposer du chiffrement et d’une réponse aux incidents. Que faut-il pour
+   rendre cette affirmation utile dans une évaluation à risque élevé ?
+2. Quel accord définit le plus directement un objectif mesurable de disponibilité : le SLA ou le SOW
+   ?
+3. Avant un test autorisé sur une application hébergée par un fournisseur, quel document définit les
+   cibles, actions permises et conditions d’arrêt ?
+
+<KeyPoint>
+  (1) Des éléments à l’appui ou une vérification adaptée : une réponse de questionnaire reste une
+  affirmation. (2) Le SLA. (3) Les règles d’engagement.
+</KeyPoint>

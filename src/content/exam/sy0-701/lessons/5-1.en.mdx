@@ -1,0 +1,152 @@
+## Why this objective matters
+
+Security governance makes security decisions repeatable, defensible, and connected to the business.
+On the exam, this objective does not ask you to configure a control. It tests whether you can tell
+which governing document applies, who should make or carry out a decision, and how an organisation
+keeps its rules useful when business, technology, and outside obligations change.
+
+A security control can be technically sound and still fail governance: perhaps nobody owns the data,
+the rule was never approved, or a team followed an obsolete procedure. Read scenario questions for
+the missing decision, authority, or review cycle—not merely for the technical product named.
+
+<KeyPoint>
+  Governance sets direction and accountability. Management implements that direction, and operations
+  perform day-to-day work. A policy says what must be true; a procedure says how a person carries
+  out a particular task.
+</KeyPoint>
+
+## The document hierarchy
+
+The four document types are close neighbours, so the exam can make every option sound reasonable.
+Work from the level of detail in the stem. Broad mandatory direction points to a policy; a required,
+repeatable technical baseline points to a standard; step-by-step actions point to a procedure.
+
+| Document  | Function                                              | Typical wording | Example                                                    |
+| --------- | ----------------------------------------------------- | --------------- | ---------------------------------------------------------- |
+| Policy    | High-level, management-approved direction             | “must”          | Company data must be classified and protected.             |
+| Standard  | Specific mandatory requirement that supports a policy | “must use”      | Administrative access must use multifactor authentication. |
+| Procedure | Ordered instructions for performing work              | “first, then”   | Steps for granting a new administrator account.            |
+| Guideline | Recommended practice that allows judgment             | “should”        | Developers should use an approved secure coding checklist. |
+
+A policy is not a detailed how-to. It assigns an expectation and authority, such as requiring an
+acceptable-use policy or a data-retention policy. Standards make that expectation consistent across
+teams. A procedure translates a standard into an action a trained person can perform the same way
+tomorrow. Guidelines are useful when circumstances differ: they guide a good decision without
+pretending that one precise method fits every situation.
+
+<ExamTrap>
+  “Mandatory” alone does not always mean policy. Both policies and standards can be mandatory.
+  Choose policy when the statement establishes broad organisational direction; choose standard when
+  it fixes a measurable or technical requirement needed to implement that direction.
+</ExamTrap>
+
+<Mnemonic>
+  Think **P-S-P-G**: Policy sets the purpose, Standard sets the specification, Procedure supplies
+  the steps, and Guideline gives guidance.
+</Mnemonic>
+
+## External considerations are inputs, not optional reading
+
+Governance has to account for conditions beyond the security team. Laws and regulations may require
+particular safeguards or reporting. Contractual commitments can impose security requirements on a
+service provider. Industry standards, regulators, court decisions, and customer expectations can
+also change what is reasonable for the organisation. A policy that ignores these inputs may be clear
+internally yet still leave the business noncompliant or exposed.
+
+Do not merge the terms in a question stem. A law is enforced by a government; a regulation is an
+authoritative rule issued under legal authority; a contract binds the parties who sign it; an
+industry framework may be voluntary unless a contract or regulator makes it mandatory. The
+governance task is to identify the applicable obligation, map it to internal policy and standards,
+and retain evidence that the organisation follows them.
+
+| External driver              | Governance response                                                         |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| New privacy requirement      | Update data-handling policy, standards, procedures, and training as needed. |
+| Customer security clause     | Assign an owner, implement agreed controls, and monitor the commitment.     |
+| Changed threat or technology | Reassess whether current rules still protect the intended assets.           |
+| Audit finding                | Correct the gap, document the decision, and verify the correction.          |
+
+<InPractice>
+  If a supplier contract requires encryption for stored customer records, a security leader should
+  not simply email engineers. The durable response is to connect the obligation to policy, specify
+  the required implementation in a standard, update procedures, name owners, and check later that
+  the requirement remains in effect.
+</InPractice>
+
+## Monitoring and revision keep governance alive
+
+Publishing a policy is a beginning, not proof that it works. Monitoring asks whether people follow
+the rules, whether controls meet the intended outcome, and whether external obligations or business
+conditions have changed. Sources can include metrics, exception requests, incidents, audit results,
+risk assessments, user feedback, and regulatory updates.
+
+Revision follows the evidence. An organisation should define who reviews a document, how often it is
+reviewed, who approves a revision, how affected people learn about it, and how the previous version
+is retained or retired. Version control and a review date demonstrate that a current document is
+intentional rather than forgotten. A revision may tighten a standard after an incident, remove a
+requirement made obsolete by a retired service, or clarify a procedure that people consistently
+misapply.
+
+Monitoring is not the same as enforcement. Monitoring measures or observes compliance; enforcement
+applies a consequence or prevents noncompliant behaviour. Both support governance, but a stem asking
+how leaders discover that a policy no longer works is asking about monitoring and review.
+
+<ExamTrap>
+  An exception is not a quiet decision to ignore policy. Effective governance records the business
+  reason, scope, owner, compensating controls, approver, and expiry or review date. Otherwise a
+  temporary exception becomes an undocumented permanent risk.
+</ExamTrap>
+
+## Governance structures and decision rights
+
+There is no single correct org chart. What matters is that the structure gives appropriate people
+authority, independence, and accountability. A centralised model places major decisions and common
+standards with one enterprise function. It increases consistency and visibility, though it can be
+less responsive to local needs. A decentralised model gives business units more control. It can
+adapt quickly, but duplicate or inconsistent practices are a risk. A hybrid or federated structure
+combines central policy and oversight with local implementation.
+
+| Structure        | Strength                                    | Governance risk to watch                        |
+| ---------------- | ------------------------------------------- | ----------------------------------------------- |
+| Centralised      | Consistent policy and enterprise visibility | Decisions may miss local operating context.     |
+| Decentralised    | Local ownership and faster adaptation       | Units may interpret requirements differently.   |
+| Hybrid/federated | Central guardrails with local execution     | Decision rights must be explicit to avoid gaps. |
+
+Boards, committees, executives, and designated security leaders commonly establish direction and
+accept major risk. System owners, data owners, custodians, privacy staff, legal counsel, and
+business units then have distinct roles. The title matters less than the responsibility stated in
+the scenario.
+
+## Systems, data, and accountable people
+
+Security governance requires named responsibility. A system owner is accountable for a system’s
+business purpose, acceptable risk, and lifecycle decisions. A data owner determines how data is
+classified, used, shared, retained, and protected. A custodian handles practical storage, backup,
+access administration, or operation of data according to the owner’s requirements. Users must follow
+approved rules and report suspected issues; they do not unilaterally redefine data classification.
+
+| Role                | Primary governance responsibility                     | Not the primary responsibility           |
+| ------------------- | ----------------------------------------------------- | ---------------------------------------- |
+| Data owner          | Classify data and decide protection requirements      | Performing every backup or access change |
+| Data custodian      | Implement and operate required handling               | Accepting business risk for the data     |
+| System owner        | Account for the system’s purpose, risk, and lifecycle | Setting every enterprise-wide policy     |
+| Security leadership | Advise, oversee, and define programme direction       | Owning every business dataset            |
+
+<KeyPoint>
+  In a role question, locate the decision being made. Classification and permitted use belong with
+  the data owner; operational care belongs with the custodian; business accountability for a system
+  belongs with its system owner.
+</KeyPoint>
+
+## Test yourself
+
+1. A document says every privileged account must use a hardware-backed factor. Is it a policy,
+   standard, procedure, or guideline?
+2. Which role decides a customer record’s classification: the data owner or the data custodian?
+3. What governance activity detects that an approved policy no longer reflects a new external duty?
+
+<KeyPoint>
+  1. A standard: it states a specific mandatory requirement. 2. The data owner classifies the data;
+  the custodian implements its handling. 3. Monitoring and revision, using inputs such as regulatory
+  updates, audits, and risk evidence.
+</KeyPoint>

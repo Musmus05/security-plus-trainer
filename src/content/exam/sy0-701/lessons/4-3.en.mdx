@@ -1,0 +1,153 @@
+## Why this objective matters
+
+Vulnerability management is not a synonym for running a scanner. On the exam, a finding moves
+through a small operational system: discover it, decide whether it matters here, choose and carry
+out a response, prove the response worked, and communicate the remaining risk. Questions usually
+test the boundary between those activities. A scan finding is not yet a remediation decision; a
+patch installed is not yet proof that exposure is gone.
+
+<KeyPoint>
+  Read the verb in a scenario. **Finding** a weakness is identification. Deciding its importance is
+  analysis. Changing the environment is remediation. Scanning or testing again is validation. Giving
+  leaders the trend, risk and exceptions is reporting.
+</KeyPoint>
+
+## Identification methods: build a credible list
+
+The process needs an asset context before it needs a tool. A vulnerability report that says an IP
+address is affected is less useful than one that identifies the owner, service, operating system,
+data sensitivity, and internet exposure. Asset inventory and ownership let a team tell whether a
+result is a production payment server, an unused test machine, or an address no longer assigned.
+
+| Identification method | What it is good at                                                    | Important limitation                                              |
+| --------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Vulnerability scan    | Comparing discovered services and software with known weaknesses      | Its result can be incomplete, stale, or a false positive          |
+| Authenticated scan    | Inspecting a host with approved credentials                           | It needs scoped, protected credentials and host access            |
+| Unauthenticated scan  | Seeing the target as an external attacker might                       | It cannot reliably see every installed component or setting       |
+| Manual review         | Checking a configuration, design, or compensating control             | It is slower and depends on the reviewer’s evidence               |
+| Penetration test      | Demonstrating whether a weakness can be exploited within agreed rules | A time-limited test is not a complete vulnerability inventory     |
+| Threat intelligence   | Adding information about active exploitation, actors, or indicators   | It prioritizes known information; it does not inspect every asset |
+
+A **vulnerability scan** is a systematic check for known conditions, such as exposed services,
+missing updates, weak configuration, or vulnerable software versions. It may use network probing, an
+agent, or credentials. An **authenticated scan** can inspect installed packages and local policy,
+whereas an **unauthenticated scan** tests what can be observed without logging in. Neither is
+automatically better: the first provides depth and the second provides an attacker-facing view.
+
+<ExamTrap>
+  Do not call every security test a penetration test. A scanner identifies possible weaknesses; a
+  penetration test attempts controlled exploitation to establish impact. They complement each other,
+  but a successful scan does not prove exploitation and an unsuccessful test does not prove that
+  every vulnerability is absent.
+</ExamTrap>
+
+Discovery also comes from vendor advisories, bug reports, configuration reviews, log investigation,
+and threat intelligence. **Threat intelligence** matters when it changes priority: a vulnerability
+that is actively exploited, reachable from the internet, or associated with the organisation’s
+technology deserves attention sooner than an equally scored but isolated issue. Keep the source,
+timestamp, affected asset, and evidence with the finding so the next stage has something to assess.
+
+## Analysis: turn a finding into a decision
+
+Analysis answers two different questions: _is the finding real?_ and _what does it mean in this
+environment?_ A scanner can misidentify a version, miss a compensating control, or report a
+condition already removed. Checking the asset, configuration, version, and exposure prevents a team
+from spending outage time on a false positive. Conversely, a result should not be dismissed merely
+because the scanner cannot demonstrate an exploit.
+
+| Factor                    | Why it changes priority                                                                   |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| Severity                  | A higher technical impact can justify faster action, but is not the only factor           |
+| Exploitability            | Public exploits, low complexity, or active exploitation raise urgency                     |
+| Exposure                  | An internet-facing or broadly reachable service has more opportunity for attack           |
+| Asset criticality         | A system supporting sensitive data or a critical business process has greater consequence |
+| Compensating controls     | Segmentation, filtering, monitoring, or restricted access can reduce practical risk       |
+| Dependencies and downtime | A fix may need a restart, coordinated change, or testing of connected systems             |
+
+Severity scores help compare technical characteristics, but vulnerability management is risk-based
+work. A medium-severity issue on a public administrator interface may outrank a critical issue on a
+retired, disconnected laboratory host. Record the reasoning: ownership, business impact, exposure,
+evidence, target date, and the person accepting any temporary exception. That record makes a queue
+defensible rather than just long.
+
+<Mnemonic>
+  **Known is not equal to urgent; exposed and exploitable is urgent.** Start with the weakness, then
+  add the asset, path to it, business consequence, and controls around it.
+</Mnemonic>
+
+## Vulnerability response and remediation
+
+Once analysed, the team chooses a response. **Remediation** removes or corrects the weakness: apply
+a vendor patch, change an insecure configuration, replace unsupported software, rotate a leaked
+credential, or disable an unnecessary service. A change should still follow the organisation’s
+change process: test where possible, schedule a maintenance window, document a rollback path, and
+notify affected owners.
+
+Sometimes immediate remediation is impossible. A legacy application may have no patch, a critical
+service may require extensive regression testing, or a vendor fix may not yet exist. A
+**compensating control** reduces exposure without claiming to remove the underlying weakness. Useful
+examples include network segmentation, stricter access control, web filtering, an application allow
+list, additional monitoring, or isolating the system. These controls are risk treatment, not
+evidence that the vulnerability disappeared.
+
+| Response                             | Appropriate outcome                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| Remediate                            | The root weakness is removed or corrected                                                         |
+| Mitigate with a compensating control | Exposure or likelihood is reduced while the weakness remains                                      |
+| Accept risk                          | An authorized owner knowingly accepts documented residual risk for a period                       |
+| Transfer risk                        | A contract or insurance arrangement shifts some financial consequence, not the technical weakness |
+| Avoid risk                           | The vulnerable service or activity is retired, disabled, or replaced                              |
+
+<InPractice>
+  A team discovers a vulnerable library in an internet-facing service. It first confirms that the
+  deployed version is affected, checks whether the vulnerable feature is enabled, and assesses the
+  service’s exposure. If the patch needs testing, it can temporarily limit access at the reverse
+  proxy and increase monitoring. The patch is still scheduled; the proxy rule is not a reason to
+  forget the finding.
+</InPractice>
+
+## Validation of remediation: prove the outcome
+
+Validation asks whether the intended condition exists **after** the change. Rerunning the relevant
+scan is common, but it may not be sufficient. Verify the updated version or configuration, confirm
+the service restarted when required, test the control from the relevant network path, and check that
+the application still works. A patch on disk may not protect a process that is still running old
+code in memory.
+
+The validation method should match the original evidence. If a credentialed scan found a missing
+package update, repeat an authenticated check. If the finding was an exposed management page,
+confirm it is no longer reachable from an unauthorized network. If a compensating control was used,
+validate the control and leave the original vulnerability open in tracking until it is actually
+remediated or formally accepted.
+
+<ExamTrap>
+  Closing a ticket because a change was performed is not validation. The ticket can close when
+  evidence shows the finding is fixed, mitigated as documented, or accepted by the right owner.
+</ExamTrap>
+
+## Reporting: make risk actionable
+
+Reporting serves different readers. Engineers need affected assets, reproduction evidence, owners,
+due dates, and validation status. Management needs trends, overdue critical findings, exposure,
+exceptions, and whether remediation capacity matches the risk. A useful report distinguishes new,
+open, remediated, mitigated, accepted, and false-positive findings; otherwise a falling total might
+only mean that tickets were closed without proof.
+
+Metrics can include remediation time by severity, percentage of assets covered by scanning, number
+of overdue findings, recurring configuration issues, and validated closure rate. Metrics do not
+replace judgement. Their purpose is to reveal whether the programme is finding assets, resolving the
+most important exposure, and carrying documented residual risk.
+
+## Test yourself
+
+1. A scan says a server is vulnerable, but the owner says the service was removed. What activity
+   should happen before a patch is scheduled?
+2. A vendor patch cannot be applied for two weeks. What response reduces exposure without removing
+   the vulnerability?
+3. What makes a remediation ticket ready to close?
+
+<KeyPoint>
+  (1) Analysis: verify the finding, asset state, and exposure. (2) A compensating control, such as
+  segmentation or stricter filtering, plus documented follow-up. (3) Validation evidence showing the
+  weakness is fixed or its approved treatment is operating as documented.
+</KeyPoint>
