@@ -1,0 +1,172 @@
+## Why this objective matters
+
+Security architecture questions rarely ask which model is universally best, because no such model
+exists. The exam gives you a business constraint — rapid scaling, strict physical separation,
+limited patching, low latency, or recovery after failure — and expects you to identify the model
+whose security implications fit it. The marks are in the trade-offs, not in memorising definitions.
+
+<KeyPoint>
+  Read every architecture scenario as two questions: **who controls each layer**, and **which
+  constraint matters most**? A cloud provider may operate the hardware while the customer still owns
+  identities and data. An isolated control system may reduce remote exposure while making patches
+  and recovery harder.
+</KeyPoint>
+
+## Where the infrastructure lives
+
+| Model       | Security advantage                                               | Security cost or constraint                                                    |
+| ----------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Cloud       | Elastic capacity, rapid deployment, provider-operated facilities | Shared duties, third-party dependency, configuration risk                      |
+| On-premises | Direct control of hardware, location, and change timing          | The organisation funds, patches, powers, and recovers everything               |
+| Hybrid      | Workloads can be placed according to sensitivity or capability   | Two environments, their identity systems, and their connection must be secured |
+
+### Cloud responsibility is divided, not removed
+
+A cloud **responsibility matrix** identifies which security tasks belong to the provider and which
+belong to the customer. The exact boundary varies with the service, but outsourcing infrastructure
+does not outsource accountability for every control. A provider can secure its physical facility
+while a customer exposes data through an overly broad permission. On the exam, “it is in the cloud”
+is never sufficient proof that a control is somebody else’s job.
+
+**Hybrid considerations** include consistent identity, monitoring, data handling, and network policy
+across on-premises and cloud resources. The connecting path is part of the architecture too.
+**Third-party vendors** add dependency and supply-chain exposure. Contracts can assign duties and
+transfer some financial impact, but the organisation still has to assess and monitor the risk.
+
+<ExamTrap>
+  Risk transference changes who absorbs an agreed loss; it does not make the vulnerability or
+  operational dependency disappear. A contract is not a firewall, and insurance is not a patch.
+</ExamTrap>
+
+## How applications and control are organised
+
+| Concept                      | What changes                                                  | Main security implication                                                                                |
+| ---------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Infrastructure as code (IaC) | Infrastructure is declared in versioned templates             | Repeatable review and deployment, but one flawed template can reproduce a weakness widely                |
+| Serverless                   | The provider runs the underlying servers and runtime platform | Less host administration for the customer, but code, permissions, secrets, and data remain concerns      |
+| Microservices                | An application is split into small communicating services     | Fault and deployment boundaries improve, while identities, APIs, and service-to-service traffic multiply |
+| Centralized                  | Decisions or services converge on a central component         | Policy and visibility are consistent, but the centre can become a high-value target or failure point     |
+| Decentralized                | Control or processing is distributed                          | Fewer single points of control, but consistency, inventory, and coordinated response become harder       |
+
+IaC is powerful because the reviewed definition can be deployed repeatedly and compared with the
+intended state. That same repetition creates **blast radius**: a publicly exposed port or excessive
+permission in the template can be copied into every environment. Protect the repository, review
+changes, scan templates, and prevent unapproved drift.
+
+Serverless does not mean that servers cease to exist. It means the customer does not manage them.
+The customer still secures application logic, event triggers, dependencies, permissions, secrets,
+and data. Microservices likewise trade one large trust boundary for many smaller ones. Their APIs
+need authentication and authorization, and their numerous dependencies require inventory and
+monitoring.
+
+<Mnemonic>
+  **Managed is not ownerless.** The more a provider manages below the application, the more the
+  customer’s attention moves upward to identities, configuration, code, and data.
+</Mnemonic>
+
+## Isolation and programmable networks
+
+| Technique                         | Boundary                                      | Strength                                        | Limitation                                                     |
+| --------------------------------- | --------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------- |
+| Physical isolation                | Separate hardware or cabling                  | Strong separation with few shared components    | Expensive and less flexible to operate                         |
+| Air-gapped                        | No direct connection to other networks        | Greatly reduces network paths into the system   | Updates and data transfer need controlled alternate procedures |
+| Logical segmentation              | Rules separate zones on shared infrastructure | Flexible and cheaper than dedicated hardware    | A rule or configuration error can weaken the boundary          |
+| Software-defined networking (SDN) | Software centrally programs network behaviour | Rapid, consistent policy changes and automation | The controller and management plane become critical assets     |
+
+An air gap is a special form of physical isolation focused on connectivity. It is not magical:
+removable media, maintenance equipment, and people can still cross the boundary. Logical
+segmentation uses mechanisms such as zones and policy enforcement on shared equipment. It can
+contain compromise without purchasing a separate network for every trust level, provided the rules
+are correct.
+
+SDN separates network control from packet forwarding so policy can be programmed rather than
+configured box by box. This improves responsiveness and consistency, but compromise or failure of
+the control plane can affect a large part of the network. Protecting administrative access and
+maintaining resilient controllers therefore matters.
+
+## Containers and virtual machines
+
+| Property        | Containerization                                            | Virtualization                                                             |
+| --------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Isolation unit  | Processes and their packaged dependencies                   | Complete virtual machine with its own guest OS                             |
+| Shared layer    | Host kernel is normally shared                              | Hypervisor and physical host are shared                                    |
+| Typical benefit | Lightweight, fast start, consistent deployment              | Stronger separation and support for different guest operating systems      |
+| Security focus  | Images, registries, orchestration, secrets, kernel boundary | Hypervisor, VM images, snapshots, guest patching, host resource contention |
+
+Neither boundary should be treated as absolute. A vulnerable image can create many identical weak
+instances, and a compromised orchestration or hypervisor layer can affect multiple workloads.
+Compared with virtual machines, containers usually have less overhead but share more of the host.
+Virtualization gives each guest an OS boundary, yet every guest still needs maintenance.
+
+## Purpose-built and operational systems
+
+| System                            | Defining need                                             | Security implication                                                       |
+| --------------------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Internet of Things (IoT)          | Connected sensors and everyday devices                    | Large, diverse inventory; constrained interfaces and uneven update support |
+| ICS/SCADA                         | Monitor or control physical and industrial processes      | Safety and availability may outweigh ordinary IT change speed              |
+| Real-time operating system (RTOS) | Predictable response within timing constraints            | Security controls must not break deterministic timing                      |
+| Embedded system                   | Computing built into a larger device for a narrow purpose | Long life, limited resources, and vendor-dependent maintenance             |
+
+These categories overlap. An industrial sensor may be IoT, embedded, and controlled by an RTOS. The
+exam distinguishes the reason for the design: IoT emphasises connectivity, ICS/SCADA physical
+processes, RTOS timing guarantees, and embedded systems a dedicated function. Many such devices
+cannot accept ordinary endpoint agents or frequent patches. Segmentation, restricted management
+paths, monitoring, and compensating controls become important when direct patching is unavailable.
+
+<InPractice>
+  Rebooting an office laptop after a patch is routine. Rebooting a controller during a production
+  cycle may stop machinery or affect safety. The same vulnerability can therefore lead to a
+  different treatment because the architecture changes the consequence of the control.
+</InPractice>
+
+## High availability
+
+High availability uses redundancy and failover to keep a service operating when a component fails.
+It can include multiple nodes, paths, locations, or power sources. It improves availability, but it
+does not replace backups: redundant systems can faithfully replicate corruption or a malicious
+change. It can also increase attack surface and cost because there are more components to secure.
+
+<ExamTrap>
+  High availability answers “can the service continue now?” A backup answers “can earlier data be
+  restored?” Both support resilience, but they solve different failure problems.
+</ExamTrap>
+
+## The twelve comparison lenses
+
+| Consideration      | Question to ask                                                               |
+| ------------------ | ----------------------------------------------------------------------------- |
+| Availability       | How much usable uptime does the design provide?                               |
+| Resilience         | Can it absorb failure and continue or adapt?                                  |
+| Cost               | What acquisition, operation, security, and recovery expense follows?          |
+| Responsiveness     | How quickly does it react to workload, threat, or business change?            |
+| Scalability        | Can capacity grow or shrink without redesign?                                 |
+| Ease of deployment | How safely and consistently can it be introduced?                             |
+| Risk transference  | Which consequences are contractually or financially shifted to another party? |
+| Ease of recovery   | How difficult and slow is restoration after failure?                          |
+| Patch availability | Does a maintained update exist when a flaw is found?                          |
+| Inability to patch | Which compensating controls are needed when updating is impossible?           |
+| Power              | What primary, backup, cooling, and site power dependencies exist?             |
+| Compute            | Is there enough processing capacity for the workload and security controls?   |
+
+Do not collapse neighbouring terms. **Availability** is the service being usable; **resilience** is
+its ability to withstand and adapt to disruption; **ease of recovery** concerns restoration after
+the disruption. **Responsiveness** concerns speed of reaction, while **scalability** concerns how
+far capacity can change. **Patch availability** is a vendor or ecosystem property; **inability to
+patch** is the operational condition that requires another treatment.
+
+## Test yourself
+
+1. A company moves an application to serverless computing. Which security responsibilities remain
+   with the customer?
+2. Which architecture provides a stronger separation boundary: logical segmentation or physical
+   isolation, and what trade-off accompanies it?
+3. A factory controller cannot be patched without interrupting a safety-critical process. Which
+   consideration is present, and what kind of response is appropriate?
+
+<KeyPoint>
+  (1) Application code, permissions, secrets, dependencies, and data remain customer concerns even
+  though the provider runs the servers. (2) Physical isolation provides the stronger boundary, at
+  greater cost and with less flexibility. (3) This is inability to patch; use segmentation,
+  restricted access, monitoring, and other compensating controls until a safe maintenance path
+  exists.
+</KeyPoint>

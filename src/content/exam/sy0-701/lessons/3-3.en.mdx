@@ -1,0 +1,164 @@
+## Why this objective matters
+
+Protecting data starts before choosing a security product. A team must know what the data is, how
+important it is, where it is, and what is happening to it. Only then can it select a control that
+fits the risk. Encrypting a database, for example, does not stop an authorised user from copying a
+record while an application is using it.
+
+The exam tests those distinctions. Expect a requirement or short scenario and a question about the
+best classification, the current data state, the location constraint, or the protection method that
+directly solves the problem.
+
+<KeyPoint>
+  Keep four questions separate: **What kind of data is it?** → type. **How carefully must the
+  organisation handle it?** → classification. **Where is it in its lifecycle?** → state and
+  location. **What should make it safer?** → protection method.
+</KeyPoint>
+
+## Data types: what the information represents
+
+A data type follows the content or the obligations attached to it. One record can belong to more
+than one type: a patent valuation may be intellectual property, a trade secret, and financial
+information at the same time.
+
+| Data type             | What identifies it                                             | Typical example                          |
+| --------------------- | -------------------------------------------------------------- | ---------------------------------------- |
+| Regulated             | A law, regulation, or industry rule governs its handling       | Health or payment-card records           |
+| Trade secret          | Secrecy gives the business a competitive advantage             | A private manufacturing formula          |
+| Intellectual property | It is a creation or intangible asset owned by a person or firm | Source code, a design, or a patent       |
+| Legal information     | It supports legal advice, proceedings, duties, or evidence     | Litigation files or counsel work product |
+| Financial information | It describes money, transactions, accounts, or financial plans | Bank details or an unreleased forecast   |
+| Human-readable        | A person can interpret it directly                             | A printed contract or plain-text report  |
+| Non-human-readable    | Software or specialised equipment must interpret it            | Encoded telemetry or a database file     |
+
+The reason for protection matters. **Regulated** data is not a synonym for “very secret”: its
+handling is constrained by an external requirement. A **trade secret** loses business value when
+secrecy is lost. **Intellectual property** is broader; published material can still be protected as
+intellectual property even though it is no longer secret.
+
+<ExamTrap>
+  Human-readable and non-human-readable describe whether people can interpret the representation,
+  not whether it is confidential. An unreadable binary file can be public; a printed salary list can
+  be highly restricted.
+</ExamTrap>
+
+## Data classifications: how it must be handled
+
+Classification labels express organisational handling requirements. Their precise definitions and
+order come from policy, so do not invent a universal ladder. On the exam, use the description in the
+stem.
+
+| Classification | Best clue in a scenario                                       |
+| -------------- | ------------------------------------------------------------- |
+| Public         | Approved for release outside the organisation                 |
+| Sensitive      | Harm could follow exposure; extra care is warranted           |
+| Confidential   | Access is limited to an authorised business group             |
+| Restricted     | The tightest handling and narrowly limited access are stated  |
+| Private        | The information concerns an individual or a non-public matter |
+| Critical       | Business operations strongly depend on its accuracy or access |
+
+**Confidentiality and criticality are different axes.** A public status page may be critical to
+operations even though anyone may read it. A confidential archive may be unavailable for a few hours
+without stopping the business. Classification should drive permissions, marking, storage, sharing,
+retention, and disposal rules.
+
+<InPractice>
+  Labels only help if systems enforce them. Marking a file “restricted” while granting the entire
+  company access records an intention; permission restrictions turn that intention into a control.
+</InPractice>
+
+## State and location: where exposure occurs
+
+Data changes state as a system processes it. Each state has a different control point.
+
+| State           | Meaning                                              | Common protection focus                     |
+| --------------- | ---------------------------------------------------- | ------------------------------------------- |
+| Data at rest    | Stored on persistent media                           | Storage encryption and access permissions   |
+| Data in transit | Moving between systems, devices, or network services | Protected communication channels            |
+| Data in use     | Actively processed, displayed, or held in memory     | Process, endpoint, and user access controls |
+
+Full-disk encryption protects a stolen powered-off laptop: its data is at rest. Once the user
+unlocks the device and opens a document, the application needs readable data. The information is now
+in use, so disk encryption alone does not prevent screen capture, malware in the user session, or an
+authorised user copying it.
+
+<ExamTrap>
+  “Encrypted” is incomplete without a state. Encryption at rest does not automatically protect a
+  network transfer, and transport encryption does not protect the destination database after the
+  session ends.
+</ExamTrap>
+
+**Data sovereignty** means data is subject to the legal authority of the jurisdiction where it is
+stored or processed. **Geolocation** establishes or uses the physical location associated with a
+user, device, service, or data store. It can provide the evidence used to enforce a location rule,
+but it is not the rule itself.
+
+<Mnemonic>
+  **Sovereignty is authority; geolocation is position; a geographic restriction is enforcement.**
+  The first explains why location matters, the second identifies it, and the third permits or blocks
+  an action because of it.
+</Mnemonic>
+
+## Methods to secure data
+
+The exam favours the method whose defining property matches the requirement. Several controls may be
+useful, but one usually answers the precise problem in the stem.
+
+| Method                  | Primary effect                                                   | Important limit                                   |
+| ----------------------- | ---------------------------------------------------------------- | ------------------------------------------------- |
+| Geographic restrictions | Allows storage, processing, or access only in approved locations | Depends on reliable location information          |
+| Encryption              | Makes data unreadable without the proper key                     | Authorised use requires decryption                |
+| Hashing                 | Produces a fixed representation used to detect change            | It does not preserve a recoverable original       |
+| Masking                 | Hides selected characters or substitutes display/test values     | It is not a general replacement for encryption    |
+| Tokenization            | Replaces a sensitive value with a token mapped in a vault        | The mapping service becomes important             |
+| Obfuscation             | Makes meaning or logic harder to understand                      | It delays understanding; it is not strong secrecy |
+| Segmentation            | Separates data or systems into controlled zones                  | It reduces reachability rather than changing data |
+| Permission restrictions | Limits allowed actions to authorised identities                  | Badly assigned rights still expose the data       |
+
+Encryption is reversible with a key; hashing is designed as a one-way transformation. Use hashing
+when the requirement is to compare a current value with a known representation and detect a change,
+not when the original must later be recovered.
+
+Masking and tokenization both reduce exposure, but they work differently. A support screen may mask
+a card number as `**** **** **** 4242`. Tokenization instead replaces the number with an unrelated
+value; an authorised vault retains the mapping. Obfuscation has a weaker promise: it makes code or
+data inconvenient to interpret but does not provide the confidentiality guarantee of sound
+encryption.
+
+<ExamTrap>
+  Segmentation and permission restrictions are neighbours, not synonyms. Segmentation limits paths
+  between zones or datasets. Permissions decide which identities may read, modify, or delete an
+  object after reaching the service that holds it.
+</ExamTrap>
+
+## Choosing a protection strategy
+
+Strong protection is usually layered. A restricted payroll database might be stored only in an
+approved country, encrypted at rest, reached through an encrypted channel, placed in a segmented
+zone, and available only to payroll roles. A test team might receive masked or tokenized values
+instead of production records. Each control addresses a different exposure.
+
+Start with the requirement rather than the favourite technology:
+
+- Need the original later, but not without a secret? **Encryption.**
+- Need evidence that content changed? **Hashing.**
+- Need to show only part of a value? **Masking.**
+- Need a substitute whose mapping is kept separately? **Tokenization.**
+- Need to limit network reachability? **Segmentation.**
+- Need only named users or roles to act? **Permission restrictions.**
+- Need data to remain or be accessed in approved places? **Geographic restrictions.**
+
+## Test yourself
+
+1. A backup is stored on an unplugged drive. What data state is it in, and which listed method
+   directly protects its confidentiality if the drive is stolen?
+2. Why is geolocation not the same thing as a geographic restriction?
+3. A development database needs realistic identifiers without exposing the original values, and a
+   tightly controlled service must be able to map substitutes back. Which method fits?
+
+<KeyPoint>
+  (1) Data at rest; encryption makes the stolen storage unreadable without the key. (2) Geolocation
+  identifies position, while a geographic restriction enforces a decision based on position. (3)
+  Tokenization: the development system receives tokens and the separate vault keeps the authorised
+  mapping.
+</KeyPoint>

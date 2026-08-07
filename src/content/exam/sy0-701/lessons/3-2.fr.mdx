@@ -1,0 +1,210 @@
+## Pourquoi cet objectif compte
+
+L’examen ne récompense pas ici une liste de produits de sécurité. Il donne une contrainte
+d’entreprise — application web exposée, poste non fiable, administrateur distant ou contrôle dont la
+panne ne doit pas arrêter la production — puis demande de placer ou de choisir le contrôle qui
+réduit le risque concerné. Les points se gagnent en comprenant où se trouve le contrôle, quel trafic
+il voit et ce qui arrive lorsqu’il tombe en panne.
+
+<KeyPoint>
+  Commence chaque scénario d’infrastructure par trois questions : **quel actif faut-il protéger, où
+  se trouve la frontière de confiance et le trafic doit-il traverser le contrôle ?** Ces réponses
+  éliminent souvent la plupart des distracteurs avant même de considérer les fonctions du produit.
+</KeyPoint>
+
+## Considérations d’infrastructure
+
+### Placement, zones et chemins
+
+Le <Term en="Device placement">placement des équipements</Term> détermine si un contrôle peut voir
+ou arrêter le trafic important. Un pare-feu Internet appartient à la frontière externe ; un pare-feu
+de segmentation interne se place entre des zones de confiance différentes ; un pare-feu
+d’application web se trouve sur le chemin des applications web. Un équipement performant placé sur
+le mauvais chemin laisse un angle mort.
+
+| Considération                                      | Question à poser                                                                           | Erreur courante                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| <Term en="Security zones">Zones de sécurité</Term> | Quels systèmes partagent un niveau de confiance et quels flux franchissent une frontière ? | Considérer le réseau interne comme une seule zone fiable         |
+| <Term en="Attack surface">Surface d’attaque</Term> | Quels services, interfaces, identités et chemins accessibles peuvent être détournés ?      | Ajouter un contrôle tout en laissant un chemin de contournement  |
+| <Term en="Connectivity">Connectivité</Term>        | Quels flux métier doivent rester possibles ?                                               | Bloquer les dépendances nécessaires avec le trafic hostile       |
+| Placement                                          | Le trafic concerné traverse-t-il réellement le contrôle ?                                  | Installer un capteur là où il ne voit que du trafic sans rapport |
+
+Une zone de sécurité est une frontière de politique, pas seulement le nom d’un sous-réseau. Les
+services publics peuvent occuper une <Term en="Demilitarized zone (DMZ)">zone démilitarisée
+(DMZ)</Term>, les postes une zone utilisateur, les bases de données une zone restreinte et les
+interfaces d’administration une zone de gestion très contrôlée. La
+
+<Term en="Segmentation">segmentation</Term> limite les déplacements latéraux uniquement si les flux
+entre zones sont filtrés. Un schéma montrant plusieurs VLAN avec un routage sans restriction porte
+des étiquettes, mais ne crée pas de véritables frontières de sécurité.
+
+Réduire la surface d’attaque consiste à retirer les expositions inutiles : désactiver les services
+inutilisés, restreindre les interfaces de gestion, fermer les ports superflus et éviter les chemins
+qui contournent l’inspection. Cela ne signifie pas supprimer toute connectivité. Une architecture
+efficace conserve le plus petit ensemble de flux nécessaire à l’activité.
+
+<ExamTrap>
+  Un contrôle ne protège que le trafic qu’il peut observer. Un IDS réseau relié au mauvais
+  commutateur, ou un WAF contourné par une seconde adresse publique, ne devient pas efficace parce
+  que sa politique est correcte.
+</ExamTrap>
+
+### Mode de panne et comportement
+
+| Paire                                                                                                           | Premier choix                                    | Second choix                                     | Compromis de sécurité                                          |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------ | -------------------------------------------------------------- |
+| <Term en="Fail-open">Ouverture en cas de panne</Term> / <Term en="Fail-closed">fermeture en cas de panne</Term> | Le trafic continue si le contrôle tombe en panne | Le trafic s’arrête si le contrôle tombe en panne | Disponibilité contre maintien de l’application de la politique |
+| <Term en="Active">Actif</Term> / <Term en="Passive">passif</Term>                                               | Le dispositif peut agir sur le trafic            | Il observe et signale                            | Prévention contre faible impact opérationnel                   |
+| <Term en="Inline">En ligne</Term> / <Term en="Tap/monitor">dérivation ou surveillance</Term>                    | Le trafic de production traverse le dispositif   | Une copie du trafic lui est envoyée              | Capacité de blocage contre absence de goulot d’étranglement    |
+
+La fermeture en cas de panne maintient la politique, mais peut transformer la panne d’un seul
+équipement en interruption. L’ouverture en cas de panne préserve la connectivité, mais laisse passer
+le trafic sans ce point de contrôle. La bonne réponse dépend du scénario : une passerelle très
+sensible peut privilégier la fermeture, alors qu’un procédé critique pour la sûreté peut exiger la
+disponibilité et une surveillance compensatoire.
+
+« En ligne » décrit le placement ; « actif » décrit le comportement. Les deux vont souvent ensemble,
+comme pour un IPS en ligne, sans être synonymes. Un IDS passif reçoit généralement une copie du
+trafic depuis une dérivation réseau ou un <Term en="Port mirror">port miroir</Term>. Il ne peut pas
+arrêter de façon fiable le paquet déjà en circulation, mais sa panne ne coupe pas le chemin de
+production.
+
+<Mnemonic>
+  **En ligne indique où ; actif indique quoi.** Le trafic traverse un contrôle en ligne. Un contrôle
+  actif entreprend une action. Sépare toujours la position du comportement.
+</Mnemonic>
+
+## Points de contrôle de l’infrastructure
+
+### Des équipements aux rôles voisins
+
+| Contrôle                                                                                    | Fonction principale                                                      | Placement ou usage adapté                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| <Term en="Jump server">Serveur de rebond</Term>                                             | Point d’entrée administratif contrôlé                                    | Entre les administrateurs et une zone de gestion restreinte               |
+| <Term en="Proxy server">Serveur mandataire</Term>                                           | Intermédiaire des requêtes client et application d’une politique d’accès | Entre les clients et les services externes ou protégés                    |
+| <Term en="Intrusion detection system (IDS)">Système de détection d’intrusion (IDS)</Term>   | Détecter et signaler une activité suspecte                               | Sur une dérivation ou un point de surveillance qui reçoit le trafic utile |
+| <Term en="Intrusion prevention system (IPS)">Système de prévention d’intrusion (IPS)</Term> | Détecter et bloquer une activité suspecte                                | En ligne, là où le trafic protégé doit passer                             |
+| <Term en="Load balancer">Répartiteur de charge</Term>                                       | Distribuer les requêtes entre plusieurs instances                        | Devant un groupe de serveurs pour la capacité et la disponibilité         |
+| <Term en="Sensor">Capteur</Term>                                                            | Recueillir des observations réseau, hôte, physiques ou environnementales | Assez près de l’événement ou du trafic mesuré                             |
+
+Un serveur de rebond concentre les accès privilégiés afin de pouvoir être renforcé, authentifié
+fortement et journalisé. Ce n’est pas un mandataire général de navigation. Un mandataire représente
+un côté d’une connexion auprès de l’autre : un mandataire direct contrôle généralement les sorties
+des clients, tandis qu’un mandataire inverse se place devant les serveurs. Un répartiteur améliore
+la distribution et la résilience ; l’inspection de sécurité peut être une fonction ajoutée, mais ce
+n’est pas son rôle distinctif.
+
+IDS et IPS se distinguent par leur réaction et leur position. L’IDS fournit des preuves et des
+alertes sans constituer le point d’application. L’IPS peut rejeter le trafic malveillant parce qu’il
+est actif et en ligne. Choisir un IPS ajoute une capacité de blocage, mais augmente aussi les
+conséquences des faux positifs et d’une panne.
+
+### Accès au port et portée des pare-feu
+
+<Term en="IEEE 802.1X">IEEE 802.1X</Term> fournit un
+<Term en="Port-based network access control">contrôle d’accès réseau fondé sur le port</Term>. Un
+<Term en="Supplicant">demandeur</Term> sollicite l’accès, un
+<Term en="Authenticator">authentificateur</Term> comme un commutateur ou un point d’accès contrôle
+le port, et un serveur d’authentification valide la demande. Le
+<Term en="Extensible Authentication Protocol (EAP)">protocole EAP</Term> est le cadre qui transporte
+une méthode d’authentification. EAP n’est ni une règle de pare-feu ni un VPN.
+
+La <Term en="Port security">sécurité des ports</Term> peut aussi limiter les terminaux autorisés à
+utiliser un port de commutateur. Le but est d’empêcher un équipement non approuvé d’obtenir un accès
+réseau ordinaire simplement parce qu’une prise active est disponible.
+
+| Type de pare-feu                                                                         | Distinction essentielle                                                                      |
+| ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| <Term en="Layer 4 firewall">Pare-feu de couche 4</Term>                                  | Filtre surtout selon les adresses, le protocole, les ports et l’état de connexion            |
+| <Term en="Layer 7 firewall">Pare-feu de couche 7</Term>                                  | Comprend les requêtes et le contenu au niveau applicatif                                     |
+| <Term en="Web application firewall (WAF)">Pare-feu d’application web (WAF)</Term>        | Se spécialise dans HTTP/S et les attaques contre les applications web                        |
+| <Term en="Unified threat management (UTM)">Gestion unifiée des menaces (UTM)</Term>      | Regroupe plusieurs fonctions de sécurité dans un équipement ou service                       |
+| <Term en="Next-generation firewall (NGFW)">Pare-feu de nouvelle génération (NGFW)</Term> | Ajoute la connaissance des applications et une inspection avancée à l’application des règles |
+
+Un WAF est le choix précis pour les requêtes HTTP malveillantes visant la logique applicative ; il
+ne remplace pas la segmentation d’une base de données. Une règle de couche 4 peut autoriser
+efficacement TCP 443, mais ne comprend pas si la requête HTTPS permise contient une attaque
+applicative. UTM insiste sur le regroupement des fonctions, tandis que NGFW insiste sur
+l’application de règles consciente des applications et l’inspection approfondie. Les appellations
+commerciales se recouvrent ; l’examen donne donc généralement une exigence distinctive.
+
+<ExamTrap>
+  Le port 443 ne prouve pas que le trafic est sûr. Un contrôle de couche 4 peut permettre la
+  connexion parce que le port est autorisé ; un contrôle de couche 7 ou un WAF examine ce que fait
+  la requête applicative.
+</ExamTrap>
+
+## Communications et accès sécurisés
+
+L’<Term en="Secure remote access">accès distant sécurisé</Term> protège à la fois le canal et la
+décision concernant les personnes autorisées à l’utiliser. Un
+
+<Term en="Virtual private network (VPN)">réseau privé virtuel (VPN)</Term> crée une connexion
+logique protégée sur un réseau non fiable. L’<Term en="Remote access">accès distant</Term> est la
+capacité métier plus générale ; le VPN est une manière de fournir son canal sécurisé.
+
+| Méthode                                                                                                  | Ce qu’elle protège ou change                                                  | Distinction essentielle                                                    |
+| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| <Term en="Transport Layer Security (TLS) tunnel">Tunnel TLS</Term>                                       | Protège une session applicative, souvent sur TCP                              | Souvent employé pour un accès par navigateur ou propre à une application   |
+| <Term en="Internet Protocol Security (IPsec) tunnel">Tunnel IPsec</Term>                                 | Protège les paquets IP au niveau réseau                                       | Courant pour relier des sites ou fournir un accès réseau distant complet   |
+| <Term en="Remote-access VPN">VPN d’accès distant</Term>                                                  | Relie un utilisateur ou équipement aux ressources de l’entreprise             | L’identité et l’état du terminal comptent avec le chiffrement              |
+| <Term en="Site-to-site VPN">VPN de site à site</Term>                                                    | Relie des réseaux par des passerelles protégées                               | Les utilisateurs ne lancent pas nécessairement le tunnel eux-mêmes         |
+| <Term en="Software-defined wide area network (SD-WAN)">Réseau étendu défini par logiciel (SD-WAN)</Term> | Sélectionne et gère les chemins étendus par une politique logicielle          | Optimise la connectivité des sites sur plusieurs liaisons                  |
+| <Term en="Secure access service edge (SASE)">Périphérie de service d’accès sécurisé (SASE)</Term>        | Fournit réseau et contrôles de sécurité sous forme de services orientés nuage | Rapproche la politique d’accès des utilisateurs et applications distribués |
+
+La <Term en="Tunneling">mise en tunnel</Term> encapsule une forme de trafic dans une autre. Le
+chiffrement et la mise en tunnel sont liés sans être identiques : le tunnel définit un chemin et une
+encapsulation, tandis que le protocole choisi détermine les propriétés de sécurité. TLS et IPsec
+peuvent fournir confidentialité, intégrité et authentification des pairs lorsqu’ils sont
+correctement configurés.
+
+Le SD-WAN améliore la sélection centralisée des chemins et la connectivité des sites, mais ne
+constitue pas automatiquement une architecture de sécurité complète. Le SASE combine l’accès étendu
+avec des capacités de sécurité fournies depuis le nuage pour les utilisateurs, sites et applications
+distribués. Dans un scénario, choisis SD-WAN si la gestion des chemins domine, et SASE si une
+politique de sécurité cohérente pour des accès très distribués est l’exigence centrale.
+
+<InPractice>
+  Chiffrer une session distante la protège en transit ; cela ne rend pas l’administrateur distant
+  digne de confiance. Authentification forte, moindre privilège, état de l’équipement,
+  journalisation et chemin de gestion contrôlé restent nécessaires après l’établissement du tunnel.
+</InPractice>
+
+## Choisir des contrôles efficaces
+
+« Le plus avancé » ne signifie pas « efficace ». Le contrôle efficace traite la menace décrite, se
+trouve sur le chemin concerné, respecte la disponibilité requise et présente un coût opérationnel
+acceptable. Utilise l’indice du scénario pour choisir le contrôle le plus précis qui résout le
+problème.
+
+| Indice du scénario                                                     | Bon candidat                              | Pourquoi les choix voisins ne suffisent pas                    |
+| ---------------------------------------------------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
+| Bloquer les requêtes malveillantes visant une application web publique | WAF sur le chemin applicatif              | Un contrôle de couche 4 voit le port permis, pas la requête    |
+| Détecter du trafic suspect sans risquer une interruption               | IDS passif sur dérivation ou port miroir  | Un IPS en ligne peut bloquer, mais aussi interrompre le trafic |
+| Forcer les administrateurs à suivre une route unique et auditée        | Serveur de rebond dans la zone de gestion | Un VPN protège le transport sans centraliser seul les sessions |
+| Refuser les équipements non authentifiés sur une prise filaire         | 802.1X                                    | Un pare-feu voit les flux ultérieurs, après le raccordement    |
+| Maintenir un service disponible sur plusieurs serveurs                 | Répartiteur de charge                     | Un IDS observe les attaques sans distribuer la demande         |
+| Protéger le trafic entre deux réseaux de sites                         | VPN IPsec de site à site                  | TLS protège généralement une session applicative plus étroite  |
+
+La <Term en="Defense in depth">défense en profondeur</Term> peut combiner plusieurs contrôles, mais
+chacun doit avoir une raison. Davantage d’équipements ajoutent interfaces de gestion, dépendances,
+coûts et modes de panne : ils créent leur propre surface d’attaque. Valide le placement, surveille
+le contrôle, teste son comportement en panne et vérifie que le trafic métier n’a pas trouvé un
+contournement sans inspection.
+
+## Se tester
+
+1. Une organisation veut observer une liaison critique, mais la panne d’un capteur ne doit jamais
+   interrompre la production. Quels placement et comportement conviennent ?
+2. Une application publique autorise déjà HTTPS dans un pare-feu de couche 4. Quel contrôle doit
+   inspecter les requêtes HTTP malveillantes ?
+3. Qu’est-ce qui distingue l’ouverture de la fermeture en cas de panne, et pourquoi aucune n’est
+   toujours correcte ?
+
+<KeyPoint>
+  (1) Un IDS ou capteur passif alimenté par une dérivation ou un port miroir : il observe une copie
+  sans se trouver sur le chemin de production. (2) Un WAF placé sur le chemin du trafic applicatif.
+  (3) L’ouverture préserve la connectivité sans application de la politique, tandis que la fermeture
+  maintient cette politique en arrêtant le trafic ; le choix dépend des priorités de disponibilité
+  et de sécurité du scénario.
+</KeyPoint>

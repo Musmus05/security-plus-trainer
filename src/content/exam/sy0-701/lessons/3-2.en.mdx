@@ -1,0 +1,188 @@
+## Why this objective matters
+
+The exam does not reward a shopping list of security products here. It gives you an enterprise
+constraint—an exposed web application, an untrusted workstation, a remote administrator, or a
+control whose failure must not interrupt production—and asks you to place or select the control that
+reduces the relevant risk. The marks come from understanding where a control sits, what traffic it
+can observe, and what happens when it fails.
+
+<KeyPoint>
+  Start every infrastructure scenario with three questions: **what asset is being protected, where
+  is the trust boundary, and must traffic pass through the control?** Those answers usually remove
+  most distractors before product features matter.
+</KeyPoint>
+
+## Infrastructure considerations
+
+### Placement, zones, and paths
+
+Device placement determines whether a control can see or stop the traffic that matters. An internet
+firewall belongs at the external boundary; an internal segmentation firewall belongs between zones
+with different trust levels; a web application firewall belongs in the path to web applications.
+Putting a capable device on the wrong path leaves a blind spot.
+
+| Consideration    | Question to ask                                                            | Typical mistake                                           |
+| ---------------- | -------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Device placement | Does the relevant traffic actually cross the control?                      | Installing a sensor where it sees only unrelated traffic  |
+| Security zones   | Which systems share a trust level and which flows cross a boundary?        | Treating the internal network as one trusted zone         |
+| Attack surface   | Which reachable services, interfaces, identities, and paths can be abused? | Adding a control while leaving an alternate path open     |
+| Connectivity     | Which business flows must remain possible?                                 | Blocking required dependencies along with hostile traffic |
+
+A security zone is a policy boundary, not merely a subnet name. Public services may occupy a DMZ,
+user devices a workstation zone, databases a restricted zone, and management interfaces a highly
+controlled management zone. Segmentation limits lateral movement only when traffic between zones is
+filtered. A diagram with several VLANs but unrestricted routing has labels, not meaningful security
+boundaries.
+
+Reducing attack surface means removing unnecessary exposure: disable unused services, restrict
+management interfaces, close unneeded ports, and avoid duplicate paths around inspection. It does
+not mean eliminating all connectivity. Effective architecture preserves the smallest set of flows
+needed by the business.
+
+<ExamTrap>
+  A control protects only traffic it can observe. A network IDS connected to the wrong switch, or a
+  WAF bypassed by a second public address, does not become effective because its policy is correct.
+</ExamTrap>
+
+### Failure mode and device behavior
+
+| Pair                    | First choice                                 | Second choice                     | Security trade-off                                          |
+| ----------------------- | -------------------------------------------- | --------------------------------- | ----------------------------------------------------------- |
+| Fail-open / fail-closed | Traffic continues if the device fails        | Traffic stops if the device fails | Availability versus enforcement                             |
+| Active / passive        | The device can act on traffic                | The device observes and reports   | Prevention versus low operational impact                    |
+| Inline / tap or monitor | Production traffic passes through the device | A copy of traffic is sent to it   | Ability to block versus resistance to becoming a bottleneck |
+
+Fail-closed preserves the policy when a device fails, but may turn one failed appliance into an
+outage. Fail-open preserves connectivity, but permits traffic without that enforcement point. The
+right answer follows the scenario: a high-security gateway may favor fail-closed, while a
+safety-critical process may require availability and compensating monitoring.
+
+Inline describes placement; active describes behavior. They often occur together, as with an inline
+IPS, but they are not synonyms. A passive IDS commonly receives copied traffic from a network tap or
+switch port mirror. It cannot reliably stop the packet already in flight, but its failure does not
+interrupt the production path.
+
+<Mnemonic>
+  **Inline is where; active is what.** Inline traffic goes through the control. An active control
+  takes action. Keep location and behavior as separate decisions.
+</Mnemonic>
+
+## Infrastructure enforcement points
+
+### Appliances with neighbouring jobs
+
+| Control       | Primary job                                                     | Best placement or use                                   |
+| ------------- | --------------------------------------------------------------- | ------------------------------------------------------- |
+| Jump server   | Controlled administrative entry point                           | Between administrators and a restricted management zone |
+| Proxy server  | Intermediates client requests and applies access policy         | Between clients and external or protected services      |
+| IDS           | Detects and alerts on suspicious activity                       | Monitor or tap where relevant traffic can be copied     |
+| IPS           | Detects and blocks suspicious activity                          | Inline where protected traffic must cross it            |
+| Load balancer | Distributes requests among service instances                    | In front of a server pool for capacity and availability |
+| Sensor        | Collects network, host, physical, or environmental observations | Close enough to the event or traffic being measured     |
+
+A jump server concentrates privileged access so it can be hardened, strongly authenticated, and
+logged. It is not a general browsing proxy. A proxy represents one side of a connection to the
+other: a forward proxy commonly controls client access outward, while a reverse proxy fronts
+servers. A load balancer improves distribution and resilience; security inspection may be an added
+feature, but it is not the defining purpose.
+
+IDS and IPS are distinguished by response and path. An IDS provides evidence and alerts without
+being the enforcement point. An IPS can reject malicious traffic because it is inline and active.
+Choosing IPS adds blocking power and also raises the consequences of false positives and device
+failure.
+
+### Port access and firewall scope
+
+IEEE 802.1X provides port-based network access control. A supplicant requests access, an
+authenticator such as a switch or access point controls the port, and an authentication server
+validates the request. Extensible Authentication Protocol (EAP) is the framework that carries an
+authentication method. EAP is not itself a firewall rule or a VPN.
+
+Port security can also restrict which endpoints may use a switch port. The goal is to stop an
+unapproved device from gaining ordinary network access merely because a live socket is available.
+
+| Firewall type                   | Best distinction                                                           |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| Layer 4 firewall                | Filters mainly by addresses, protocol, ports, and connection state         |
+| Layer 7 firewall                | Understands application-level requests and content                         |
+| Web application firewall (WAF)  | Specializes in HTTP/S traffic and attacks against web applications         |
+| Unified threat management (UTM) | Bundles several security functions into one appliance or service           |
+| Next-generation firewall (NGFW) | Adds application awareness and advanced inspection to firewall enforcement |
+
+A WAF is the precise choice for malicious HTTP requests aimed at application logic; it does not
+replace network segmentation for databases. A Layer 4 rule can efficiently allow TCP 443, but it
+does not understand whether the permitted HTTPS request contains an application attack. UTM
+emphasizes consolidated functions, while NGFW emphasizes application-aware enforcement and deeper
+inspection. Product labels overlap, so exam questions usually provide a defining requirement.
+
+<ExamTrap>
+  Port 443 is not proof that traffic is safe. A Layer 4 control can permit the connection because
+  the port is allowed; a Layer 7 control or WAF examines what the application request is doing.
+</ExamTrap>
+
+## Secure communication and access
+
+Secure remote access protects both the channel and the decision about who may use it. A virtual
+private network (VPN) creates a protected logical connection over an untrusted network. Remote
+access is the broader business capability; a VPN is one way to provide its secure channel.
+
+| Method            | What it protects or changes                                                        | Key distinction                                                   |
+| ----------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| TLS tunnel        | Protects an application session, commonly over TCP                                 | Often used for browser-based or application-specific access       |
+| IPsec tunnel      | Protects IP packets at the network layer                                           | Common for site-to-site and full network remote access            |
+| Remote-access VPN | Connects an individual user or device to enterprise resources                      | Identity and endpoint policy matter alongside encryption          |
+| Site-to-site VPN  | Connects networks through protected gateways                                       | Users may not initiate the tunnel individually                    |
+| SD-WAN            | Selects and manages wide-area paths through software-defined policy                | Optimizes branch connectivity across multiple links               |
+| SASE              | Delivers networking and security controls as a cloud-oriented service architecture | Brings access policy closer to distributed users and applications |
+
+Tunneling encapsulates one kind of traffic inside another. Encryption and tunneling are related but
+not identical: a tunnel defines a path and encapsulation, while the chosen protocol determines the
+security properties. TLS and IPsec can provide confidentiality, integrity, and peer authentication
+when correctly configured.
+
+Software-defined wide area networking (SD-WAN) improves centralized path selection and branch
+connectivity, but it is not automatically a complete security architecture. Secure access service
+edge (SASE) combines wide-area access with cloud-delivered security capabilities for distributed
+users, sites, and applications. In a scenario, choose SD-WAN when path management is the dominant
+requirement and SASE when consistent security policy for widely distributed access is central.
+
+<InPractice>
+  Encrypting a remote session protects it in transit; it does not make the remote administrator
+  trustworthy. Strong authentication, least privilege, device posture, logging, and a controlled
+  management path still apply after the tunnel is established.
+</InPractice>
+
+## Selecting effective controls
+
+“Most advanced” is not the same as effective. The effective control addresses the stated threat,
+sits on the relevant path, fits the required availability, and produces an acceptable operational
+cost. Use the clue in the scenario to select the narrowest control that solves the problem.
+
+| Scenario clue                                        | Strong candidate                   | Why neighbouring choices fall short                               |
+| ---------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------- |
+| Block malicious requests to a public web application | WAF in the application path        | A basic Layer 4 rule sees the permitted port, not the request     |
+| Detect suspicious traffic without risking an outage  | Passive IDS on a tap or mirror     | Inline IPS can block, but can also interrupt traffic              |
+| Force administrators through one audited route       | Jump server in the management zone | A VPN protects transit but does not centralize sessions by itself |
+| Reject unauthenticated devices at a wired port       | 802.1X                             | A firewall sees later flows, after attachment has occurred        |
+| Keep service available across several back ends      | Load balancer                      | An IDS observes attacks but does not distribute demand            |
+| Protect traffic between two branch networks          | IPsec site-to-site VPN             | TLS commonly protects a narrower application session              |
+
+Defense in depth may combine several of these, but each control needs a reason. More devices add
+management interfaces, dependencies, cost, and failure modes—an attack surface of their own.
+Validate placement, monitor the control, test its failure behavior, and review whether business
+traffic has found an uninspected bypass.
+
+## Test yourself
+
+1. An organization wants visibility into a critical link but cannot let a sensor failure interrupt
+   production. What placement and behavior fit best?
+2. A public application already allows HTTPS through a Layer 4 firewall. Which control should
+   inspect malicious HTTP requests?
+3. What distinguishes fail-open from fail-closed, and why is neither universally correct?
+
+<KeyPoint>
+  (1) A passive IDS or sensor fed by a tap or port mirror; it observes a copy rather than sitting in
+  the production path. (2) A WAF placed in the application traffic path. (3) Fail-open preserves
+  connectivity without enforcement, while fail-closed preserves enforcement by stopping traffic; the
+  correct choice depends on the scenario’s availability and security priorities.
+</KeyPoint>
