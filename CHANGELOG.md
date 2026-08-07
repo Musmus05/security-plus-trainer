@@ -77,6 +77,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   lesson and a 15-question bank. Domains 1 and 2 are complete; domain 3 is three quarters done.
 - The official acronym appendix extracted as source data (320 entries) with its extraction script.
 
+- The acronym glossary: all 320 official entries, searchable by acronym, English expansion or
+  French gloss, with relevance ranking and a diacritic-insensitive fold so “integrite” finds
+  “intégrité”. The English expansion stays primary in both interface languages.
+- French glosses for the whole appendix, in a file of their own so re-running the extraction
+  cannot discard them. The content gate compares the two key sets in both directions, which is
+  what makes the join's fallback unreachable rather than merely unlikely.
+- Objective links on a glossary entry are **derived** from the official outline rather than
+  stored, so the glossary cannot claim a link the syllabus does not make.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no
