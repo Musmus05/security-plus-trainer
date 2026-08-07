@@ -1,7 +1,7 @@
 {
   "name": "security-plus-trainer",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Bilingual (EN/FR) gamified study app for the CompTIA Security+ SY0-701 certification",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE",
