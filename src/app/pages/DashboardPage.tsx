@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { DOMAINS } from '@/content/exam/sy0-701/domains';
 import { ActivityHeatmap } from '@/features/dashboard/ActivityHeatmap';
 import { useDashboard } from '@/features/dashboard/useDashboard';
+import { DueCardsCallout } from '@/features/flashcards/DueCardsCallout';
 import { Badge, ButtonLink, Card, domainAccent, ProgressBar, ProgressRing, StatTile } from '@/ui';
 
 export function DashboardPage() {
@@ -76,6 +77,13 @@ export function DashboardPage() {
           </span>
         </div>
       </Card>
+
+      {/*
+        Reviews come before the next objective, deliberately. Cards fall due whether or not the
+        learner opens the app, so a backlog compounds while new material does not — and a schedule
+        loses all its value the moment it is routinely ignored.
+      */}
+      <DueCardsCallout />
 
       {nextObjective && (
         <Card className="flex flex-wrap items-center justify-between gap-4">

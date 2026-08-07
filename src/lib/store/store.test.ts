@@ -18,6 +18,7 @@ function reset(): void {
     settings: { ...DEFAULT_SETTINGS },
     gamification: INITIAL_GAMIFICATION,
     progress: {},
+    srs: {},
     lastStreakOutcome: null,
   });
 }
@@ -53,6 +54,7 @@ describe('settings', () => {
       'gamification',
       'progress',
       'settings',
+      'srs',
     ]);
   });
 
@@ -87,6 +89,37 @@ describe('settings', () => {
     expect(state.settings.dailyGoalXp).toBe(250);
     expect(state.gamification).toEqual(INITIAL_GAMIFICATION);
     expect(state.progress).toEqual({});
+    expect(state.srs).toEqual({});
+  });
+
+  it('migrates a version 2 blob without losing XP, streak or progress', () => {
+    /*
+     * Version 2 predates the review schedule. Losing a learner's streak and XP to a deployment is
+     * the failure this whole migration machinery exists to prevent, so the fixture carries real
+     * values rather than the initial state — an assertion against the defaults would pass even if
+     * the migration wiped everything.
+     */
+    seedStorage(
+      {
+        settings: { ...DEFAULT_SETTINGS, locale: 'en' },
+        gamification: {
+          totalXp: 480,
+          streak: { current: 6, longest: 9, lastCompletedDay: '2026-03-11', freezes: 1 },
+          ledger: { '2026-03-11': 55 },
+        },
+        progress: { '1.1': { lessonRead: true, quizAttempts: 3, bestAccuracy: 0.9 } },
+      },
+      2,
+    );
+
+    void useAppStore.persist.rehydrate();
+
+    const state = useAppStore.getState();
+    expect(state.gamification.totalXp).toBe(480);
+    expect(state.gamification.streak.current).toBe(6);
+    expect(state.progress['1.1']?.bestAccuracy).toBe(0.9);
+    // The new key is simply absent from the old blob and coerces to an empty schedule.
+    expect(state.srs).toEqual({});
   });
 });
 
@@ -252,8 +285,9 @@ describe('progress and XP', () => {
     expect(Object.keys(useAppStore.getState().progress)).toEqual(['1.1']);
   });
 
-  it('resetAll clears progress and gamification as well as settings', () => {
+  it('resetAll clears progress, gamification and the review schedule', () => {
     useAppStore.getState().markLessonRead('1.1');
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
     useAppStore.getState().setLocale('en');
 
     useAppStore.getState().resetAll();
@@ -262,5 +296,89 @@ describe('progress and XP', () => {
     expect(state.settings).toEqual(DEFAULT_SETTINGS);
     expect(state.gamification).toEqual(INITIAL_GAMIFICATION);
     expect(state.progress).toEqual({});
+    expect(state.srs).toEqual({});
+  });
+});
+
+describe('spaced repetition', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    reset();
+    setClockForTests(createFixedClock('2026-03-12T09:00:00Z'));
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('creates a schedule for a card graded for the first time', () => {
+    useAppStore.getState().gradeCard('acr:SIEM', 'good');
+
+    const card = useAppStore.getState().srs['acr:SIEM'];
+    expect(card).toBeDefined();
+    expect(card?.due).toBe('2026-03-13');
+    expect(card?.reps).toBe(1);
+  });
+
+  it('pays XP for the review whatever the grade', () => {
+    // The economy rewards the work, not the outcome: paying only for remembered cards would teach
+    // the learner to review what they already know.
+    useAppStore.getState().gradeCard('acr:AAA', 'again');
+    const afterFailure = useAppStore.getState().gamification.totalXp;
+
+    useAppStore.getState().gradeCard('acr:ACL', 'easy');
+    const afterSuccess = useAppStore.getState().gamification.totalXp;
+
+    expect(afterFailure).toBe(XP.flashcardReviewed);
+    expect(afterSuccess - afterFailure).toBe(XP.flashcardReviewed);
+  });
+
+  it('advances an existing schedule rather than starting it over', () => {
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
+
+    expect(useAppStore.getState().srs['acr:AAA']?.reps).toBe(2);
+  });
+
+  it('leaves a forgotten card due today so it comes back in the same session', () => {
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
+    useAppStore.getState().gradeCard('acr:AAA', 'again');
+
+    const card = useAppStore.getState().srs['acr:AAA'];
+    expect(card?.due).toBe('2026-03-12');
+    expect(card?.lapses).toBe(1);
+  });
+
+  it('writes no schedule for cards that were never graded', () => {
+    // 320 pre-seeded initial states would persist a schedule for cards the learner may never open.
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
+
+    expect(Object.keys(useAppStore.getState().srs)).toEqual(['acr:AAA']);
+  });
+
+  it('drops only the broken cards from a corrupt schedule', () => {
+    seedStorage({
+      settings: DEFAULT_SETTINGS,
+      gamification: INITIAL_GAMIFICATION,
+      srs: {
+        'acr:AAA': { ease: 2.5, intervalDays: 6, due: '2026-03-20', reps: 2, lapses: 0 },
+        // An ease this high would schedule the card past any horizon the learner will ever reach,
+        // and they would simply never see it again — a silent loss, the worst kind.
+        'acr:ACL': { ease: 1e9, intervalDays: 6, due: '2026-03-20', reps: 2, lapses: 0 },
+        'acr:AES': { ease: 2.5, intervalDays: 6, due: 'tomorrow', reps: 2, lapses: 0 },
+      },
+    });
+
+    void useAppStore.persist.rehydrate();
+
+    expect(Object.keys(useAppStore.getState().srs)).toEqual(['acr:AAA']);
+  });
+
+  it('keeps the schedule across a reload', () => {
+    useAppStore.getState().gradeCard('acr:AAA', 'good');
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().srs['acr:AAA']?.reps).toBe(1);
   });
 });

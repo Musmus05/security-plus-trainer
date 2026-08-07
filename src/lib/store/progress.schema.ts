@@ -79,6 +79,48 @@ export function coerceGamification(value: unknown): GamificationState {
   };
 }
 
+/* ------------------------------------------------- spaced-repetition schedule */
+
+/**
+ * One card's schedule.
+ *
+ * The bounds mirror `src/domain/srs/scheduler.ts` rather than trusting it, because this data comes
+ * back out of `localStorage`, where an ease of `1e9` is one edit away. An out-of-range value would
+ * schedule the card past the heat death of the universe and the learner would simply never see it
+ * again — a silent loss, which is the worst kind.
+ */
+export const cardStateSchema = z.object({
+  ease: z.number().min(1.3).max(2.8),
+  intervalDays: z.number().int().min(0).max(365),
+  due: dayKeySchema,
+  reps: z.number().int().nonnegative(),
+  lapses: z.number().int().nonnegative(),
+});
+
+export const srsMapSchema = z.record(z.string().min(1), cardStateSchema);
+export type SrsMap = z.infer<typeof srsMapSchema>;
+
+/**
+ * Coerce the persisted review schedule, card by card.
+ *
+ * Same rule as the progress map: one unparseable card costs that card. Losing a whole schedule
+ * because a single entry was truncated mid-write would throw away weeks of reviews.
+ */
+export function coerceSrs(value: unknown): SrsMap {
+  if (typeof value !== 'object' || value === null) {
+    return {};
+  }
+
+  const kept: SrsMap = {};
+  for (const [key, entry] of Object.entries(value)) {
+    const state = cardStateSchema.safeParse(entry);
+    if (key.length > 0 && state.success) {
+      kept[key] = state.data;
+    }
+  }
+  return kept;
+}
+
 /**
  * Coerce the per-objective progress map, dropping only the entries that are broken.
  *
