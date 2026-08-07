@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] — 2026-08-07
 
 ### Added
 
@@ -109,6 +109,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The persisted store now holds the exam in progress and up to 20 past results, at
   `STORE_VERSION` 4 with a migration.
 
+### Known limits
+
+- The 100–900 score is an estimate produced by this app under a stated linear mapping. CompTIA
+  does not publish its scaling, so it cannot be reproduced from outside; the raw score is the
+  number to trust.
+- Flashcards ship one deck — the 320 official acronyms. Per-objective decks are not written.
+- The learning path has no progressive unlock: every objective is reachable from the start.
+- French lessons are working translations reviewed against the official English wording, not a
+  professional translation.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no
@@ -119,4 +129,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   every domain mark carries its number. See
   [ADR-0006](docs/adr/0006-domain-colour-and-chart-encoding.md).
 
-[Unreleased]: https://github.com/Musmus05/security-plus-trainer/commits/main
+[1.0.0]: https://github.com/Musmus05/security-plus-trainer/releases/tag/v1.0.0

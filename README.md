@@ -18,13 +18,13 @@ JSON at any time.
 
 | Feature               | What it does                                                                                                           |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Learning path**     | 5 domains → 28 objective nodes, progressive unlock, mastery crowns                                                     |
+| **Learning path**     | 5 domains → 28 objective nodes on a winding trail, mastery crowns, a marker on what to do next                         |
 | **Lessons**           | Long-form notes per objective, in English and French                                                                   |
 | **Objective quizzes** | Immediate feedback with an explanation for the correct answer _and every distractor_                                   |
 | **Mock exam**         | 90 questions sampled at the official domain weights, 90-minute timer that survives a page reload, per-domain breakdown |
-| **Flashcards**        | Spaced repetition (SM-2 derived), due-card counters, one deck per objective plus an acronym deck                       |
+| **Flashcards**        | Spaced repetition (SM-2 derived), due-card counters, a 320-card acronym deck derived from the glossary                 |
 | **Acronym glossary**  | The full official acronym appendix, searchable, bilingual, cross-linked to objectives                                  |
-| **Gamification**      | XP, levels, daily streaks, badges, activity heatmap                                                                    |
+| **Gamification**      | XP, levels with security-career rank titles, daily streaks with freezes, mastery crowns, a 26-week activity heatmap    |
 
 ### Exam facts
 
@@ -105,13 +105,13 @@ et peut être exportée en JSON à tout moment.
 
 | Fonctionnalité        | Rôle                                                                                                                  |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **Parcours**          | 5 domaines → 28 nœuds d'objectifs, déverrouillage progressif, couronnes de maîtrise                                   |
+| **Parcours**          | 5 domaines → 28 nœuds sur un chemin sinueux, couronnes de maîtrise, repère sur la prochaine étape                     |
 | **Leçons**            | Fiches détaillées par objectif, en anglais et en français                                                             |
 | **Quiz par objectif** | Correction immédiate avec explication de la bonne réponse _et de chaque distracteur_                                  |
 | **Examen blanc**      | 90 questions tirées selon les poids officiels, chronomètre de 90 min qui survit à un rechargement, détail par domaine |
-| **Flashcards**        | Répétition espacée (dérivée de SM-2), compteur de cartes dues, un deck par objectif plus un deck d'acronymes          |
+| **Flashcards**        | Répétition espacée (dérivée de SM-2), compteur de cartes dues, deck de 320 acronymes issu du glossaire                |
 | **Glossaire**         | L'annexe officielle complète des acronymes, avec recherche, bilingue, reliée aux objectifs                            |
-| **Gamification**      | XP, niveaux, séries quotidiennes, badges, carte d'activité                                                            |
+| **Gamification**      | XP, niveaux avec titres de carrière, séries quotidiennes avec jokers, couronnes, carte d’activité sur 26 semaines     |
 
 ### Le français, et pourquoi il ne suffit pas
 
