@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { objectiveIdSchema } from '@/content/schemas';
+import type { ExamAttempt } from '@/domain/exam';
 
 /**
  * Persisted progress and gamification state.
@@ -119,6 +120,82 @@ export function coerceSrs(value: unknown): SrsMap {
     }
   }
   return kept;
+}
+
+/* ---------------------------------------------------------------- mock exams */
+
+/**
+ * An exam attempt in progress.
+ *
+ * Question **ids**, never questions. Ninety questions with bilingual prose and four explanations
+ * each is several hundred kilobytes, and a `localStorage` entry that large is a candidate for
+ * eviction — which would lose the attempt it was written to protect.
+ */
+export const examAttemptSchema = z.object({
+  questionIds: z.array(z.string().min(1)).max(200),
+  answers: z.record(z.string().min(1), z.array(z.string().min(1))),
+  flagged: z.array(z.string().min(1)),
+  index: z.number().int().nonnegative(),
+  startedAt: z.number().int().positive(),
+  durationMs: z.number().int().positive(),
+  seed: z.number().int(),
+});
+
+export const examResultSchema = z.object({
+  /** Epoch milliseconds the attempt was submitted. */
+  at: z.number().int().positive(),
+  correct: z.number().int().nonnegative(),
+  total: z.number().int().positive(),
+  unanswered: z.number().int().nonnegative(),
+  scaled: z.number().int(),
+  passed: z.boolean(),
+  byDomain: z.array(
+    z.object({
+      domain: z.number().int().min(1).max(5),
+      correct: z.number().int().nonnegative(),
+      total: z.number().int().nonnegative(),
+    }),
+  ),
+});
+export type ExamResultRecord = z.infer<typeof examResultSchema>;
+
+/**
+ * An attempt that no longer matches its questions is discarded rather than repaired.
+ *
+ * Half an exam is not a shorter exam: the domain weighting is the whole point of the format, and a
+ * partially-recovered attempt would report a score against a distribution nobody chose.
+ */
+export function coerceExamAttempt(value: unknown): ExamAttempt | null {
+  const parsed = examAttemptSchema.safeParse(value);
+  if (!parsed.success) {
+    return null;
+  }
+
+  // An index past the end would render a blank question with no way forward.
+  if (parsed.data.index >= parsed.data.questionIds.length) {
+    return null;
+  }
+
+  return parsed.data;
+}
+
+/** An unbounded history is a slow leak in a store measured in a few megabytes. */
+export const MAX_EXAM_HISTORY = 20;
+
+/** Attempt history, entry by entry: one corrupt result must not erase the rest. */
+export function coerceExamHistory(value: unknown): ExamResultRecord[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const kept: ExamResultRecord[] = [];
+  for (const entry of value) {
+    const parsed = examResultSchema.safeParse(entry);
+    if (parsed.success) {
+      kept.push(parsed.data);
+    }
+  }
+  return kept.sort((a, b) => b.at - a.at).slice(0, MAX_EXAM_HISTORY);
 }
 
 /**

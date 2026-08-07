@@ -99,6 +99,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   had been written, reviewed and committed while the app reported them as unwritten, because
   registration lives in more than one place and nothing checked that the places agreed.
 
+- The mock exam simulator: 90 questions drawn at the official domain weights (11 / 20 / 16 / 25 /
+  18) by largest remainder, free navigation with a review grid, flag-for-review, and a 90-minute
+  clock derived from the wall clock so it survives a reload and keeps running while the app is
+  closed. Running out of time submits the attempt.
+- The scaled 100–900 score is labelled as an estimate produced by this app, on the start screen as
+  well as the result. CompTIA does not publish its scaling, so the raw score leads and the mapping
+  used here is stated in full.
+- The persisted store now holds the exam in progress and up to 20 past results, at
+  `STORE_VERSION` 4 with a migration.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

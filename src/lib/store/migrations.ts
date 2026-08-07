@@ -10,7 +10,7 @@
  * shape, and writing a fake predecessor just to have something to test would prove nothing.
  */
 
-export const STORE_VERSION = 3;
+export const STORE_VERSION = 4;
 
 export type Migration = (state: unknown) => unknown;
 
@@ -33,6 +33,9 @@ export const MIGRATIONS: Record<number, Migration> = {
    * to do", it is treated as unrecoverable, and the learner loses their streak, XP and progress.
    */
   2: (state) => state,
+
+  /** 3 → 4: the mock exam attempt and its history joined the persisted state. Additive. */
+  3: (state) => state,
 };
 
 export interface MigrationOutcome {
