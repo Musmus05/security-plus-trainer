@@ -86,7 +86,8 @@
     },
     "glossary": {
       "title": "Acronyms",
-      "placeholder": "The acronym appendix arrives with the content model."
+      "subtitle_one": "{{count}} acronym from the official SY0-701 appendix",
+      "subtitle_other": "{{count}} acronyms from the official SY0-701 appendix"
     }
   },
   "common": {
@@ -190,5 +191,14 @@
       "medium": "Medium",
       "hard": "Hard"
     }
+  },
+  "glossary": {
+    "searchLabel": "Search the acronym list",
+    "searchPlaceholder": "Acronym, English expansion or French gloss…",
+    "clearSearch": "Clear the search",
+    "resultCount_one": "{{count}} result",
+    "resultCount_other": "{{count}} results",
+    "noResults": "No acronym matches “{{query}}”.",
+    "examinedIn": "In the scope of"
   }
 }

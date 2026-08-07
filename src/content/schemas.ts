@@ -217,8 +217,21 @@ export type Flashcard = z.infer<typeof flashcardSchema>;
 /* ----------------------------------------------------------------- acronyms */
 
 export const acronymSchema = z.object({
-  // Covers the shapes the official list actually uses: AES-256, IEEE 802.1X, S/MIME, IaaS.
-  acronym: z.string().regex(/^[A-Z0-9][A-Z0-9a-z/.-]{0,15}$/),
+  /*
+   * Widened to the shapes the official appendix actually contains, which is not what an acronym
+   * "obviously" looks like. Written from imagination, this pattern rejected four real entries:
+   * `ATT&CK`, `TACACS+`, `PCI DSS` and `SE Linux` — an ampersand, a plus sign, and two entries with
+   * an internal space. The rest of the list needs the slash in `S/MIME`, the dot in `802.1X`, the
+   * hyphen in `AES-256` and the lower case in `IaaS`.
+   *
+   * One internal space is allowed, not many: the pattern still has to reject a phrase that reached
+   * the list because the PDF's column layout merged two rows, which is how the extraction failed
+   * twice before it was right.
+   */
+  acronym: z
+    .string()
+    .max(16)
+    .regex(/^[A-Z0-9][A-Za-z0-9/.&+-]*( [A-Za-z0-9/.&+-]+)?$/),
   /** The official expansion, in English. Not translated: it is what appears on the exam. */
   en: z.string().min(1),
   /** A short French gloss to aid comprehension, alongside the English expansion. */

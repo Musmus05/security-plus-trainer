@@ -16,6 +16,7 @@ import type { z } from 'zod';
 
 import { EXAM_META } from '../src/content/exam-meta.ts';
 import { examMetaSchema } from '../src/content/exam-meta.schema.ts';
+import { ACRONYMS, FRENCH_GLOSS_KEYS } from '../src/content/exam/sy0-701/acronyms.ts';
 import { ALL_OBJECTIVES, DOMAINS, findObjective } from '../src/content/exam/sy0-701/domains.ts';
 import { QUESTIONS_1_1 } from '../src/content/exam/sy0-701/questions/1-1.ts';
 import { QUESTIONS_1_2 } from '../src/content/exam/sy0-701/questions/1-2.ts';
@@ -29,7 +30,12 @@ import { QUESTIONS_2_5 } from '../src/content/exam/sy0-701/questions/2-5.ts';
 import { QUESTIONS_3_2 } from '../src/content/exam/sy0-701/questions/3-2.ts';
 import { QUESTIONS_3_3 } from '../src/content/exam/sy0-701/questions/3-3.ts';
 import { QUESTIONS_3_1 } from '../src/content/exam/sy0-701/questions/3-1.ts';
-import { examOutlineSchema, type Question, questionSchema } from '../src/content/schemas.ts';
+import {
+  acronymListSchema,
+  examOutlineSchema,
+  type Question,
+  questionSchema,
+} from '../src/content/schemas.ts';
 
 interface Violation {
   source: string;
@@ -300,6 +306,81 @@ for (const [objectiveId, locales] of lessonsByObjective) {
   for (const required of ['en', 'fr']) {
     if (!locales.has(required)) {
       fail('lessons', objectiveId, `has no ${required} lesson; both languages are required`);
+    }
+  }
+}
+
+/* -------------------------------------------------------------------- acronyms */
+
+/**
+ * The acronym appendix.
+ *
+ * `src/content/exam/sy0-701/acronyms.ts` joins a machine-extracted English list to a hand-authored
+ * French one by key. That join fails silently — a missing gloss falls back to the English expansion
+ * and renders as a plausible-looking row — so the two key sets are compared here in both
+ * directions. This check is what makes the fallback in that file unreachable rather than merely
+ * unlikely.
+ */
+sourcesChecked += 1;
+validate('acronyms', acronymListSchema, ACRONYMS);
+
+const officialAcronyms = new Set(ACRONYMS.map((entry) => entry.acronym));
+const glossedAcronyms = new Set(FRENCH_GLOSS_KEYS);
+
+for (const acronym of officialAcronyms) {
+  if (!glossedAcronyms.has(acronym)) {
+    fail('acronyms', acronym, 'extracted from the PDF but has no French gloss');
+  }
+}
+
+for (const acronym of glossedAcronyms) {
+  if (!officialAcronyms.has(acronym)) {
+    fail(
+      'acronyms',
+      acronym,
+      'has a French gloss but is not in the extracted list — a typo in the key, or an entry ' +
+        'invented by hand',
+    );
+  }
+}
+
+/**
+ * Entries whose French gloss is identical to the English expansion **on purpose**.
+ *
+ * An identical pair almost always means the gloss was skipped, so it is an error by default. These
+ * five are the real exceptions, and naming each one is the point: it costs a reviewer one line to
+ * admit an untranslated entry, and nothing at all to leave 315 of them silently untranslated.
+ */
+const UNTRANSLATED_BY_DESIGN = new Map([
+  ['AV', 'antivirus is the same word in French'],
+  ['GPG', 'Gnu Privacy Guard is a product name'],
+  ['IEEE', 'the institute is referred to by its English name in French'],
+  ['PGP', 'Pretty Good Privacy is a product name'],
+  ['VBA', 'Visual Basic is a product name'],
+]);
+
+for (const entry of ACRONYMS) {
+  if (entry.fr.includes("'")) {
+    fail('acronyms', entry.acronym, 'French glosses must use ’ rather than the ASCII apostrophe');
+  }
+
+  if (
+    entry.fr.toLowerCase() === entry.en.toLowerCase() &&
+    !UNTRANSLATED_BY_DESIGN.has(entry.acronym)
+  ) {
+    fail(
+      'acronyms',
+      entry.acronym,
+      `the French gloss repeats the English expansion: "${entry.en}". If that is correct, add it ` +
+        'to UNTRANSLATED_BY_DESIGN with a reason.',
+    );
+  }
+
+  // Derived from the outline, so an id that is not an objective means the derivation is broken,
+  // not that the data is stale.
+  for (const objectiveId of entry.objectives) {
+    if (findObjective(objectiveId) === undefined) {
+      fail('acronyms', entry.acronym, `derived a link to a non-existent objective ${objectiveId}`);
     }
   }
 }

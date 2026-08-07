@@ -86,7 +86,8 @@
     },
     "glossary": {
       "title": "Acronymes",
-      "placeholder": "L’annexe des acronymes arrive avec le modèle de contenu."
+      "subtitle_one": "{{count}} acronyme de l’annexe officielle SY0-701",
+      "subtitle_other": "{{count}} acronymes de l’annexe officielle SY0-701"
     }
   },
   "common": {
@@ -190,5 +191,14 @@
       "medium": "Moyen",
       "hard": "Difficile"
     }
+  },
+  "glossary": {
+    "searchLabel": "Rechercher un acronyme",
+    "searchPlaceholder": "Sigle, définition anglaise ou glose française…",
+    "clearSearch": "Effacer la recherche",
+    "resultCount_one": "{{count}} résultat",
+    "resultCount_other": "{{count}} résultats",
+    "noResults": "Aucun acronyme ne correspond à « {{query}} ».",
+    "examinedIn": "Au programme de"
   }
 }

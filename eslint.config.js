@@ -34,9 +34,15 @@ export default tseslint.config(
     },
   },
 
-  // Plain JS files get no type-aware rules — there is no type information to reason about.
+  /*
+   * Plain JS files get no type-aware rules — there is no type information to reason about.
+   *
+   * `.mjs` is here for the same reason as `.js` and not by analogy: `scripts/extract-acronyms.mjs`
+   * is a one-shot Node extractor that belongs to no tsconfig, and without this the project service
+   * refuses to parse it at all rather than merely lint it loosely.
+   */
   {
-    files: ['**/*.js'],
+    files: ['**/*.js', '**/*.mjs'],
     extends: [tseslint.configs.disableTypeChecked],
     languageOptions: { globals: globals.node },
   },
