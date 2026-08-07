@@ -1,0 +1,124 @@
+## Pourquoi cet objectif compte
+
+Cet objectif ouvre le domaine 2, le plus lourd de l’examen (22 %). Il ne contient aucune technique :
+uniquement **qui attaque, avec quels moyens, et pourquoi**.
+
+C’est trompeusement simple. Les acteurs semblent évidents jusqu’à ce qu’un scénario décrive une
+attaque et demande lequel en est l’auteur le plus probable. La réponse ne se déduit jamais de la
+technique employée — elle se déduit de la **combinaison ressources + motivation**.
+
+<KeyPoint>
+  Ne cherche pas « quelle attaque » mais **« qui avait intérêt à faire ça, et qui en avait les
+  moyens »**. Deux acteurs peuvent employer exactement le même outil ; ce qui les distingue est ce
+  qu’ils veulent et ce qu’ils peuvent se payer.
+</KeyPoint>
+
+## Les acteurs
+
+| Acteur                                                      | Ressources       | Sophistication | Motivation dominante                       |
+| ----------------------------------------------------------- | ---------------- | -------------- | ------------------------------------------ |
+| <Term en="Nation-state">État-nation</Term>                  | Quasi illimitées | Très haute     | Espionnage, guerre, perturbation           |
+| <Term en="Organized crime">Crime organisé</Term>            | Élevées          | Haute          | Gain financier                             |
+| <Term en="Insider threat">Menace interne</Term>             | Variables        | Variable       | Rancune, gain financier, erreur            |
+| <Term en="Hacktivist">Hacktiviste</Term>                    | Faibles          | Moyenne        | Conviction politique ou philosophique      |
+| <Term en="Shadow IT">Informatique fantôme</Term>            | Internes         | Faible         | **Aucune** — ce ne sont pas des attaquants |
+| <Term en="Unskilled attacker">Attaquant non qualifié</Term> | Très faibles     | Très faible    | Notoriété, curiosité, chaos                |
+
+<ExamTrap>
+  L’<Term en="Shadow IT">informatique fantôme</Term> est listée parmi les acteurs de la menace mais
+  n’a **aucune intention malveillante**. Ce sont des collègues qui contournent l’informatique
+  officielle pour travailler plus vite. Le risque est réel, l’intention ne l’est pas — et une
+  question qui insiste sur l’absence de malveillance décrit très probablement cela.
+</ExamTrap>
+
+<ExamTrap>
+  « Attaquant non qualifié » a remplacé l’ancien terme <Term en="script kiddie">script kiddie</Term>
+  . Les deux désignent quelqu’un qui exécute des outils sans les comprendre. Ce qui compte : il est
+  imprévisible et bruyant, donc facile à détecter, mais il peut tout de même causer des dégâts avec
+  un outil emprunté.
+</ExamTrap>
+
+## Les attributs qui les séparent
+
+L’examen retient trois attributs, et il les combine.
+
+**Interne ou externe** — un interne dispose déjà d’un accès légitime. Il n’a pas besoin de percer un
+périmètre : il est dedans. C’est ce qui rend la menace interne si difficile à détecter, pas sa
+sophistication.
+
+**Ressources et financement** — c’est le seul attribut qui explique une attaque tenue sur des mois.
+Un hacktiviste ne peut pas se payer une vulnérabilité inconnue à sept chiffres ; un État si.
+
+**Niveau de sophistication et de capacité** — la capacité à développer ses propres outils plutôt
+qu’à utiliser ceux des autres.
+
+<Mnemonic>
+  **Une attaque discrète, lente, sur mesure, qui dure des mois → un État.** Personne d’autre ne
+  finance ce niveau de patience. Une attaque bruyante et immédiate → quelqu’un qui n’a rien à
+  perdre.
+</Mnemonic>
+
+## Les motivations
+
+| Motivation                                                   | Ce qu’elle produit comme scénario                  |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| <Term en="Financial gain">Gain financier</Term>              | Rançongiciel, fraude, revente de données           |
+| <Term en="Data exfiltration">Exfiltration de données</Term>  | Vol silencieux, sans dégradation                   |
+| <Term en="Espionage">Espionnage</Term>                       | Vol de secrets industriels ou d’État, sur la durée |
+| <Term en="Service disruption">Perturbation de service</Term> | Déni de service, sabotage                          |
+| <Term en="Blackmail">Chantage</Term>                         | Menace de divulgation                              |
+| <Term en="Philosophical/political beliefs">Conviction</Term> | Défiguration de site, fuite militante              |
+| <Term en="Revenge">Vengeance</Term>                          | Salarié licencié, sabotage ciblé                   |
+| <Term en="Disruption/chaos">Chaos</Term>                     | Destruction sans bénéfice pour l’auteur            |
+| <Term en="War">Guerre</Term>                                 | Attaque d’infrastructure critique                  |
+| <Term en="Ethical">Éthique</Term>                            | Chercheur en sécurité, divulgation responsable     |
+
+<KeyPoint>
+  La motivation **éthique** est dans la liste officielle. Un chercheur qui signale une faille est un
+  acteur au sens de cet objectif, même s’il aide. Une question qui décrit une intrusion suivie d’un
+  rapport détaillé envoyé à l’entreprise ne décrit pas un criminel.
+</KeyPoint>
+
+## Lire un scénario correctement
+
+L’examen construit ces questions en donnant deux indices : un sur les moyens, un sur le but. Les
+distracteurs sont les acteurs qui ont l’un mais pas l’autre.
+
+<InPractice>
+  « Une intrusion découverte après quatorze mois, aucune donnée détruite, uniquement des documents
+  de recherche copiés. »
+
+Quatorze mois sans être vu suppose un financement et une discipline considérables : cela écarte
+l’attaquant non qualifié et l’hacktiviste. Rien n’est monnayé rapidement : cela écarte le crime
+organisé, dont le modèle est le rendement. Des documents de recherche volés en silence sur la durée,
+c’est de l’espionnage — donc un État-nation.
+
+</InPractice>
+
+<ExamTrap>
+  Le crime organisé et l’État-nation ont tous deux de gros moyens. Ce qui les sépare est le
+  **rythme** : le crime organisé monétise vite, parce que le temps coûte de l’argent. Un État peut
+  attendre des années.
+</ExamTrap>
+
+## La menace interne, cas particulier
+
+Un interne n’a pas à franchir de périmètre, ce qui rend la plupart des contrôles réseau inutiles
+contre lui. Les contre-mesures sont donc ailleurs : moindre privilège, séparation des tâches,
+rotation des postes, revues d’accès, et la traçabilité vue en 1.2.
+
+Toutes les menaces internes ne sont pas malveillantes. Un salarié qui clique sur un lien de
+hameçonnage est un vecteur, pas un acteur — une distinction que l’objectif 2.2 reprend.
+
+## Se tester
+
+1. Un site institutionnel est défiguré avec un message politique, en pleine journée, sans vol de
+   données. Quel acteur ?
+2. Quel acteur est listé alors qu’il n’a aucune intention malveillante ?
+3. Deux acteurs disposent de gros moyens. Qu’est-ce qui permet de les distinguer dans un scénario ?
+
+<KeyPoint>
+  (1) Un hacktiviste — la visibilité **est** le but, et il n’y a aucun gain financier. (2)
+  L’informatique fantôme. (3) Le rythme : le crime organisé monétise vite, l’État-nation peut
+  attendre des années.
+</KeyPoint>

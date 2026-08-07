@@ -22,6 +22,50 @@ const LESSONS: Partial<Record<string, Partial<Record<Locale, LessonLoader>>>> = 
     fr: async () => (await import('./exam/sy0-701/lessons/1-1.fr.mdx')).default,
     en: async () => (await import('./exam/sy0-701/lessons/1-1.en.mdx')).default,
   },
+  '1.2': {
+    fr: async () => (await import('./exam/sy0-701/lessons/1-2.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/1-2.en.mdx')).default,
+  },
+  '1.3': {
+    fr: async () => (await import('./exam/sy0-701/lessons/1-3.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/1-3.en.mdx')).default,
+  },
+  '1.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/1-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/1-4.en.mdx')).default,
+  },
+  '2.1': {
+    fr: async () => (await import('./exam/sy0-701/lessons/2-1.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/2-1.en.mdx')).default,
+  },
+  '2.2': {
+    fr: async () => (await import('./exam/sy0-701/lessons/2-2.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/2-2.en.mdx')).default,
+  },
+  '2.3': {
+    fr: async () => (await import('./exam/sy0-701/lessons/2-3.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/2-3.en.mdx')).default,
+  },
+  '2.4': {
+    fr: async () => (await import('./exam/sy0-701/lessons/2-4.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/2-4.en.mdx')).default,
+  },
+  '2.5': {
+    fr: async () => (await import('./exam/sy0-701/lessons/2-5.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/2-5.en.mdx')).default,
+  },
+  '3.2': {
+    fr: async () => (await import('./exam/sy0-701/lessons/3-2.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/3-2.en.mdx')).default,
+  },
+  '3.3': {
+    fr: async () => (await import('./exam/sy0-701/lessons/3-3.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/3-3.en.mdx')).default,
+  },
+  '3.1': {
+    fr: async () => (await import('./exam/sy0-701/lessons/3-1.fr.mdx')).default,
+    en: async () => (await import('./exam/sy0-701/lessons/3-1.en.mdx')).default,
+  },
 };
 
 export function hasLesson(objectiveId: string, locale: Locale): boolean {

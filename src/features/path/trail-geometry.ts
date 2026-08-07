@@ -12,7 +12,7 @@ export const NODE_RADIUS = NODE_SIZE / 2;
 /** Vertical distance between node centres. */
 export const NODE_SPACING = 124;
 /** How far a node swings from the centre line at the widest point. */
-export const AMPLITUDE = 62;
+export const AMPLITUDE = 84;
 
 export interface TrailPoint {
   x: number;
@@ -22,12 +22,21 @@ export interface TrailPoint {
 /**
  * Horizontal offset for the nth node.
  *
- * A sine with a six-node period: 0 → right → right → 0 → left → left. That reads as a road winding
- * downhill. A strict alternate-left-right zig-zag looks mechanical, and a period that divides the
- * domain sizes evenly (4, 5, 4, 9, 6) would make every domain look identical.
+ * A sine with a **four-node** period: centre → right → centre → left, repeating. Each domain
+ * therefore shows whole, balanced swings whatever its length.
+ *
+ * The previous version used a six-node period, chosen so the domains would not all look alike. Two
+ * things were wrong with it. Sampling a six-node sine puts nodes 1 and 2 at the same x, and 4 and 5
+ * likewise, so the trail rendered as a staircase rather than a curve. Worse, three of the five
+ * domains have four or five objectives, and a six-node period never completes inside them: domain 1
+ * drew 0, +A, +A, 0 — drifting right and returning, never once swinging left. The wave was only ever
+ * visible in domain 4.
+ *
+ * Distinguishing the domains is the accent colour's job (ADR-0006), not the geometry's. A rhythm
+ * that closes inside every domain is worth more than a rhythm that varies between them.
  */
 export function offsetAt(index: number): number {
-  const offset = Math.round(AMPLITUDE * Math.sin((index * Math.PI) / 3));
+  const offset = Math.round(AMPLITUDE * Math.sin((index * Math.PI) / 2));
 
   /*
    * Normalise negative zero. `sin(2π)` is −2.4e−16 rather than 0, so `Math.round` returns `-0` at
@@ -84,7 +93,19 @@ export function trailPath(points: readonly TrailPoint[]): string {
  *
  * Opposite the swing, so the label never overlaps the curve. A node pushed right gets its label on
  * the left, and vice versa.
+ *
+ * With a four-node period every other node sits dead centre, where there is no swing to be opposite
+ * of. Sending all of those to one side would pile three labels out of four on the left. They
+ * alternate instead, which follows the wave: the centred node between a right swing and a left one
+ * takes the side the trail is heading away from.
  */
 export function labelSide(index: number): 'left' | 'right' {
-  return offsetAt(index) > 0 ? 'left' : 'right';
+  const offset = offsetAt(index);
+  if (offset > 0) {
+    return 'left';
+  }
+  if (offset < 0) {
+    return 'right';
+  }
+  return index % 4 === 0 ? 'right' : 'left';
 }

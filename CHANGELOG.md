@@ -73,6 +73,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A visual pass on the learning path: a winding node trail with per-domain accent strips, crown pips,
   and a marker on the objective the dashboard is pointing at.
 
+- Content for 12 of the 28 objectives: 1.1–1.4, 2.1–2.5 and 3.1–3.3, each with a bilingual
+  lesson and a 15-question bank. Domains 1 and 2 are complete; domain 3 is three quarters done.
+- The official acronym appendix extracted as source data (320 entries) with its extraction script.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no

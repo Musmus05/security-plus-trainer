@@ -1,0 +1,182 @@
+## Pourquoi cet objectif compte
+
+Une architecture de sécurité ne se choisit pas parce qu’un modèle serait toujours supérieur aux
+autres. L’examen fournit plutôt une contrainte métier — montée en charge rapide, séparation physique
+stricte, correctifs impossibles, faible latence ou reprise après panne — puis demande quel modèle
+présente les implications de sécurité adaptées. Les points se gagnent en comparant les compromis,
+pas en récitant des définitions.
+
+<KeyPoint>
+  Lis chaque scénario d’architecture comme deux questions : **qui contrôle chaque couche** et
+  **quelle contrainte domine** ? Confier du matériel à un fournisseur ne lui confie pas forcément
+  les identités et les données. Isoler un automate réduit certains chemins d’attaque, mais peut
+  compliquer les mises à jour et la reprise.
+</KeyPoint>
+
+## Où réside l’infrastructure
+
+| Modèle                                                       | Avantage de sécurité                                                        | Coût ou contrainte de sécurité                                              |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| <Term en="Cloud">Nuage</Term>                                | Capacité élastique, déploiement rapide, locaux exploités par le fournisseur | Responsabilités partagées, dépendance externe, risque de configuration      |
+| <Term en="On-premises">Sur site</Term>                       | Contrôle direct du matériel, du lieu et du calendrier des changements       | L’organisation finance, corrige, alimente et restaure tout                  |
+| <Term en="Hybrid considerations">Architecture hybride</Term> | Placement des charges selon leur sensibilité ou leurs besoins               | Deux environnements, leurs identités et leur liaison doivent être sécurisés |
+
+### Dans le nuage, la responsabilité se partage
+
+Une <Term en="Responsibility matrix">matrice des responsabilités</Term> indique quelles tâches de
+sécurité reviennent au fournisseur et lesquelles restent au client. La frontière exacte varie avec
+le service, mais externaliser l’infrastructure ne revient pas à externaliser tous les contrôles. Le
+fournisseur peut protéger ses bâtiments tandis que le client expose des données par une autorisation
+trop large. À l’examen, « cela se trouve dans le nuage » ne prouve jamais qu’une tâche appartient à
+quelqu’un d’autre.
+
+Les choix hybrides imposent de garder cohérents les identités, la surveillance, le traitement des
+données et les règles réseau. La liaison entre les deux environnements fait aussi partie de
+l’architecture. Les <Term en="Third-party vendors">fournisseurs tiers</Term> ajoutent une dépendance
+et un risque de chaîne d’approvisionnement. Un contrat peut répartir les devoirs et transférer une
+partie de l’impact financier, sans supprimer la nécessité d’évaluer et de surveiller ce risque.
+
+<ExamTrap>
+  Le transfert du risque change qui absorbe une perte convenue ; il ne fait disparaître ni la
+  vulnérabilité ni la dépendance opérationnelle. Un contrat n’est pas un pare-feu et une assurance
+  n’est pas un correctif.
+</ExamTrap>
+
+## Comment organiser les applications et le contrôle
+
+| Concept                                                                        | Ce qui change                                                     | Implication de sécurité principale                                                                        |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| <Term en="Infrastructure as code (IaC)">Infrastructure en tant que code</Term> | Des modèles versionnés déclarent l’infrastructure                 | Revue et déploiement reproductibles, mais une faiblesse du modèle peut être répliquée partout             |
+| <Term en="Serverless">Informatique sans serveur</Term>                         | Le fournisseur exploite les serveurs et la plateforme d’exécution | Moins d’administration des hôtes, mais le code, les droits, les secrets et les données restent à protéger |
+| <Term en="Microservices">Microservices</Term>                                  | Une application est divisée en petits services communicants       | Meilleures limites de panne et de déploiement, mais multiplication des identités, API et flux internes    |
+| <Term en="Centralized">Centralisé</Term>                                       | Les décisions ou services convergent vers un composant central    | Règles et visibilité cohérentes, mais cible de grande valeur et point de panne possible                   |
+| <Term en="Decentralized">Décentralisé</Term>                                   | Le contrôle ou le traitement est distribué                        | Moins de dépendance à un centre unique, mais inventaire et réponse coordonnée plus difficiles             |
+
+L’IaC est puissante parce qu’une définition relue peut être déployée plusieurs fois puis comparée à
+l’état attendu. Cette répétition élargit aussi le rayon d’impact : un port public ou un droit
+excessif inscrit dans le modèle peut atteindre tous les environnements. Il faut protéger le dépôt,
+réviser les changements, analyser les modèles et empêcher les écarts non approuvés.
+
+« Sans serveur » ne signifie pas que les serveurs ont disparu, mais que le client ne les administre
+pas. Celui-ci protège toujours la logique applicative, les déclencheurs, les dépendances, les
+autorisations, les secrets et les données. Les microservices remplacent de même une grande frontière
+de confiance par de nombreuses petites. Leurs API exigent authentification et autorisation, et leurs
+dépendances nombreuses demandent inventaire et surveillance.
+
+<Mnemonic>
+  **Géré ne veut pas dire sans propriétaire.** Plus le fournisseur administre les couches basses,
+  plus l’attention du client remonte vers les identités, la configuration, le code et les données.
+</Mnemonic>
+
+## Isolement et réseaux programmables
+
+| Technique                                                                      | Frontière                                                     | Force                                               | Limite                                                               |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------- |
+| <Term en="Physical isolation">Isolement physique</Term>                        | Matériel ou câblage distinct                                  | Séparation forte avec peu de composants communs     | Coûteux et moins souple à exploiter                                  |
+| <Term en="Air-gapped">Coupure physique des réseaux</Term>                      | Aucune liaison directe avec les autres réseaux                | Réduit fortement les chemins réseau entrants        | Les mises à jour et transferts exigent une autre procédure contrôlée |
+| <Term en="Logical segmentation">Segmentation logique</Term>                    | Des règles séparent des zones sur une infrastructure partagée | Plus souple et moins chère que du matériel dédié    | Une erreur de règle ou de configuration affaiblit la frontière       |
+| <Term en="Software-defined networking (SDN)">Réseau défini par logiciel</Term> | Un logiciel programme centralement le comportement du réseau  | Modifications rapides et cohérentes, automatisation | Le contrôleur et le plan de gestion deviennent des actifs critiques  |
+
+Une coupure réseau est une forme particulière d’isolement physique centrée sur la connectivité. Elle
+n’est pas magique : supports amovibles, équipements de maintenance et personnes peuvent franchir la
+frontière. La segmentation logique applique des zones et des politiques sur du matériel partagé.
+Elle peut contenir une compromission sans acheter un réseau distinct pour chaque niveau de
+confiance, à condition que les règles soient correctes.
+
+Le SDN sépare le contrôle du réseau de l’acheminement des paquets : la politique est programmée au
+lieu d’être réglée boîtier par boîtier. La réactivité et la cohérence progressent, mais une panne ou
+une compromission du plan de contrôle peut toucher une grande partie du réseau. Les accès
+d’administration et la résilience des contrôleurs deviennent donc essentiels.
+
+## Conteneurs et machines virtuelles
+
+| Propriété            | <Term en="Containerization">Conteneurisation</Term>           | <Term en="Virtualization">Virtualisation</Term>                                      |
+| -------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Unité isolée         | Processus et dépendances empaquetées                          | Machine virtuelle complète avec son propre système invité                            |
+| Couche partagée      | Le noyau de l’hôte est normalement partagé                    | L’hyperviseur et l’hôte physique sont partagés                                       |
+| Bénéfice courant     | Faible poids, démarrage rapide, déploiement cohérent          | Séparation plus forte et systèmes invités différents                                 |
+| Priorité de sécurité | Images, registres, orchestration, secrets, frontière du noyau | Hyperviseur, images, instantanés, correctifs invités, concurrence sur les ressources |
+
+Aucune frontière n’est absolue. Une image vulnérable peut produire de nombreuses instances faibles
+identiques, et la compromission de l’orchestrateur ou de l’hyperviseur peut affecter plusieurs
+charges. Les conteneurs consomment généralement moins de ressources que les machines virtuelles,
+mais partagent davantage de couches de l’hôte. La virtualisation fournit à chaque invité une
+frontière de système d’exploitation, sans dispenser aucun invité de maintenance.
+
+## Systèmes spécialisés et opérationnels
+
+| Système                                                                                                                                                 | Besoin distinctif                                      | Implication de sécurité                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| <Term en="Internet of Things (IoT)">Internet des objets</Term>                                                                                          | Capteurs et appareils courants connectés               | Parc vaste et hétérogène, interfaces limitées, suivi logiciel inégal             |
+| <Term en="Industrial control systems (ICS) / supervisory control and data acquisition (SCADA)">Systèmes de contrôle industriel et de supervision</Term> | Surveiller ou commander des procédés physiques         | Sûreté et disponibilité peuvent primer sur la vitesse de changement habituelle   |
+| <Term en="Real-time operating system (RTOS)">Système d’exploitation temps réel</Term>                                                                   | Réponse prévisible sous des contraintes de temps       | Les contrôles de sécurité ne doivent pas rompre le déterminisme temporel         |
+| <Term en="Embedded systems">Système embarqué</Term>                                                                                                     | Calcul intégré à un appareil pour une fonction précise | Longue durée de vie, faibles ressources et maintenance dépendante du fournisseur |
+
+Ces catégories peuvent se recouper. Un capteur industriel peut être connecté, embarqué et piloté par
+un système temps réel. L’examen distingue la raison de la conception : connectivité pour l’IoT,
+procédé physique pour ICS ou SCADA, délais garantis pour RTOS, fonction dédiée pour le système
+embarqué. Beaucoup de ces appareils n’acceptent ni agent de sécurité ordinaire ni correctifs
+fréquents. Segmentation, accès d’administration restreints, surveillance et contrôles compensatoires
+deviennent essentiels quand la mise à jour directe est impossible.
+
+<InPractice>
+  Redémarrer un ordinateur de bureau après un correctif est banal. Redémarrer un contrôleur pendant
+  un cycle de production peut arrêter une machine ou nuire à la sûreté. Une même vulnérabilité mène
+  donc à un traitement différent parce que l’architecture modifie la conséquence du contrôle.
+</InPractice>
+
+## Haute disponibilité
+
+La <Term en="High availability">haute disponibilité</Term> emploie redondance et basculement pour
+maintenir un service lorsqu’un composant tombe en panne. Elle peut multiplier les nœuds, chemins,
+sites ou sources électriques. Elle améliore la disponibilité, mais ne remplace pas les sauvegardes :
+des systèmes redondants peuvent répliquer fidèlement une corruption ou une modification
+malveillante. Elle peut aussi augmenter la surface d’attaque et le coût, puisque davantage de
+composants doivent être protégés.
+
+<ExamTrap>
+  La haute disponibilité répond à « le service peut-il continuer maintenant ? ». Une sauvegarde
+  répond à « peut-on restaurer des données antérieures ? ». Toutes deux servent la résilience, mais
+  ne traitent pas la même panne.
+</ExamTrap>
+
+## Les douze axes de comparaison
+
+| Considération                                                               | Question à poser                                                                                    |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| <Term en="Availability">Disponibilité</Term>                                | Quelle durée de service utilisable la conception fournit-elle ?                                     |
+| <Term en="Resilience">Résilience</Term>                                     | Peut-elle absorber une panne et continuer ou s’adapter ?                                            |
+| <Term en="Cost">Coût</Term>                                                 | Quelles dépenses d’achat, d’exploitation, de sécurité et de reprise entraîne-t-elle ?               |
+| <Term en="Responsiveness">Réactivité</Term>                                 | À quelle vitesse réagit-elle à une charge, une menace ou un changement métier ?                     |
+| <Term en="Scalability">Évolutivité</Term>                                   | La capacité peut-elle croître ou diminuer sans refonte ?                                            |
+| <Term en="Ease of deployment">Facilité de déploiement</Term>                | Avec quelle sûreté et quelle régularité peut-elle être introduite ?                                 |
+| <Term en="Risk transference">Transfert du risque</Term>                     | Quelles conséquences sont déplacées contractuellement ou financièrement vers un tiers ?             |
+| <Term en="Ease of recovery">Facilité de reprise</Term>                      | Combien la restauration après panne est-elle lente ou complexe ?                                    |
+| <Term en="Patch availability">Disponibilité des correctifs</Term>           | Une mise à jour maintenue existe-t-elle lorsqu’une faille apparaît ?                                |
+| <Term en="Inability to patch">Impossibilité d’appliquer un correctif</Term> | Quels contrôles compensatoires faut-il quand la mise à jour est impossible ?                        |
+| <Term en="Power">Alimentation électrique</Term>                             | Quelles dépendances existent pour la source principale, le secours, le refroidissement et le site ? |
+| <Term en="Compute">Capacité de calcul</Term>                                | Le traitement suffit-il à la charge et aux contrôles de sécurité ?                                  |
+
+Ne confonds pas les termes voisins. La **disponibilité** mesure si le service est utilisable ; la
+**résilience** décrit sa capacité à supporter une perturbation et à s’y adapter ; la **facilité de
+reprise** porte sur la restauration après cette perturbation. La **réactivité** mesure la vitesse de
+réaction, tandis que l’**évolutivité** mesure l’amplitude possible du changement de capacité. La
+**disponibilité des correctifs** dépend du fournisseur ou de l’écosystème ; l’**impossibilité de
+corriger** est une contrainte opérationnelle qui exige un autre traitement.
+
+## Se tester
+
+1. Une entreprise déplace une application vers une architecture sans serveur. Quelles
+   responsabilités de sécurité restent au client ?
+2. Quelle architecture fournit la frontière la plus forte entre segmentation logique et isolement
+   physique, et quel compromis l’accompagne ?
+3. Un contrôleur industriel ne peut pas être corrigé sans interrompre un procédé critique pour la
+   sûreté. Quelle considération intervient, et quel type de réponse convient ?
+
+<KeyPoint>
+  (1) Le code applicatif, les autorisations, les secrets, les dépendances et les données restent au
+  client même si le fournisseur exploite les serveurs. (2) L’isolement physique fournit la frontière
+  la plus forte, au prix d’un coût supérieur et d’une souplesse moindre. (3) Il s’agit de
+  l’impossibilité d’appliquer un correctif ; segmentation, accès restreints, surveillance et autres
+  contrôles compensatoires conviennent jusqu’à la création d’une voie de maintenance sûre.
+</KeyPoint>

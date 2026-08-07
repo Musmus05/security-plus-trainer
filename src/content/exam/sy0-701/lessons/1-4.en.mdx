@@ -1,0 +1,158 @@
+## Why this objective matters
+
+This is the largest objective in domain 1 and the densest vocabulary on the exam. Eleven official
+topics, including PKI and certificates, which come back throughout domain 4.
+
+The good news: the exam does not ask you to do cryptography. It asks you to **pick the right tool**.
+Nobody will test you on the internals of AES; you will be asked whether the problem described calls
+for encryption, hashing, or tokenization.
+
+<KeyPoint>
+  The founding question of this objective: **must the result be able to become the original data
+  again?** Yes → encryption. No, never → hashing. Yes, but only through a lookup table →
+  tokenization.
+</KeyPoint>
+
+## Symmetric and asymmetric
+
+| Criterion   | Symmetric                   | Asymmetric                 |
+| ----------- | --------------------------- | -------------------------- |
+| Keys        | One, shared                 | A pair: public and private |
+| Speed       | Fast                        | Slow                       |
+| Typical use | Encrypting the bulk of data | Exchanging a key, signing  |
+| Problem     | How do you deliver the key? | Too slow for large volumes |
+| Examples    | AES, ChaCha20               | RSA, ECC, Diffie-Hellman   |
+
+They are not competitors: they are **combined**. TLS uses asymmetric cryptography to agree on a
+session key, then symmetric cryptography for the rest of the conversation. That is key exchange.
+
+<Mnemonic>
+  **Encrypt with the public key, decrypt with the private one** → confidentiality, only the
+  recipient reads it. **Sign with the private key, verify with the public one** → non-repudiation,
+  everybody can check it was you.
+</Mnemonic>
+
+<ExamTrap>
+  Key length does not compare across families. A 256-bit ECC key offers roughly the security of a
+  3072-bit RSA key. "Longer is safer" holds only within a single algorithm.
+</ExamTrap>
+
+## Levels of encryption
+
+The exam tests the choice of level by what it protects **and by what it does not**.
+
+| Level     | Protects against                    | Does not protect against           |
+| --------- | ----------------------------------- | ---------------------------------- |
+| Full-disk | Theft of the laptop, powered off    | An attacker on the running machine |
+| Partition | The same, for one partition         | The rest of the disk               |
+| Volume    | A logical container                 | Whatever leaves it                 |
+| File      | One specific file, wherever it goes | Metadata, the file name            |
+| Database  | The database files at rest          | A legitimate SQL query             |
+| Record    | One row, one field                  | The rest of the table              |
+
+<ExamTrap>
+  Full-disk encryption protects **nothing** on a machine that is powered on and unlocked: the system
+  decrypts on the fly for any authorised process. It protects a laptop stolen on a train, not
+  against malware running on it.
+</ExamTrap>
+
+**Transport encryption** — TLS for the web, IPsec for network tunnels. It protects data _in
+transit_; it becomes readable again on arrival.
+
+## Hardware tools
+
+| Tool                  | What it is                                                                       |
+| --------------------- | -------------------------------------------------------------------------------- |
+| TPM                   | A chip **soldered to a motherboard**, storing that machine's keys                |
+| HSM                   | A **dedicated** appliance, often rack-mounted, for shared keys and heavy volume  |
+| Key management system | The software running the lifecycle: creation, rotation, revocation               |
+| Secure enclave        | An isolated region **inside the processor**, unreachable by the operating system |
+
+<Mnemonic>
+  **TPM = one machine. HSM = many machines.** The TPM is soldered in and serves the host that
+  carries it; the HSM is a separate appliance serving a whole infrastructure.
+</Mnemonic>
+
+## Obfuscation
+
+Three techniques the exam consistently contrasts.
+
+| Technique     | What it does                                           | Reversible?                      |
+| ------------- | ------------------------------------------------------ | -------------------------------- |
+| Steganography | Hides data **inside** another file                     | Yes, if you know it is there     |
+| Tokenization  | Replaces the data with a worthless token               | Yes, **through the token vault** |
+| Data masking  | Replaces part of it with characters — `**** **** 4242` | No, the masked part is gone      |
+
+<ExamTrap>
+  Tokenization and encryption look alike and do not substitute for each other. A token has **no
+  mathematical relationship** to the original: without the vault it is useless even with infinite
+  compute. Encrypted data becomes readable again with the key.
+</ExamTrap>
+
+## Hashing, salting, key stretching
+
+Hashing is one-way: same input, same digest, and no path back.
+
+The problem: two users with the same password produce the same digest, and an attacker can
+precompute the digests of common passwords.
+
+Salting solves that by adding a unique random value to each password before hashing. Two identical
+passwords then produce two different digests, and a global precomputation becomes worthless.
+
+Key stretching solves the other half: making each attempt **slow**. Applying the function thousands
+of times makes brute force expensive while a legitimate login loses only a few milliseconds.
+
+<KeyPoint>
+  Salt defeats **precomputed tables**. Stretching defeats **brute force**. Two distinct problems and
+  two distinct answers — a question about rainbow tables wants salt, a question about guessing rate
+  wants stretching.
+</KeyPoint>
+
+## PKI and certificates
+
+A public key infrastructure answers one question: **does this public key really belong to whoever
+claims it?**
+
+| Element               | Role                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| Certificate authority | Signs certificates and stakes its reputation on them                     |
+| Root of trust         | The root authority, preinstalled in the system                           |
+| CSR                   | The signing request, carrying your public key                            |
+| Self-signed           | Signed by yourself: technically valid, with no third party vouching      |
+| Wildcard              | Covers `*.example.com` — convenient, and one theft compromises all of it |
+| Key escrow            | A copy of the private key held by a third party                          |
+
+### Checking that a certificate is still valid
+
+| Mechanism | How it works                                               | Limitation                                       |
+| --------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| CRL       | The client downloads the full list of revoked certificates | Large, and stale between publications            |
+| OCSP      | The client asks the authority about **one** certificate    | Reveals to the authority which sites are visited |
+
+<ExamTrap>
+  A self-signed certificate is not "fake": the cryptography works exactly the same. What is missing
+  is **third-party verification**. It is perfectly acceptable internally and unacceptable on a
+  public site — hence the browser warning.
+</ExamTrap>
+
+## Blockchain and the open public ledger
+
+A blockchain is a ledger where each block contains the hash of the previous one. Altering an old
+block would invalidate every block after it, which makes tampering detectable.
+
+An open public ledger is the variant where anyone can read and verify the ledger. That is **publicly
+verifiable integrity**, not confidentiality — a confusion the exam exploits.
+
+## Test yourself
+
+1. A card number must be replaced in a test database by a value with no mathematical relationship to
+   the original. Which technique?
+2. Two users have the same password and the same stored digest. What is missing?
+3. An encrypted laptop is stolen while powered on and unlocked. What does full-disk encryption
+   protect in that case?
+
+<KeyPoint>
+  (1) Tokenization — encryption would preserve a mathematical relationship. (2) Salt: without it,
+  identical inputs give identical digests. (3) Nothing. The disk was already decrypted for the
+  running system.
+</KeyPoint>

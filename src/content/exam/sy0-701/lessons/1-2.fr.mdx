@@ -1,0 +1,172 @@
+## Pourquoi cet objectif compte
+
+C’est l’objectif « vocabulaire de base », et c’est précisément ce qui le rend piégeux : tout y
+semble évident jusqu’à ce qu’une question demande **laquelle** des trois propriétés de la triade a
+été violée, ou **quel composant** de l’architecture Zero Trust prend la décision.
+
+Sept sujets officiels, et ils ne se ressemblent pas : trois concepts abstraits, un modèle
+d’architecture, une méthode d’analyse, et deux familles très concrètes — la sécurité physique et les
+technologies de leurre.
+
+<KeyPoint>
+  Dans cet objectif, l’examen teste rarement « qu’est-ce que c’est ». Il décrit une situation et
+  demande **quel terme la nomme**. Apprends les frontières entre les termes, pas leurs définitions.
+</KeyPoint>
+
+## La triade CIA
+
+| Propriété                                         | Ce qu’elle garantit                | Violée quand…                 | Contrôle typique              |
+| ------------------------------------------------- | ---------------------------------- | ----------------------------- | ----------------------------- |
+| <Term en="Confidentiality">Confidentialité</Term> | Seuls les autorisés lisent         | Une fuite, une écoute réseau  | Chiffrement, contrôle d’accès |
+| <Term en="Integrity">Intégrité</Term>             | La donnée n’a pas été altérée      | Une modification non détectée | Hachage, signature numérique  |
+| <Term en="Availability">Disponibilité</Term>      | L’accès est possible quand il faut | Un déni de service, une panne | Redondance, sauvegardes       |
+
+<ExamTrap>
+  Un rançongiciel qui chiffre tes fichiers attaque la **disponibilité**, pas la confidentialité —
+  personne n’a lu tes données, tu ne peux simplement plus y accéder. Si l’attaquant exfiltre *aussi*
+  les fichiers avant de chiffrer (double extorsion), alors la confidentialité tombe également. Lis
+  attentivement ce que le scénario décrit.
+</ExamTrap>
+
+## Non-répudiation
+
+La <Term en="Non-repudiation">non-répudiation</Term> garantit qu’un auteur ne peut pas nier avoir
+produit un message ou une action.
+
+C’est une propriété distincte de l’intégrité, et l’examen exploite la confusion :
+
+- Un **hachage** prouve que la donnée n’a pas changé → intégrité.
+- Une **signature numérique** prouve _qui_ l’a produite, parce qu’elle utilise une clé privée que
+  seul l’auteur détient → intégrité **et** non-répudiation.
+
+Un journal d’audit contribue aussi à la non-répudiation, à condition qu’on ne puisse pas le
+modifier.
+
+<Mnemonic>
+  **Non-répudiation = « tu ne peux pas dire que ce n’était pas toi ».** Il faut donc quelque chose
+  que toi seul possèdes : une clé privée, une biométrie. Un mot de passe partagé ne suffit pas.
+</Mnemonic>
+
+## AAA
+
+| Étape                                             | Question posée               | Exemple                             |
+| ------------------------------------------------- | ---------------------------- | ----------------------------------- |
+| <Term en="Authentication">Authentification</Term> | Qui es-tu ?                  | Mot de passe, certificat, empreinte |
+| <Term en="Authorization">Autorisation</Term>      | Qu’as-tu le droit de faire ? | Appartenance à un groupe, rôle      |
+| <Term en="Accounting">Traçabilité</Term>          | Qu’as-tu fait ?              | Journaux, enregistrement de session |
+
+L’objectif distingue trois volets.
+
+**Authentifier des personnes** — mot de passe, MFA, biométrie.
+
+**Authentifier des systèmes** — une machine n’a pas de doigts. On utilise des certificats, des clés
+d’API, ou 802.1X pour un équipement qui rejoint le réseau. C’est le volet le plus oublié en
+révision.
+
+**Modèles d’autorisation** — comment la décision est prise : par rôle, par attributs, par règle. Le
+détail est traité dans l’objectif 4.6 ; ici il suffit de savoir que l’autorisation est une décision
+_séparée_ de l’authentification.
+
+<ExamTrap>
+  S’authentifier ne donne aucun droit. Un compte valide qui n’accède à rien est authentifié mais non
+  autorisé — et c’est exactement l’état visé par le moindre privilège.
+</ExamTrap>
+
+## Analyse d’écart
+
+Une <Term en="Gap analysis">analyse d’écart</Term> compare **où tu es** à **où tu devrais être** :
+posture actuelle contre un référentiel, une norme, ou une exigence réglementaire. Le produit de
+sortie est une liste d’écarts, généralement priorisés, qui alimente un plan de remédiation.
+
+Ce n’est pas un audit — un audit vérifie la conformité, l’analyse d’écart mesure la distance. Ce
+n’est pas non plus une évaluation de risque : elle ne pondère pas par probabilité.
+
+## Zero Trust
+
+Le principe : **aucune confiance implicite**, ni pour un utilisateur, ni pour un appareil, ni parce
+qu’on est « à l’intérieur du réseau ». Chaque accès est vérifié.
+
+L’objectif découpe l’architecture en deux plans, et c’est ce découpage que l’examen teste.
+
+### Le plan de contrôle — il décide
+
+| Composant                                                                            | Rôle                                                              |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| <Term en="Policy Engine">Moteur de politique</Term>                                  | **Prend** la décision d’autoriser ou non                          |
+| <Term en="Policy Administrator">Administrateur de politique</Term>                   | **Communique** la décision et établit ou coupe la session         |
+| <Term en="Adaptive identity">Identité adaptative</Term>                              | Ajuste l’exigence selon le contexte : lieu, appareil, heure       |
+| <Term en="Threat scope reduction">Réduction du périmètre de menace</Term>            | Limite ce qui est atteignable, donc ce qui peut être attaqué      |
+| <Term en="Policy-driven access control">Contrôle d’accès piloté par politique</Term> | L’accès découle d’une politique, pas d’une configuration manuelle |
+
+### Le plan de données — il applique
+
+| Composant                                                                      | Rôle                                                |
+| ------------------------------------------------------------------------------ | --------------------------------------------------- |
+| <Term en="Policy Enforcement Point">Point d’application de la politique</Term> | **Applique** la décision : laisse passer ou bloque  |
+| <Term en="Subject/System">Sujet / système</Term>                               | Ce qui demande l’accès : un utilisateur, un service |
+| <Term en="Implicit trust zones">Zones de confiance implicite</Term>            | Ce que Zero Trust cherche à **éliminer**            |
+
+<ExamTrap>
+  Le **moteur** décide, l’**administrateur** transmet, le **point d’application** exécute. Confondre
+  le moteur de politique et le point d’application est l’erreur la plus fréquente sur cet objectif :
+  l’un réfléchit, l’autre obéit.
+</ExamTrap>
+
+<Mnemonic>
+  **Plan de contrôle = le cerveau. Plan de données = les mains.** Si le composant réfléchit, il est
+  dans le plan de contrôle ; s’il laisse passer un paquet, il est dans le plan de données.
+</Mnemonic>
+
+## Sécurité physique
+
+| Contrôle                                               | Ce qu’il fait vraiment                                                  |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| <Term en="Bollards">Bornes</Term>                      | Arrêtent un **véhicule**, pas une personne                              |
+| <Term en="Access control vestibule">Sas d’accès</Term> | Empêche le <Term en="tailgating">talonnage</Term> : une porte à la fois |
+| <Term en="Fencing">Clôture</Term>                      | Délimite et retarde ; dissuasive **et** préventive selon sa hauteur     |
+| <Term en="Video surveillance">Vidéosurveillance</Term> | Détective ; dissuasive si elle est visible                              |
+| <Term en="Security guard">Agent de sécurité</Term>     | Le seul contrôle qui **exerce un jugement**                             |
+| <Term en="Access badge">Badge d’accès</Term>           | Authentifie et trace le passage                                         |
+| <Term en="Lighting">Éclairage</Term>                   | Dissuasif, et rend la détection possible                                |
+
+### Les quatre capteurs
+
+C’est un point de détail que l’examen aime, parce qu’il est purement factuel.
+
+| Capteur                                   | Détecte                          |
+| ----------------------------------------- | -------------------------------- |
+| <Term en="Infrared">Infrarouge</Term>     | La chaleur d’un corps            |
+| <Term en="Pressure">Pression</Term>       | Un poids sur une surface         |
+| <Term en="Microwave">Micro-ondes</Term>   | Le mouvement, par onde réfléchie |
+| <Term en="Ultrasonic">Ultrasonique</Term> | Le mouvement, par onde sonore    |
+
+## Technologies de leurre
+
+Elles ne protègent rien : elles **révèlent** une intrusion et font perdre du temps à l’attaquant.
+
+| Leurre                                    | Ce que c’est                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------- |
+| <Term en="Honeypot">Pot de miel</Term>    | Un **système** factice, exposé pour être attaqué                          |
+| <Term en="Honeynet">Réseau de miel</Term> | Un **réseau entier** de pots de miel                                      |
+| <Term en="Honeyfile">Fichier piège</Term> | Un **fichier** appâtant — `mots_de_passe.xlsx` — qui alerte à l’ouverture |
+| <Term en="Honeytoken">Jeton piège</Term>  | Une **donnée** fictive dont tout usage prouve une fuite                   |
+
+<InPractice>
+  La différence entre fichier piège et jeton piège tient à ce qui déclenche l’alerte. Le fichier
+  alerte quand on **l’ouvre**, sur ton système. Le jeton — une fausse adresse e-mail dans une base
+  clients — alerte quand on **l’utilise**, souvent ailleurs, ce qui prouve que la base a fuité.
+</InPractice>
+
+## Se tester
+
+1. Une panne de climatisation arrête un centre de données. Quelle propriété de la triade est touchée
+   ?
+2. Dans Zero Trust, quel composant établit et coupe la session ?
+3. Une fausse adresse e-mail placée dans une base clients reçoit un courrier : quel leurre, et que
+   prouve-t-il ?
+
+<KeyPoint>
+  (1) La disponibilité — rien n’a été lu ni modifié. (2) L’administrateur de politique : le moteur
+  décide, l’administrateur exécute la décision sur la session. (3) Un jeton piège, et son usage
+  prouve que la base de données a fuité.
+</KeyPoint>

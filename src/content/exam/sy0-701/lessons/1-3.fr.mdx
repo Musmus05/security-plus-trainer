@@ -1,0 +1,140 @@
+## Pourquoi cet objectif compte
+
+Presque toutes les pannes et une bonne part des vulnérabilités exploitables naissent d’un changement
+: un correctif appliqué sans test, une règle de pare-feu ajoutée « temporairement », un service
+redémarré un vendredi soir. La gestion du changement n’est pas de la bureaucratie — c’est le
+contrôle qui rend un système compréhensible.
+
+Cet objectif est presque entièrement conceptuel. L’examen n’y demande pas de configurer quoi que ce
+soit : il décrit une situation et demande **quelle étape du processus a été sautée**.
+
+<KeyPoint>
+  La question type de cet objectif est « qu’est-ce qui manque ? ». Un changement échoue, personne ne
+  sait revenir en arrière → il manquait un plan de retour arrière. Un changement casse une
+  application voisine → il manquait une analyse d’impact.
+</KeyPoint>
+
+## Le processus métier
+
+Sept étapes, et l’examen les teste par leur fonction, pas par leur nom.
+
+| Étape                                                               | Ce qu’elle produit                                                        |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| <Term en="Approval process">Processus d’approbation</Term>          | Une décision formelle, souvent par un comité (<Term en="CAB">CAB</Term>)  |
+| <Term en="Ownership">Propriété</Term>                               | Une personne nommée, responsable du changement du début à la fin          |
+| <Term en="Stakeholders">Parties prenantes</Term>                    | La liste de qui est affecté et doit être prévenu                          |
+| <Term en="Impact analysis">Analyse d’impact</Term>                  | Ce qui casse si le changement se passe mal — et ce qui casse s’il réussit |
+| <Term en="Test results">Résultats de test</Term>                    | La preuve que le changement fonctionne ailleurs qu’en production          |
+| <Term en="Backout plan">Plan de retour arrière</Term>               | La procédure de retour à l’état précédent, écrite **avant** le changement |
+| <Term en="Maintenance window">Fenêtre de maintenance</Term>         | Le créneau convenu, choisi pour limiter l’impact métier                   |
+| <Term en="Standard operating procedure">Procédure normalisée</Term> | Le mode opératoire écrit, pour que le changement soit reproductible       |
+
+<ExamTrap>
+  Le **plan de retour arrière** s’écrit avant le changement, jamais pendant l’incident. Dès qu’un
+  énoncé contient « et si le changement échoue ? » ou « comment revenir à l’état précédent ? »,
+  c’est la réponse. Ne le confonds pas avec une sauvegarde : la sauvegarde est une donnée, le plan
+  est une procédure.
+</ExamTrap>
+
+<ExamTrap>
+  Le comité d’approbation **décide**, il n’exécute pas. Une question qui décrit un comité en train
+  d’appliquer un correctif décrit un processus cassé, pas un CAB.
+</ExamTrap>
+
+### Le changement d’urgence
+
+Un correctif de sécurité critique ne peut pas attendre le prochain comité. Il existe donc une voie
+d’urgence : approbation réduite, exécution immédiate, **puis** passage devant le comité a
+posteriori.
+
+<InPractice>
+  La voie d’urgence est la porte dérobée préférée des équipes pressées. Une organisation où la
+  moitié des changements sont « urgents » n’a plus de gestion du changement du tout — elle a un
+  formulaire.
+</InPractice>
+
+## Les implications techniques
+
+C’est la partie que l’examen relie explicitement à la sécurité.
+
+### Listes d’autorisation et listes de blocage
+
+| Mécanisme                                         | Comportement par défaut | Conséquence                                         |
+| ------------------------------------------------- | ----------------------- | --------------------------------------------------- |
+| <Term en="Allow list">Liste d’autorisation</Term> | Tout est refusé         | Plus sûr, mais casse ce qui n’a pas été prévu       |
+| <Term en="Deny list">Liste de blocage</Term>      | Tout est autorisé       | Plus souple, mais ne bloque que les menaces connues |
+
+<Mnemonic>
+  **Liste d’autorisation = refus par défaut.** Elle est plus sûre précisément parce qu’elle est plus
+  gênante : ce qui n’a pas été explicitement prévu ne passe pas. L’inversion des deux est l’erreur
+  la plus fréquente de cet objectif.
+</Mnemonic>
+
+### Ce qu’un changement coûte
+
+**Activités restreintes** — un changement approuvé ne l’est que dans son périmètre. Toucher autre
+chose « pendant qu’on y est » est un changement non approuvé.
+
+**Interruption de service** — même planifiée, elle doit être annoncée aux parties prenantes.
+
+**Redémarrage de service ou d’application** — un correctif appliqué sans redémarrage n’est souvent
+pas actif. Un serveur affiche la version corrigée en disque tout en exécutant l’ancien code en
+mémoire, et le scanner de vulnérabilités le déclare sain.
+
+**Applications héritées** — un système que le fournisseur ne corrige plus ne peut pas être mis à
+jour. On ne le supprime pas toujours : on l’isole, on le segmente, on ajoute des contrôles
+compensatoires. C’est le lien direct avec l’objectif 1.1.
+
+**Dépendances** — changer A casse B. C’est ce que l’analyse d’impact cherche, et c’est ce qu’un
+inventaire à jour permet de trouver.
+
+<ExamTrap>
+  Un correctif installé mais non redémarré n’est pas appliqué. Si un scénario décrit une
+  vulnérabilité toujours détectée après un correctif « réussi », le redémarrage manquant est la
+  première hypothèse.
+</ExamTrap>
+
+## La documentation
+
+Deux artefacts, et l’examen insiste sur leur mise à jour plutôt que sur leur création.
+
+**Mettre à jour les schémas** — un schéma réseau faux est pire que pas de schéma : pendant un
+incident, l’équipe de réponse suit une carte qui ne correspond plus au terrain.
+
+**Mettre à jour les politiques et procédures** — un changement technique qui rend une procédure
+fausse a créé une dette invisible. La procédure sera suivie quand même, par quelqu’un qui n’était
+pas là.
+
+## Le contrôle de version
+
+Le <Term en="Version control">contrôle de version</Term> ne concerne pas que le code.
+Configurations, infrastructure décrite en fichiers, règles de pare-feu, modèles de déploiement :
+tout ce qui est texte peut être versionné.
+
+Il apporte trois choses à la sécurité :
+
+- **Savoir ce qui a changé** — le différentiel entre deux états, exactement.
+- **Revenir en arrière** — le retour arrière devient une opération, pas une reconstruction.
+- **Savoir qui a changé quoi** — chaque modification est attribuée, ce qui rejoint la traçabilité et
+  la non-répudiation vues en 1.2.
+
+<InPractice>
+  Une règle de pare-feu ajoutée à la main un soir de crise n’existe dans aucun différentiel. Six
+  mois plus tard, personne ne sait pourquoi elle est là, donc personne n’ose la retirer. C’est ainsi
+  que les jeux de règles deviennent des passoires : non par une erreur, mais par accumulation de
+  changements non tracés.
+</InPractice>
+
+## Se tester
+
+1. Un changement approuvé casse la facturation, et l’équipe met six heures à restaurer le service.
+   Quelle étape a manqué ?
+2. Une liste d’autorisation ou une liste de blocage : laquelle refuse par défaut ?
+3. Le scanner détecte toujours la vulnérabilité après application du correctif. Quelle est la
+   première hypothèse ?
+
+<KeyPoint>
+  (1) Le plan de retour arrière — il aurait fallu l’écrire avant, pas l’improviser pendant. (2) La
+  liste d’autorisation : tout ce qui n’y figure pas est refusé. (3) Le service ou l’application n’a
+  pas été redémarré, donc l’ancien code tourne toujours en mémoire.
+</KeyPoint>

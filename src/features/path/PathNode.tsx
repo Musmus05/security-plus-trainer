@@ -1,4 +1,4 @@
-import { Check, Crown, Sparkles } from 'lucide-react';
+import { Check, Crown, Lock, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
@@ -11,6 +11,8 @@ export interface PathNodeProps {
   crowns: number;
   /** The single objective the dashboard is currently pointing at. */
   isNext: boolean;
+  /** Whether this objective has a lesson or a question bank yet. */
+  hasContent: boolean;
   domain: DomainId;
   label: string;
 }
@@ -22,11 +24,23 @@ export interface PathNodeProps {
  * trail reads as a route with a position on it. That difference is most of what makes a path feel
  * worth continuing, which is the whole point of the gamified direction.
  *
- * Everything a learner needs is on the node itself — the objective number, the crown count, and a
- * ring that fills as crowns are earned. Colour never carries meaning alone (ADR-0006): the number is
- * always there.
+ * Four states, and the split that matters most is the last one. Every node used to render outlined
+ * until it was started, so a learner opening the app for the first time saw twenty-eight identical
+ * empty rings — the exact "dead backlog" the trail exists to avoid, and no way to tell an objective
+ * that is ready from one whose lesson is not written. A node with content is now filled in the
+ * domain colour from the outset, and one without is visibly dormant and says so.
+ *
+ * Colour never carries meaning alone (ADR-0006): the number is always on the node, completion adds
+ * a tick, progress adds crown pips, and an unwritten objective adds a padlock.
  */
-export function PathNode({ objectiveId, crowns, isNext, domain, label }: PathNodeProps) {
+export function PathNode({
+  objectiveId,
+  crowns,
+  isNext,
+  hasContent,
+  domain,
+  label,
+}: PathNodeProps) {
   const { t } = useTranslation();
   const accent = domainAccent(domain);
   const complete = crowns >= MAX_CROWNS;
@@ -44,12 +58,14 @@ export function PathNode({ objectiveId, crowns, isNext, domain, label }: PathNod
           // The inset bottom edge is what makes a node feel like a physical button to press.
           complete
             ? 'bg-good text-white shadow-[inset_0_-5px_0_0_rgb(0_0_0/0.25)]'
-            : started
-              ? cn(accent.bg, 'text-white shadow-[inset_0_-5px_0_0_rgb(0_0_0/0.25)]')
-              : // Outlined, not filled grey. A column of flat grey circles reads as a dead backlog;
-                // an outline in the domain's own colour reads as a stage not yet reached. The text
-                // tone is used rather than the mark tone, because the number has to be readable.
-                cn('bg-surface border-[3px]', accent.border, accent.text),
+            : hasContent
+              ? // `accent.fill`, not `accent.bg`. The mark tone is chosen to be seen, not written
+                // on — white on the domain 3 mark is 2.81:1. The fill tones are solved for both a
+                // white label and a visible edge against the surface; see tokens.test.ts.
+                cn(accent.fill, 'text-white shadow-[inset_0_-5px_0_0_rgb(0_0_0/0.25)]')
+              : // Nothing written yet. Neutral rather than a pale version of the domain colour, so
+                // "not authored" never reads as "authored but not started".
+                'bg-sunken border-edge-strong text-ink-muted border-2 border-dashed',
         )}
       >
         {complete ? (
@@ -73,6 +89,17 @@ export function PathNode({ objectiveId, crowns, isNext, domain, label }: PathNod
                 strokeWidth={3}
               />
             ))}
+          </span>
+        )}
+
+        {/* An honest marker. A learner should be able to see what is not written yet, not discover
+            it by tapping through to an empty page. */}
+        {!hasContent && !started && (
+          <span
+            aria-hidden
+            className="bg-surface border-edge text-ink-muted absolute -bottom-1.5 rounded-full border p-1"
+          >
+            <Lock className="size-2.5" strokeWidth={3} />
           </span>
         )}
 

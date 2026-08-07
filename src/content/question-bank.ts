@@ -17,6 +17,17 @@ type BankLoader = () => Promise<Question[]>;
 
 const BANKS: Partial<Record<string, BankLoader>> = {
   '1.1': async () => (await import('./exam/sy0-701/questions/1-1')).QUESTIONS_1_1,
+  '1.2': async () => (await import('./exam/sy0-701/questions/1-2')).QUESTIONS_1_2,
+  '1.3': async () => (await import('./exam/sy0-701/questions/1-3')).QUESTIONS_1_3,
+  '1.4': async () => (await import('./exam/sy0-701/questions/1-4')).QUESTIONS_1_4,
+  '2.1': async () => (await import('./exam/sy0-701/questions/2-1')).QUESTIONS_2_1,
+  '2.2': async () => (await import('./exam/sy0-701/questions/2-2')).QUESTIONS_2_2,
+  '2.3': async () => (await import('./exam/sy0-701/questions/2-3')).QUESTIONS_2_3,
+  '2.4': async () => (await import('./exam/sy0-701/questions/2-4')).QUESTIONS_2_4,
+  '2.5': async () => (await import('./exam/sy0-701/questions/2-5')).QUESTIONS_2_5,
+  '3.2': async () => (await import('./exam/sy0-701/questions/3-2')).QUESTIONS_3_2,
+  '3.3': async () => (await import('./exam/sy0-701/questions/3-3')).QUESTIONS_3_3,
+  '3.1': async () => (await import('./exam/sy0-701/questions/3-1')).QUESTIONS_3_1,
 };
 
 /** Objectives that currently have a question bank. */

@@ -1,0 +1,117 @@
+## Why this objective matters
+
+This objective opens domain 2, the heaviest on the exam at 22%. It contains no techniques at all:
+only **who attacks, with what resources, and why**.
+
+It is deceptively simple. The actors look obvious until a scenario describes an attack and asks who
+most likely carried it out. The answer never follows from the technique used — it follows from the
+**combination of resources and motivation**.
+
+<KeyPoint>
+  Do not ask "which attack". Ask **"who wanted this, and who could afford it"**. Two actors may use
+  exactly the same tool; what separates them is what they want and what they can pay for.
+</KeyPoint>
+
+## The actors
+
+| Actor              | Resources      | Sophistication | Dominant motivation                |
+| ------------------ | -------------- | -------------- | ---------------------------------- |
+| Nation-state       | Near-unlimited | Very high      | Espionage, war, disruption         |
+| Organized crime    | High           | High           | Financial gain                     |
+| Insider threat     | Varies         | Varies         | Grievance, financial gain, mistake |
+| Hacktivist         | Low            | Medium         | Political or philosophical belief  |
+| Shadow IT          | Internal       | Low            | **None** — they are not attackers  |
+| Unskilled attacker | Very low       | Very low       | Notoriety, curiosity, chaos        |
+
+<ExamTrap>
+  Shadow IT is listed among the threat actors but has **no malicious intent**. These are colleagues
+  routing around official IT to get their work done faster. The risk is real, the intent is not —
+  and a question that stresses the absence of malice is very probably describing this.
+</ExamTrap>
+
+<ExamTrap>
+  "Unskilled attacker" replaced the older term "script kiddie". Both mean someone running tools they
+  do not understand. What matters: they are unpredictable and noisy, so easy to detect, but they can
+  still do damage with a borrowed tool.
+</ExamTrap>
+
+## The attributes that separate them
+
+The exam keeps three attributes, and it combines them.
+
+**Internal or external** — an insider already holds legitimate access. They do not need to breach a
+perimeter; they are inside it. That is what makes insider threat hard to detect, not their
+sophistication.
+
+**Resources and funding** — the only attribute that explains an attack sustained over months. A
+hacktivist cannot buy a seven-figure unknown vulnerability; a state can.
+
+**Level of sophistication and capability** — the ability to build their own tools rather than run
+somebody else's.
+
+<Mnemonic>
+  **Quiet, slow, bespoke, running for months → a nation-state.** Nobody else funds that much
+  patience. Loud and immediate → somebody with nothing to lose.
+</Mnemonic>
+
+## The motivations
+
+| Motivation                      | The scenario it produces                        |
+| ------------------------------- | ----------------------------------------------- |
+| Financial gain                  | Ransomware, fraud, resale of data               |
+| Data exfiltration               | Silent theft, no degradation                    |
+| Espionage                       | Industrial or state secrets, over the long term |
+| Service disruption              | Denial of service, sabotage                     |
+| Blackmail                       | Threat of disclosure                            |
+| Philosophical/political beliefs | Website defacement, activist leak               |
+| Revenge                         | Dismissed employee, targeted sabotage           |
+| Disruption/chaos                | Destruction with no benefit to the author       |
+| War                             | Attack on critical infrastructure               |
+| Ethical                         | Security researcher, responsible disclosure     |
+
+<KeyPoint>
+  **Ethical** motivation is on the official list. A researcher who reports a flaw is an actor in the
+  sense of this objective, even though they are helping. A question describing an intrusion followed
+  by a detailed report sent to the company is not describing a criminal.
+</KeyPoint>
+
+## Reading a scenario correctly
+
+The exam builds these questions by giving two clues: one about means, one about ends. The
+distractors are the actors who have one but not the other.
+
+<InPractice>
+  "An intrusion discovered after fourteen months, no data destroyed, only research documents
+  copied."
+
+Fourteen months undetected implies considerable funding and discipline: that rules out the unskilled
+attacker and the hacktivist. Nothing is monetised quickly: that rules out organized crime, whose
+model is yield. Research documents taken quietly over time is espionage — so a nation-state.
+
+</InPractice>
+
+<ExamTrap>
+  Organized crime and nation-states both have deep resources. What separates them is **tempo**:
+  organized crime monetises fast, because time costs money. A state can wait years.
+</ExamTrap>
+
+## Insider threat, the special case
+
+An insider does not have to cross a perimeter, which makes most network controls useless against
+them. The countermeasures therefore live elsewhere: least privilege, separation of duties, job
+rotation, access reviews, and the accounting seen in 1.2.
+
+Not every insider threat is malicious. An employee who clicks a phishing link is a vector, not an
+actor — a distinction objective 2.2 picks up.
+
+## Test yourself
+
+1. A government website is defaced with a political message, in broad daylight, with no data stolen.
+   Which actor?
+2. Which listed actor has no malicious intent at all?
+3. Two actors both have deep resources. What distinguishes them in a scenario?
+
+<KeyPoint>
+  (1) A hacktivist — visibility **is** the goal, and there is no financial gain. (2) Shadow IT. (3)
+  Tempo: organized crime monetises fast, a nation-state can wait years.
+</KeyPoint>

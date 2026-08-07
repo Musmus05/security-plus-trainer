@@ -1,0 +1,176 @@
+## Pourquoi cet objectif compte
+
+La <Term en="Data protection">protection des données</Term> ne commence pas par le choix d’un
+produit. Il faut d’abord reconnaître ce que représente l’information, la règle de manipulation qui
+s’y applique, son emplacement et son état au moment du risque. Un
+
+<Term en="Security control">contrôle de sécurité</Term> excellent au mauvais endroit laisse une
+brèche : le <Term en="Encryption">chiffrement</Term> d’un disque ne bloque pas la copie d’un
+document déjà ouvert par un utilisateur autorisé.
+
+L’examen présente surtout un besoin concret. Il faut alors distinguer le
+
+<Term en="Data types">type de donnée</Term>, sa
+<Term en="Data classifications">classification</Term>, son
+<Term en="Data states">état</Term>, la
+<Term en="Geographic restrictions">restriction géographique</Term> ou la
+<Term en="Methods to secure data">méthode de sécurisation</Term> qui répond directement au besoin.
+
+<KeyPoint>
+  Pose quatre questions dans l’ordre : **Que représente l’information ?** → type. **Quelles règles
+  de manipulation lui appliquer ?** → classification. **Où se trouve-t-elle et que lui arrive-t-il
+  ?** → état et emplacement. **Quel risque précis faut-il réduire ?** → méthode de protection.
+</KeyPoint>
+
+## Les types de données : ce que contient l’information
+
+Un type de donnée décrit la nature du contenu ou l’obligation qui lui est attachée. Une même donnée
+peut relever de plusieurs types. Le plan financier d’une invention non publiée peut être
+simultanément un <Term en="Trade secret">secret commercial</Term>, une
+
+<Term en="Intellectual property">propriété intellectuelle</Term> et une
+<Term en="Financial information">information financière</Term>.
+
+| Type                                                                      | Indice distinctif                                                          | Exemple                               |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------- |
+| <Term en="Regulated">Réglementé</Term>                                    | Une loi, une réglementation ou une règle sectorielle encadre le traitement | Dossier médical ou donnée de paiement |
+| Secret commercial                                                         | Le maintien du secret procure un avantage concurrentiel                    | Formule de fabrication non publiée    |
+| Propriété intellectuelle                                                  | Une création ou un actif immatériel appartient à une personne ou entité    | Code source, dessin ou brevet         |
+| <Term en="Legal information">Information juridique</Term>                 | Le contenu concerne conseil, procédure, obligation ou preuve juridique     | Dossier de litige                     |
+| Information financière                                                    | Le contenu décrit argent, compte, opération ou prévision                   | Coordonnées bancaires ou budget       |
+| <Term en="Human-readable">Lisible par l’humain</Term>                     | Une personne peut interpréter directement la représentation                | Contrat imprimé ou rapport en clair   |
+| <Term en="Non-human-readable">Non lisible directement par l’humain</Term> | Un logiciel ou équipement spécialisé doit interpréter la représentation    | Télémétrie encodée ou fichier de base |
+
+Le terme **réglementé** ne signifie pas automatiquement « le plus secret ». Il indique surtout une
+obligation extérieure à l’organisation. Un **secret commercial** tire sa valeur du secret, tandis
+que la **propriété intellectuelle** est plus large : une œuvre publiée reste une propriété
+intellectuelle même si tout le monde peut la lire.
+
+<ExamTrap>
+  Lisible ou non lisible par l’humain décrit la représentation, pas la sensibilité. Un fichier
+  binaire incompréhensible à l’œil peut être public. Une feuille imprimée parfaitement lisible peut
+  être strictement restreinte.
+</ExamTrap>
+
+## Les classifications : la règle de manipulation
+
+La <Term en="Data classification">classification des données</Term> traduit une décision interne sur
+le traitement attendu. La hiérarchie exacte dépend de la politique de l’organisation : il ne faut
+donc pas supposer que toutes les entreprises classent leurs étiquettes dans le même ordre. Dans un
+scénario, la description donnée prime sur une échelle mémorisée.
+
+| Classification                                | Signal principal dans un énoncé                                       |
+| --------------------------------------------- | --------------------------------------------------------------------- |
+| <Term en="Public">Publique</Term>             | Diffusion externe explicitement approuvée                             |
+| <Term en="Sensitive">Sensible</Term>          | Une divulgation pourrait causer un préjudice et exige des précautions |
+| <Term en="Confidential">Confidentielle</Term> | Accès limité à un groupe métier autorisé                              |
+| <Term en="Restricted">Restreinte</Term>       | Manipulation la plus stricte et accès très étroitement limité         |
+| <Term en="Private">Privée</Term>              | Information relative à une personne ou à une affaire non publique     |
+| <Term en="Critical">Critique</Term>           | Le fonctionnement métier dépend fortement de son exactitude ou accès  |
+
+**Confidentialité et criticité ne mesurent pas la même chose.** Une page publique qui pilote
+l’orientation des clients peut être critique sans être secrète. Une archive confidentielle peut
+rester indisponible quelques heures sans arrêter l’activité. La classification doit guider le
+marquage, le stockage, le partage, la conservation, la destruction et les droits accordés.
+
+<InPractice>
+  Une étiquette « restreinte » ne protège rien à elle seule. Si tout le personnel peut ouvrir le
+  fichier, elle documente une intention contredite par la configuration. Le contrôle doit faire
+  respecter la classification.
+</InPractice>
+
+## États et emplacement : situer l’exposition
+
+L’<Term en="Data state">état des données</Term> change au fil du traitement. Chaque état place le
+risque à un endroit différent.
+
+| État                                                         | Situation                                                   | Protection à privilégier                           |
+| ------------------------------------------------------------ | ----------------------------------------------------------- | -------------------------------------------------- |
+| <Term en="Data at rest">Données au repos</Term>              | Stockées sur un support persistant                          | Chiffrement du stockage et droits d’accès          |
+| <Term en="Data in transit">Données en transit</Term>         | En déplacement entre systèmes, appareils ou services réseau | Canal de communication protégé                     |
+| <Term en="Data in use">Données en cours d’utilisation</Term> | Traitées, affichées ou présentes en mémoire                 | Contrôles du processus, du terminal et de l’usager |
+
+Un ordinateur portable éteint contient des données au repos. Une fois le disque déverrouillé et le
+fichier ouvert, l’application a besoin de la version lisible : les données sont en cours
+d’utilisation. Le chiffrement du disque ne suffit alors plus contre une capture d’écran, un logiciel
+malveillant dans la session ou une copie effectuée par la personne connectée.
+
+<ExamTrap>
+  « Les données sont chiffrées » est une réponse incomplète si leur état manque. Le chiffrement au
+  repos ne couvre pas automatiquement leur transfert, et la protection du transfert ne chiffre pas
+  nécessairement la base de destination.
+</ExamTrap>
+
+La <Term en="Data sovereignty">souveraineté des données</Term> signifie que les données relèvent de
+l’autorité juridique du territoire où elles sont stockées ou traitées. La
+
+<Term en="Geolocation">géolocalisation</Term> établit ou exploite la position physique associée à un
+utilisateur, un appareil, un service ou un stockage. Elle fournit une information de position ; elle
+ne décide pas, à elle seule, si une opération est autorisée.
+
+<Mnemonic>
+  **Souveraineté = autorité ; géolocalisation = position ; restriction géographique = décision.** La
+  première explique pourquoi le lieu compte, la deuxième l’identifie et la troisième applique la
+  règle.
+</Mnemonic>
+
+## Les méthodes de sécurisation
+
+Une <Term en="Method to secure data">méthode de sécurisation des données</Term> doit correspondre à
+la propriété recherchée. Plusieurs protections peuvent être pertinentes, mais une seule répond
+souvent au verbe précis de la question.
+
+| Méthode                                                               | Effet principal                                                   | Limite importante                                  |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------- |
+| <Term en="Geographic restrictions">Restrictions géographiques</Term>  | Autorisent stockage, traitement ou accès dans les lieux approuvés | Dépendent d’une information de position fiable     |
+| <Term en="Encryption">Chiffrement</Term>                              | Rend la donnée illisible sans la bonne clé                        | L’usage autorisé nécessite de la déchiffrer        |
+| <Term en="Hashing">Hachage</Term>                                     | Produit une empreinte permettant de détecter une modification     | Ne conserve pas un original récupérable            |
+| <Term en="Masking">Masquage</Term>                                    | Cache des caractères ou substitue des valeurs d’affichage ou test | Ne remplace pas le chiffrement dans tous les cas   |
+| <Term en="Tokenization">Tokenisation</Term>                           | Remplace la valeur sensible par un jeton relié via un coffre      | Le service de correspondance devient essentiel     |
+| <Term en="Obfuscation">Obscurcissement</Term>                         | Rend le sens ou la logique plus difficile à comprendre            | Retarde la compréhension sans garantir le secret   |
+| <Term en="Segmentation">Segmentation</Term>                           | Sépare données ou systèmes dans des zones contrôlées              | Réduit l’accessibilité sans transformer la donnée  |
+| <Term en="Permission restrictions">Restrictions d’autorisation</Term> | Limite les actions aux identités autorisées                       | Des droits mal attribués exposent encore la donnée |
+
+Le chiffrement est réversible avec une clé. Le hachage est conçu comme une transformation à sens
+unique. Le second convient pour comparer une valeur actuelle à une empreinte connue et repérer un
+changement ; il ne convient pas si le métier doit récupérer le contenu initial.
+
+Masquage et tokenisation réduisent tous deux l’exposition, mais leur mécanisme diffère. Un écran
+peut masquer un numéro en `**** **** **** 4242`. La tokenisation fournit plutôt une valeur de
+substitution sans relation exploitable ; un coffre séparé conserve la correspondance autorisée.
+L’obscurcissement promet moins : il complique la lecture du code ou des données, sans apporter la
+garantie de confidentialité d’un chiffrement robuste.
+
+<ExamTrap>
+  Segmentation et restrictions d’autorisation sont voisines, mais distinctes. La segmentation réduit
+  les chemins entre zones. Les autorisations déterminent quelles identités peuvent lire, modifier ou
+  supprimer un objet après avoir atteint le service qui le contient.
+</ExamTrap>
+
+## Construire une stratégie cohérente
+
+Une protection solide associe plusieurs couches. Une base de paie restreinte peut rester dans un
+pays approuvé, être chiffrée au repos, utiliser un canal protégé, résider dans une zone segmentée et
+n’accepter que les rôles de paie. Une équipe de développement peut recevoir des valeurs masquées ou
+des jetons plutôt que les dossiers de production. Chaque mesure traite une exposition différente.
+
+Pars toujours du besoin : récupérer ultérieurement un contenu secret appelle le chiffrement ;
+détecter une modification appelle le hachage ; cacher une partie affichée appelle le masquage ;
+conserver une correspondance séparée appelle la tokenisation. Pour limiter les chemins, choisis la
+segmentation. Pour limiter les personnes et leurs actions, choisis les restrictions d’autorisation.
+Pour imposer un lieu de stockage ou d’accès, choisis les restrictions géographiques.
+
+## Se tester
+
+1. Une sauvegarde repose sur un disque déconnecté. Quel est son état, et quelle méthode protège
+   directement sa confidentialité en cas de vol du disque ?
+2. Pourquoi la géolocalisation et une restriction géographique ne sont-elles pas synonymes ?
+3. Une base de développement doit recevoir des identifiants réalistes, tandis qu’un service très
+   contrôlé doit pouvoir retrouver les valeurs originales. Quelle méthode convient ?
+
+<KeyPoint>
+  (1) Les données sont au repos ; le chiffrement rend le support volé illisible sans la clé. (2) La
+  géolocalisation indique une position, tandis que la restriction applique une décision fondée sur
+  cette position. (3) La tokenisation : le développement reçoit les jetons et le coffre séparé
+  conserve la correspondance autorisée.
+</KeyPoint>

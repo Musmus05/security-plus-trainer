@@ -1,0 +1,122 @@
+## Why this objective matters
+
+Domain 2 ends with the remedies. Eleven mitigation techniques, and the exam does not ask how to
+configure them — it asks **which one to choose** for a given problem.
+
+It is the exact mirror of objective 2.3. There you classified defects; here you pick a response. And
+the response follows from the defect, not from the severity.
+
+<KeyPoint>
+  The wrong answers on this objective are almost always **real, useful controls** applied to the
+  wrong problem. Encrypting a database does not fix SQL injection: the query is legitimate, so it
+  receives the decrypted data.
+</KeyPoint>
+
+## Reducing what is reachable
+
+| Technique       | What it does                                                   |
+| --------------- | -------------------------------------------------------------- |
+| Segmentation    | Divides the network so a compromise does not spread everywhere |
+| Isolation       | Cuts a system off from everything else completely              |
+| Least privilege | Every account holds only what it needs                         |
+| Access control  | Decides who may reach what                                     |
+
+<ExamTrap>
+  Segmentation and isolation are not the same thing. Segmentation **limits** communication between
+  zones that still talk to each other; isolation **removes** it. You segment a corporate network;
+  you isolate a legacy system or an infected machine.
+</ExamTrap>
+
+<KeyPoint>
+  Least privilege is the most frequently correct answer on the whole exam, because it reduces the
+  impact of nearly everything: stolen credentials, insider threat, zero-day. It does not prevent
+  intrusion — it bounds the consequences.
+</KeyPoint>
+
+Access control is the mechanism the other three depend on. Least privilege is a principle, and it
+only becomes real when something decides, per request, whether an identity may reach a resource.
+That is the same Policy Engine and Policy Enforcement Point split seen in objective 1.2, applied
+here as a mitigation rather than as an architecture.
+
+The four are also cumulative rather than alternative. A segmented network with over-privileged
+accounts still loses everything inside one zone; a least-privileged estate on a flat network still
+lets an attacker reach every host to try. Real questions usually have one best answer because the
+stem names one specific failure — but in practice these are layers, which is what defence in depth
+means.
+
+## Controlling what runs
+
+**Application allow list** — only approved software executes. This is the answer to a ransomware or
+unauthorised-software scenario, and it has the same polarity as in 1.3: anything not on the list is
+denied.
+
+**Configuration enforcement** — the intended state is applied automatically and drift is corrected.
+It is what stops misconfiguration from coming back.
+
+**Hardening** — removing what is not needed. The objective lists six concrete measures:
+
+| Hardening measure               | Effect                                      |
+| ------------------------------- | ------------------------------------------- |
+| Encryption                      | Data at rest becomes unreadable             |
+| Endpoint protection             | Detection and blocking on the machine       |
+| Host-based firewall             | Filtering at the host, not at the perimeter |
+| HIPS                            | Blocks a behaviour, not only a file         |
+| Disabling ports/protocols       | Removes paths — reduces the surface         |
+| Default password changes        | Closes the easiest vector there is          |
+| Removal of unnecessary software | Less code, fewer flaws                      |
+
+## Seeing and fixing
+
+**Patching** — the answer to **known** vulnerabilities, and to nothing else. A zero-day has no
+patch; a misconfiguration does not need one.
+
+**Monitoring** — prevents nothing. It lets you detect and reconstruct. It is a detective control in
+the sense of objective 1.1.
+
+**Encryption** — protects confidentiality at rest and in transit. It protects against neither a
+legitimate query nor a compromised account that is allowed to read.
+
+<ExamTrap>
+  Encryption is the universal distractor on this objective. It is nearly always a good idea, and
+  nearly never the right answer when the problem is **authorised but unwanted access**. If the
+  attacker travels a legitimate path, they receive decrypted data.
+</ExamTrap>
+
+## Taking things out of service
+
+Decommissioning is the only technique that removes a risk permanently. It is listed because it gets
+forgotten: a system out of use but still plugged in is still attack surface, and usually the least
+monitored surface you have.
+
+<InPractice>
+  Decommissioning is not "switch it off". It is removing access, wiping data, deleting DNS entries
+  and firewall rules, and returning licences. A server switched off and switched back on six months
+  later returns with six months of missing patches.
+</InPractice>
+
+## Matching the remedy to the defect
+
+That is the skill this objective assesses. Pairings the exam favours:
+
+| The problem                              | The expected answer                  |
+| ---------------------------------------- | ------------------------------------ |
+| A legacy system that cannot be patched   | Isolation plus compensating controls |
+| Ransomware spreading laterally           | Segmentation                         |
+| Stolen credentials reaching everything   | Least privilege                      |
+| Unauthorised software running            | Application allow list               |
+| Configuration drift that keeps returning | Configuration enforcement            |
+| A stolen laptop                          | Full-disk encryption                 |
+| A known vulnerability                    | Patching                             |
+| A forgotten server still plugged in      | Decommissioning                      |
+
+## Test yourself
+
+1. A legacy industrial system can no longer be patched. Which mitigation?
+2. Does monitoring prevent an attack?
+3. SQL injection exfiltrates a table. Would encrypting the database have helped?
+
+<KeyPoint>
+  (1) Isolation plus compensating controls — there is no patch to apply. (2) No: it is a detective
+  control, letting you see and reconstruct. (3) No — the injected query travels through the
+  application, which receives the data already decrypted.
+</KeyPoint>

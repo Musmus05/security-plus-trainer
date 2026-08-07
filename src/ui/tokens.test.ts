@@ -151,6 +151,41 @@ describe('design tokens', () => {
       }
     });
   });
+
+  describe('domain fills carry a white label and still read as a control', () => {
+    /*
+     * Path nodes are filled discs with the objective number on them, so they have two constraints
+     * at once, and the mark tones satisfy neither reliably: white on `#1baf7a` is 2.81:1.
+     *
+     * The second gate is the one easy to forget. A fill dark enough for a white label can be so
+     * close to a dark surface that the disc has no visible edge — solving only the text constraint
+     * put domain 4 at 2.04:1 against `#161a22`, an invisible node with perfectly legible text on it.
+     * 3:1 is the WCAG threshold for a non-text control boundary.
+     */
+    it.each([
+      ['light', light],
+      ['dark', osDark],
+    ])('%s', (themeName, declarations) => {
+      const surface = read(declarations, themeName, '--sp-surface');
+
+      for (const domain of [1, 2, 3, 4, 5]) {
+        const role = `--sp-domain-${String(domain)}-fill`;
+        const fill = read(declarations, themeName, role);
+
+        const label = contrastRatio('#ffffff', fill);
+        expect(
+          label,
+          `${themeName}: white on ${role} (${fill}) is ${label.toFixed(2)}:1`,
+        ).toBeGreaterThanOrEqual(4.5);
+
+        const edge = contrastRatio(fill, surface);
+        expect(
+          edge,
+          `${themeName}: ${role} (${fill}) on the surface (${surface}) is ${edge.toFixed(2)}:1`,
+        ).toBeGreaterThanOrEqual(3);
+      }
+    });
+  });
 });
 
 function read(declarations: Map<string, string>, themeName: string, role: string): string {

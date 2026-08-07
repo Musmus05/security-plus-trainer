@@ -1,0 +1,133 @@
+## Pourquoi cet objectif compte
+
+Douze sujets officiels, et c’est l’objectif le plus long du domaine 2. Il répond à une seule
+question : **par où entre-t-on ?**
+
+Un <Term en="Threat vector">vecteur de menace</Term> est le chemin emprunté. Une
+
+<Term en="Attack surface">surface d’attaque</Term> est l’ensemble de tous les chemins possibles.
+Réduire la surface, c’est fermer des portes ; défendre un vecteur, c’est surveiller une porte qui
+reste ouverte.
+
+<KeyPoint>
+  Les questions de cet objectif décrivent une compromission et demandent **par où elle est entrée**.
+  Le piège est de répondre par la charge utile — « un rançongiciel » n’est pas un vecteur, c’est ce
+  qui est arrivé une fois la porte franchie.
+</KeyPoint>
+
+## Les vecteurs par le contenu
+
+| Vecteur                                     | Comment il fonctionne                                              |
+| ------------------------------------------- | ------------------------------------------------------------------ |
+| <Term en="Message-based">Par message</Term> | Courriel, SMS, messagerie instantanée — le vecteur le plus courant |
+| <Term en="Image-based">Par image</Term>     | Charge dissimulée dans un fichier image ou son rendu               |
+| <Term en="File-based">Par fichier</Term>    | Document piégé : macro, script, exécutable déguisé                 |
+| <Term en="Voice call">Appel vocal</Term>    | <Term en="Vishing">Hameçonnage vocal</Term>, fraude au président   |
+
+Le courriel domine parce qu’il combine deux choses : il atteint tout le monde, et il transporte à la
+fois un lien et une pièce jointe.
+
+<ExamTrap>
+  Un SMS de hameçonnage est un vecteur **par message**, pas un vecteur distinct. Les termes
+  <Term en="smishing">smishing</Term> et <Term en="vishing">vishing</Term> décrivent la technique
+  d’ingénierie sociale ; le vecteur reste le canal — message ou appel vocal.
+</ExamTrap>
+
+## Les vecteurs par l’équipement et le réseau
+
+**Support amovible** — clé USB, disque externe. Il contourne entièrement le périmètre réseau, ce qui
+en fait le vecteur de choix contre un système isolé.
+
+**Logiciel vulnérable** — l’objectif distingue deux cas : ce qui est **géré par un correctif** et ce
+qui ne l’est pas. Un logiciel non géré vieillit sans que personne ne le sache.
+
+**Systèmes et applications non pris en charge** — plus aucun correctif n’existe. C’est l’application
+héritée vue en 1.3, du point de vue de l’attaquant cette fois.
+
+**Réseaux non sécurisés** — sans fil, filaire et Bluetooth. Un réseau ouvert n’est pas seulement une
+écoute possible : c’est aussi une position pour intercepter.
+
+**Ports de service ouverts** — chaque port à l’écoute est une porte. C’est la définition la plus
+littérale d’une surface d’attaque.
+
+**Identifiants par défaut** — `admin` / `admin`. Le vecteur le plus embarrassant et l’un des plus
+fréquents, parce qu’il ne demande aucune compétence.
+
+<Mnemonic>
+  **Surface d’attaque = combien de portes. Vecteur de menace = quelle porte a servi.** Fermer un
+  port réduit la surface. Filtrer les courriels défend un vecteur sans réduire la surface, puisque
+  la porte reste ouverte.
+</Mnemonic>
+
+## La chaîne d’approvisionnement
+
+Trois angles, et l’examen les nomme séparément.
+
+| Angle                                                            | Ce qui est compromis                                       |
+| ---------------------------------------------------------------- | ---------------------------------------------------------- |
+| <Term en="Managed service providers">Prestataire infogéré</Term> | Un prestataire qui a déjà un accès administrateur chez toi |
+| <Term en="Vendors">Fournisseurs</Term>                           | Un logiciel légitime, altéré avant de t’être livré         |
+| <Term en="Suppliers">Sous-traitants</Term>                       | Du matériel ou un composant modifié en amont               |
+
+<ExamTrap>
+  Ce qui rend la chaîne d’approvisionnement redoutable n’est pas la technique mais la **confiance**.
+  Le logiciel est signé, le prestataire est autorisé, le matériel est neuf. Tous tes contrôles
+  disent oui — parce que la compromission a eu lieu avant que la chose n’arrive chez toi.
+</ExamTrap>
+
+## Les vecteurs humains
+
+L’ingénierie sociale est la moitié de cet objectif. Elle exploite un comportement, pas une faille
+technique.
+
+| Technique                                                       | Le levier utilisé                                           |
+| --------------------------------------------------------------- | ----------------------------------------------------------- |
+| <Term en="Phishing">Hameçonnage</Term>                          | Un message de masse qui imite une source de confiance       |
+| <Term en="Spear phishing">Harponnage</Term>                     | Le même, ciblé et documenté sur la victime                  |
+| <Term en="Whaling">Chasse à la baleine</Term>                   | Le même, visant un dirigeant                                |
+| <Term en="Vishing">Hameçonnage vocal</Term>                     | La voix, qui crée une pression immédiate                    |
+| <Term en="Smishing">Hameçonnage par SMS</Term>                  | Le SMS, où l’URL est difficile à vérifier                   |
+| <Term en="Misinformation/disinformation">Désinformation</Term>  | Une fausse information, diffusée pour orienter une décision |
+| <Term en="Impersonation">Usurpation d’identité</Term>           | Se faire passer pour quelqu’un d’autorisé                   |
+| <Term en="Business email compromise">Fraude au président</Term> | L’autorité hiérarchique et l’urgence                        |
+| <Term en="Pretexting">Prétexte</Term>                           | Une histoire crédible qui justifie la demande               |
+| <Term en="Watering hole">Point d’eau</Term>                     | Un site tiers que la cible visite déjà                      |
+| <Term en="Brand impersonation">Usurpation de marque</Term>      | La confiance déjà accordée à une marque connue              |
+| <Term en="Typosquatting">Typosquattage</Term>                   | Une faute de frappe dans un nom de domaine                  |
+
+<KeyPoint>
+  Hameçonnage, harponnage et chasse à la baleine sont **la même technique à trois niveaux de
+  ciblage** : tout le monde, une personne précise, un dirigeant. Une question qui insiste sur les
+  détails personnels connus de l’attaquant décrit un harponnage, pas un hameçonnage.
+</KeyPoint>
+
+<InPractice>
+  L’attaque par point d’eau est la plus contre-intuitive. L’attaquant ne touche pas sa cible : il
+  compromet un site que la cible consulte tous les jours — un forum métier, un fournisseur local —
+  et attend. Elle sert quand la cible elle-même est trop bien défendue pour être approchée
+  directement.
+</InPractice>
+
+## Réduire la surface plutôt que défendre chaque vecteur
+
+Les deux notions appellent des réponses différentes, et l’examen le teste.
+
+- Désactiver un service inutilisé **réduit la surface** — la porte disparaît.
+- Ajouter un filtre antipourriel **défend un vecteur** — la porte reste, on y met un garde.
+
+La réduction de surface est structurelle et durable ; la défense de vecteur doit être maintenue
+indéfiniment. Quand les deux sont possibles, la réduction gagne.
+
+## Se tester
+
+1. Un employé branche une clé USB trouvée sur le parking. Quel vecteur, et pourquoi le périmètre
+   réseau n’a-t-il rien vu ?
+2. Un logiciel signé par son éditeur installe une porte dérobée. Quel vecteur ?
+3. Quelle différence entre désactiver un port et le filtrer ?
+
+<KeyPoint>
+  (1) Un support amovible : il contourne physiquement le réseau, donc aucun contrôle réseau n’est
+  sur le chemin. (2) La chaîne d’approvisionnement — la compromission a eu lieu avant la livraison,
+  et la signature est authentique. (3) Désactiver réduit la surface d’attaque ; filtrer défend un
+  vecteur en laissant la porte ouverte.
+</KeyPoint>

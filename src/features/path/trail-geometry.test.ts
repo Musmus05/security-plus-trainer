@@ -28,22 +28,45 @@ describe('offsetAt', () => {
     }
   });
 
-  it('repeats on a six-node period', () => {
-    // A period that does not divide the domain sizes (4, 5, 4, 9, 6) evenly is deliberate: with a
-    // divisor every domain would draw the identical shape.
+  it('repeats on a four-node period', () => {
     for (let index = 0; index < 20; index += 1) {
-      expect(offsetAt(index + 6)).toBe(offsetAt(index));
+      expect(offsetAt(index + 4)).toBe(offsetAt(index));
     }
   });
 
-  it('does not alternate strictly left-right', () => {
-    // A strict zig-zag looks mechanical. Consecutive nodes should sometimes sit on the same side.
-    const offsets = Array.from({ length: 6 }, (_, index) => offsetAt(index));
-    const sameSidePairs = offsets
-      .slice(1)
-      .filter((value, index) => value !== 0 && Math.sign(value) === Math.sign(offsets[index] ?? 0));
+  it('swings both ways inside every real domain, however short', () => {
+    /*
+     * This is the regression the six-node period shipped. Three of the five domains have four or
+     * five objectives, and a six-node wave never completed inside them — domain 1 drew 0, +A, +A, 0,
+     * drifting right and coming back without ever going left. The wave was only visible in domain 4,
+     * and the rest of the path looked like a mistake.
+     *
+     * The domain sizes are hard-coded rather than imported: if the outline ever changes, this test
+     * should be re-examined deliberately rather than silently following it.
+     */
+    for (const size of [4, 5, 4, 9, 6]) {
+      const offsets = Array.from({ length: size }, (_, index) => offsetAt(index));
 
-    expect(sameSidePairs.length).toBeGreaterThan(0);
+      expect(
+        offsets.some((value) => value > 0),
+        `domain of ${String(size)} never swings right`,
+      ).toBe(true);
+      expect(
+        offsets.some((value) => value < 0),
+        `domain of ${String(size)} never swings left`,
+      ).toBe(true);
+    }
+  });
+
+  it('never puts two consecutive nodes at the same horizontal position', () => {
+    // Sampling the old six-node sine gave nodes 1 and 2 the same x, and 4 and 5 likewise, so the
+    // trail rendered as a staircase: two nodes level, then a diagonal, then two level again.
+    for (let index = 1; index < 24; index += 1) {
+      expect(
+        offsetAt(index),
+        `nodes ${String(index - 1)} and ${String(index)} share an x`,
+      ).not.toBe(offsetAt(index - 1));
+    }
   });
 });
 
@@ -124,9 +147,21 @@ describe('labelSide', () => {
       const offset = offsetAt(index);
       if (offset > 0) {
         expect(labelSide(index)).toBe('left');
-      } else {
+      } else if (offset < 0) {
         expect(labelSide(index)).toBe('right');
       }
     }
+  });
+
+  it('does not pile the centred nodes onto one side', () => {
+    /*
+     * Half the nodes sit dead centre under a four-node period, where there is no swing to be
+     * opposite of. Sending them all to one side would leave three labels out of every four on the
+     * left, which looks like a bug even though each individual label is placed "correctly".
+     */
+    const sides = Array.from({ length: 12 }, (_, index) => labelSide(index));
+    const left = sides.filter((side) => side === 'left').length;
+
+    expect(left).toBe(sides.length - left);
   });
 });

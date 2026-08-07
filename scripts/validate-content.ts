@@ -18,6 +18,17 @@ import { EXAM_META } from '../src/content/exam-meta.ts';
 import { examMetaSchema } from '../src/content/exam-meta.schema.ts';
 import { ALL_OBJECTIVES, DOMAINS, findObjective } from '../src/content/exam/sy0-701/domains.ts';
 import { QUESTIONS_1_1 } from '../src/content/exam/sy0-701/questions/1-1.ts';
+import { QUESTIONS_1_2 } from '../src/content/exam/sy0-701/questions/1-2.ts';
+import { QUESTIONS_1_3 } from '../src/content/exam/sy0-701/questions/1-3.ts';
+import { QUESTIONS_1_4 } from '../src/content/exam/sy0-701/questions/1-4.ts';
+import { QUESTIONS_2_1 } from '../src/content/exam/sy0-701/questions/2-1.ts';
+import { QUESTIONS_2_2 } from '../src/content/exam/sy0-701/questions/2-2.ts';
+import { QUESTIONS_2_3 } from '../src/content/exam/sy0-701/questions/2-3.ts';
+import { QUESTIONS_2_4 } from '../src/content/exam/sy0-701/questions/2-4.ts';
+import { QUESTIONS_2_5 } from '../src/content/exam/sy0-701/questions/2-5.ts';
+import { QUESTIONS_3_2 } from '../src/content/exam/sy0-701/questions/3-2.ts';
+import { QUESTIONS_3_3 } from '../src/content/exam/sy0-701/questions/3-3.ts';
+import { QUESTIONS_3_1 } from '../src/content/exam/sy0-701/questions/3-1.ts';
 import { examOutlineSchema, type Question, questionSchema } from '../src/content/schemas.ts';
 
 interface Violation {
@@ -121,6 +132,17 @@ for (const domain of DOMAINS) {
 /** Every authored bank. New objectives are added here as their questions are written. */
 const BANKS: { objective: string; questions: Question[] }[] = [
   { objective: '1.1', questions: QUESTIONS_1_1 },
+  { objective: '1.2', questions: QUESTIONS_1_2 },
+  { objective: '1.3', questions: QUESTIONS_1_3 },
+  { objective: '1.4', questions: QUESTIONS_1_4 },
+  { objective: '2.1', questions: QUESTIONS_2_1 },
+  { objective: '2.2', questions: QUESTIONS_2_2 },
+  { objective: '2.3', questions: QUESTIONS_2_3 },
+  { objective: '2.4', questions: QUESTIONS_2_4 },
+  { objective: '2.5', questions: QUESTIONS_2_5 },
+  { objective: '3.1', questions: QUESTIONS_3_1 },
+  { objective: '3.3', questions: QUESTIONS_3_3 },
+  { objective: '3.2', questions: QUESTIONS_3_2 },
 ];
 
 /** From docs/content-authoring.md. */
@@ -250,7 +272,16 @@ for (const file of lessonFiles) {
   }
 
   if (locale === 'fr') {
-    if (text.includes("'")) {
+    /*
+     * `{' '}` is JSX, not prose. Prettier emits it to preserve a significant space when it wraps a
+     * line between two elements — `<Term>x</Term> <Term>y</Term>` becomes `<Term>x</Term>{' '}` plus
+     * a newline. Those two ASCII apostrophes are syntax the author never typed and cannot remove, so
+     * counting them as prose would mean the gate fires whenever the formatter happens to reflow a
+     * line. Stripping exactly that token, and nothing else, keeps the rule strict about real text.
+     */
+    const prose = text.replaceAll("{' '}", '');
+
+    if (prose.includes("'")) {
       fail(source, 'apostrophes', 'French prose must use ’ rather than the ASCII apostrophe');
     }
     if (!text.includes('<Term en=')) {
