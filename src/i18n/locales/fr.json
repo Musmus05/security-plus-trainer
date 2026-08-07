@@ -82,7 +82,7 @@
     },
     "flashcards": {
       "title": "Flashcards",
-      "placeholder": "La répétition espacée arrive dans sa propre étape."
+      "subtitle": "Répétition espacée : chaque carte revient au moment où tu allais l’oublier."
     },
     "glossary": {
       "title": "Acronymes",
@@ -160,7 +160,8 @@
       "lesson-unread": "Termine la lecture",
       "no-quiz": "Prêt pour un quiz",
       "weak-accuracy": "À revoir"
-    }
+    },
+    "reviewDue": "Cartes à revoir"
   },
   "quiz": {
     "backToObjective": "Retour à l’objectif",
@@ -190,6 +191,28 @@
       "easy": "Facile",
       "medium": "Moyen",
       "hard": "Difficile"
+    }
+  },
+  "flashcards": {
+    "deckName": "Deck des acronymes officiels",
+    "dueSummary_one": "{{count}} carte à revoir aujourd’hui",
+    "dueSummary_other": "{{count}} cartes à revoir aujourd’hui",
+    "allCaughtUp": "Rien à revoir pour aujourd’hui. Reviens demain : c’est la régularité qui fait tenir la mémoire.",
+    "start": "Commencer la révision",
+    "reveal": "Voir la réponse",
+    "promptLabel": "Sigle",
+    "answerLabel": "Signification officielle",
+    "gradeLabel": "À quel point t’en souvenais-tu ?",
+    "progress": "{{done}} carte(s) sur {{total}} terminée(s)",
+    "doneTitle": "Session terminée",
+    "doneBody_one": "{{count}} carte revue. Le planning est enregistré.",
+    "doneBody_other": "{{count}} cartes revues. Le planning est enregistré.",
+    "backToDeck": "Retour au deck",
+    "grade": {
+      "again": "Oublié",
+      "hard": "Difficile",
+      "good": "Correct",
+      "easy": "Facile"
     }
   },
   "glossary": {

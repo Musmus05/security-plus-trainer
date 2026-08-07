@@ -82,7 +82,7 @@
     },
     "flashcards": {
       "title": "Flashcards",
-      "placeholder": "Spaced repetition arrives in its own change."
+      "subtitle": "Spaced repetition: each card returns just as you were about to forget it."
     },
     "glossary": {
       "title": "Acronyms",
@@ -160,7 +160,8 @@
       "lesson-unread": "Finish reading",
       "no-quiz": "Ready for a quiz",
       "weak-accuracy": "Worth another look"
-    }
+    },
+    "reviewDue": "Cards due"
   },
   "quiz": {
     "backToObjective": "Back to the objective",
@@ -190,6 +191,28 @@
       "easy": "Easy",
       "medium": "Medium",
       "hard": "Hard"
+    }
+  },
+  "flashcards": {
+    "deckName": "Official acronym deck",
+    "dueSummary_one": "{{count}} card due today",
+    "dueSummary_other": "{{count}} cards due today",
+    "allCaughtUp": "Nothing due today. Come back tomorrow — regularity is what makes the schedule work.",
+    "start": "Start reviewing",
+    "reveal": "Show the answer",
+    "promptLabel": "Acronym",
+    "answerLabel": "Official expansion",
+    "gradeLabel": "How well did you recall it?",
+    "progress": "{{done}} of {{total}} cards done",
+    "doneTitle": "Session complete",
+    "doneBody_one": "{{count}} card reviewed. The schedule is saved.",
+    "doneBody_other": "{{count}} cards reviewed. The schedule is saved.",
+    "backToDeck": "Back to the deck",
+    "grade": {
+      "again": "Forgot",
+      "hard": "Hard",
+      "good": "Good",
+      "easy": "Easy"
     }
   },
   "glossary": {

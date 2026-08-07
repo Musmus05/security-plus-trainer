@@ -14,6 +14,7 @@ import {
   xpOn,
 } from '@/domain/gamification';
 import type { Clock } from '@/domain/ports';
+import { type CardState, type Grade, newCard, schedule } from '@/domain/srs';
 import { createSystemClock } from '@/lib/clock';
 import { resolveStorage } from '@/lib/storage';
 
@@ -21,10 +22,12 @@ import { runMigrations, STORE_VERSION } from './migrations';
 import {
   coerceGamification,
   coerceProgress,
+  coerceSrs,
   type GamificationState,
   INITIAL_GAMIFICATION,
   NO_RECORD,
   type ProgressMap,
+  type SrsMap,
 } from './progress.schema';
 import {
   coerceSettings,
@@ -54,6 +57,13 @@ export interface AppState {
   settings: Settings;
   gamification: GamificationState;
   progress: ProgressMap;
+  /**
+   * Card id → review schedule.
+   *
+   * Keyed by card id alone, not by deck, so a card keeps its history if it is ever moved between
+   * decks or if a deck is regenerated from different source data.
+   */
+  srs: SrsMap;
 
   /** What the most recent day-recording did, for the UI to celebrate. Deliberately not persisted. */
   lastStreakOutcome: StreakOutcome['kind'] | null;
@@ -71,6 +81,8 @@ export interface AppState {
   recordQuizAttempt: (objectiveId: string, correct: number, total: number) => void;
   /** Record a finished mock exam. */
   recordExamAttempt: (passed: boolean) => void;
+  /** Grade one flashcard, advancing its schedule. */
+  gradeCard: (cardId: string, grade: Grade) => void;
 
   resetAll: () => void;
 }
@@ -133,6 +145,7 @@ export const useAppStore = create<AppState>()(
         settings: { ...DEFAULT_SETTINGS },
         gamification: INITIAL_GAMIFICATION,
         progress: {},
+        srs: {},
         lastStreakOutcome: null,
 
         setLocale: (locale) => set((state) => ({ settings: { ...state.settings, locale } })),
@@ -187,11 +200,29 @@ export const useAppStore = create<AppState>()(
           applyTo(examXp(passed));
         },
 
+        /*
+         * XP is paid whatever the grade — see the rule at the top of `xp.ts`. Paying only for cards
+         * the learner remembered would teach them to review what they already know, which is the
+         * exact opposite of what spaced repetition is for.
+         *
+         * A card with no schedule yet is created on the spot rather than pre-seeded for the whole
+         * deck: writing 320 initial states into `localStorage` the first time the glossary deck is
+         * opened would persist a schedule for cards the learner may never review.
+         */
+        gradeCard: (cardId, grade) => {
+          const today = clock.localDayKey();
+          const existing: CardState = get().srs[cardId] ?? newCard(today);
+
+          set((state) => ({ srs: { ...state.srs, [cardId]: schedule(existing, grade, today) } }));
+          applyTo([award('flashcardReviewed')]);
+        },
+
         resetAll: () =>
           set({
             settings: { ...DEFAULT_SETTINGS },
             gamification: INITIAL_GAMIFICATION,
             progress: {},
+            srs: {},
             lastStreakOutcome: null,
           }),
       };
@@ -207,6 +238,7 @@ export const useAppStore = create<AppState>()(
         settings: state.settings,
         gamification: state.gamification,
         progress: state.progress,
+        srs: state.srs,
       }),
 
       migrate: (persisted, version) => {
@@ -231,6 +263,7 @@ export const useAppStore = create<AppState>()(
           settings: coerceSettings(blob['settings']),
           gamification: coerceGamification(blob['gamification']),
           progress: coerceProgress(blob['progress']),
+          srs: coerceSrs(blob['srs']),
         };
       },
     },

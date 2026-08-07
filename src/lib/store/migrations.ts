@@ -10,7 +10,7 @@
  * shape, and writing a fake predecessor just to have something to test would prove nothing.
  */
 
-export const STORE_VERSION = 2;
+export const STORE_VERSION = 3;
 
 export type Migration = (state: unknown) => unknown;
 
@@ -25,6 +25,14 @@ export const MIGRATIONS: Record<number, Migration> = {
    * settings, which is a bad way to find out the table was not updated.
    */
   1: (state) => state,
+
+  /**
+   * 2 → 3: the spaced-repetition schedule joined the persisted state.
+   *
+   * Additive again, and listed for the same reason: an absent entry here is not treated as "nothing
+   * to do", it is treated as unrecoverable, and the learner loses their streak, XP and progress.
+   */
+  2: (state) => state,
 };
 
 export interface MigrationOutcome {

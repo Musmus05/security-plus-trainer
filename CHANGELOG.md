@@ -86,6 +86,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Objective links on a glossary entry are **derived** from the official outline rather than
   stored, so the glossary cannot claim a link the syllabus does not make.
 
+- Spaced repetition: a pure SM-2 scheduler with an injected calendar day, a review runner, and a
+  320-card acronym deck derived from the glossary rather than authored a second time. XP is paid
+  for the review whatever the grade.
+- The persisted store now holds the review schedule, at `STORE_VERSION` 3 with a migration and a
+  test that a version 2 blob keeps its XP, streak and progress.
+- A due-cards prompt on the dashboard, above the next objective — cards fall due whether or not
+  the learner opens the app, so a review backlog compounds while new material does not.
+
 ### Notes
 
 - ESLint is pinned to 9.x and TypeScript to 6.0.x because `eslint-plugin-jsx-a11y` has no
