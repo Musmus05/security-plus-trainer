@@ -1,6 +1,6 @@
 import { MDXProvider } from '@mdx-js/react';
 import { Languages } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type LessonComponent, loadLesson } from '@/content/lesson-bank';
@@ -8,7 +8,9 @@ import type { Locale } from '@/lib/store/settings.schema';
 import { useAppStore } from '@/lib/store/store';
 import { Badge, Card } from '@/ui';
 
+import { LessonLocaleContext } from './lesson-locale';
 import { lessonComponents } from './mdx-components';
+import { useMarkReadAtEnd } from './useMarkReadAtEnd';
 
 export interface LessonBodyProps {
   objectiveId: string;
@@ -23,11 +25,21 @@ export interface LessonBodyProps {
 export function LessonBody({ objectiveId }: LessonBodyProps) {
   const { t } = useTranslation();
   const locale = useAppStore((state) => state.settings.locale);
+  const markLessonRead = useAppStore((state) => state.markLessonRead);
   const [state, setState] = useState<
     | { status: 'loading' }
     | { status: 'missing' }
     | { status: 'ready'; Lesson: LessonComponent; shownIn: Locale }
   >({ status: 'loading' });
+
+  const endOfLesson = useRef<HTMLDivElement>(null);
+  const markRead = useCallback(() => {
+    markLessonRead(objectiveId);
+  }, [markLessonRead, objectiveId]);
+
+  // Only once the prose is on the page: arming the observer against a "loading" card would find
+  // its sentinel immediately and mark a lesson read that has not rendered yet.
+  useMarkReadAtEnd(endOfLesson, markRead, state.status === 'ready');
 
   useEffect(() => {
     let cancelled = false;
@@ -77,11 +89,21 @@ export function LessonBody({ objectiveId }: LessonBodyProps) {
         </Badge>
       )}
 
-      <div lang={shownIn} className="text-ink">
-        <MDXProvider components={lessonComponents}>
-          <Lesson />
-        </MDXProvider>
-      </div>
+      {/*
+        The lesson's own language is provided to everything inside it. Callout headings are part of
+        the prose, so they follow `shownIn` rather than the interface language — which also keeps
+        them consistent with the fallback badge above whenever the two differ.
+      */}
+      <LessonLocaleContext value={shownIn}>
+        <div lang={shownIn} className="text-ink">
+          <MDXProvider components={lessonComponents}>
+            <Lesson />
+          </MDXProvider>
+        </div>
+      </LessonLocaleContext>
+
+      {/* The end of the prose. Reaching it is what marks the lesson read. */}
+      <div ref={endOfLesson} aria-hidden />
     </Card>
   );
 }

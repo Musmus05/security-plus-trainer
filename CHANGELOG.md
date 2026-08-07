@@ -5,6 +5,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Lesson callout headings were hardcoded French — "À retenir", "Piège d’examen" and two others —
+  and rendered in all 56 lesson files, so an English lesson was interrupted by French. They now
+  follow the language the lesson is actually shown in, which also keeps them consistent with the
+  fallback badge when a translation is missing.
+
+### Added
+
+- A lesson marks itself read once the learner reaches the end of it. The button remains for
+  marking earlier, and a lesson short enough to fit on screen without scrolling is not
+  auto-marked.
+
 ## [1.0.0] — 2026-08-07
 
 ### Added
@@ -129,4 +144,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   every domain mark carries its number. See
   [ADR-0006](docs/adr/0006-domain-colour-and-chart-encoding.md).
 
+[Unreleased]: https://github.com/Musmus05/security-plus-trainer/compare/v1.0.0...main
 [1.0.0]: https://github.com/Musmus05/security-plus-trainer/releases/tag/v1.0.0

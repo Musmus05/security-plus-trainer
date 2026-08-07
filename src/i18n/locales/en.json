@@ -138,7 +138,13 @@
     "crowns_other": "{{count}} of {{max}} crowns",
     "notWrittenYet": "The lesson for this objective has not been written yet. The official topics below are the exact scope the exam holds it to.",
     "shownInOtherLanguage": "Shown in {{language}} — not yet translated",
-    "tableLabel": "Table, scrollable sideways"
+    "tableLabel": "Table, scrollable sideways",
+    "callout": {
+      "examTrap": "Exam trap",
+      "mnemonic": "Mnemonic",
+      "keyPoint": "Key point",
+      "inPractice": "In practice"
+    }
   },
   "dashboard": {
     "rank": "{{rank}} · level {{level}}",
