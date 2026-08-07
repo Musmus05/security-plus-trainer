@@ -82,10 +82,25 @@ test.describe('mock exam', () => {
     await page.getByRole('button', { name: 'Suivante' }).click();
     await page.getByRole('button', { name: 'Précédente' }).click();
 
+    // The selection is still there — this is the whole reason the real exam allows navigation.
     await expect(options(page).first()).toBeChecked();
+
     await options(page).last().check();
     await expect(options(page).last()).toBeChecked();
-    await expect(options(page).first()).not.toBeChecked();
+
+    /*
+     * Branching on the input type, not on an assumption. 47 of the 420 questions are multi-select,
+     * so roughly one run in ten drew one here and failed on an assertion that was simply wrong for
+     * that shape: checking a second box is a *toggle*, not a replacement. Asserting both rules is
+     * better coverage than picking a question that avoids the question.
+     */
+    const multiSelect = (await options(page).first().getAttribute('type')) === 'checkbox';
+
+    if (multiSelect) {
+      await expect(options(page).first()).toBeChecked();
+    } else {
+      await expect(options(page).first()).not.toBeChecked();
+    }
   });
 
   test('the review grid jumps to a question and marks what is answered', async ({ page }) => {
