@@ -1,0 +1,153 @@
+## Why this objective matters
+
+An attacker does not need a sophisticated exploit when an organisation cannot say which laptop,
+server, application, account, dataset, or licence it owns. Asset management is a security control
+because it gives every later control a target. You cannot patch an unknown host, remove software
+that nobody has recorded, investigate an unassigned device, or prove that sensitive data left at the
+end of a contract was destroyed.
+
+On the exam, this objective is less about naming an inventory tool than about following an asset
+through its life. A scenario may start with a purchase request, an employee receiving a device, a
+missing endpoint, or a retired storage array. The question asks what security evidence or action
+belongs at that point. The four official topics form one chain: acquisition/procurement,
+assignment/accounting, monitoring/asset tracking, and disposal/decommissioning.
+
+<KeyPoint>
+  Asset management makes responsibility, location, state, and lifecycle visible. Those facts turn
+  policies such as patching, least privilege, data handling, and incident response into actions that
+  can actually be carried out.
+</KeyPoint>
+
+## Start securely: acquisition and procurement
+
+Security begins before an asset is delivered. The acquisition/procurement process is the point at
+which an organisation decides what it will be able to manage later. A request for a new platform,
+software subscription, mobile device, or data service should establish the approved purpose and the
+party responsible for it. It should also avoid acquiring something that cannot be supported,
+updated, inventoried, or retired safely.
+
+Procurement is not simply purchasing. It creates a chance to make security requirements part of the
+decision: an approved supplier, a support and update path, ownership information, and a way to
+record the asset. A cheap device that never enters the inventory can become an unmanaged entry
+point. Software obtained outside the approved process can be unlicensed, unpatched, or invisible to
+the team expected to respond to incidents.
+
+| Procurement question                          | Security implication                                                         |
+| --------------------------------------------- | ---------------------------------------------------------------------------- |
+| Who needs it and for what approved purpose?   | Establishes a business owner and makes unusual use easier to spot.           |
+| Can it be supported and updated?              | Avoids deliberately adding an asset that will become exposed when fixes end. |
+| Can it be entered into the asset record?      | Ensures later monitoring, audits, and response have an identifier to use.    |
+| Does it process or store organisational data? | Connects the purchase to handling and disposal requirements.                 |
+
+<ExamTrap>
+  Procurement approval is not the same as access approval. Buying an application permits the
+  organisation to obtain it; it does not decide which individual may use its data or administrative
+  features. Keep lifecycle governance separate from identity and access decisions.
+</ExamTrap>
+
+## Assign it and account for it
+
+Once acquired, an asset has to be assigned and accounted for. Assignment links an asset to a person,
+team, service, or owner. Accounting records the facts needed to manage it: what it is, its unique
+identifier, where it is, who is responsible, and its current status. The record can cover hardware,
+software, and data assets; the exact fields differ, but the security question is the same: can the
+organisation identify the asset and the responsible party?
+
+For hardware, the record may connect a serial number or asset tag to a custodian and location. For
+software, it may connect a product, version, licence, deployment, and owner. For data, it may name
+the system or owner responsible for the collection and identify where it is held. Assignment does
+not mean the assignee has unlimited permission. It means there is a known point of accountability
+when a device is lost, an application is vulnerable, or a dataset must be handled.
+
+| Term             | What it answers                                       | What it does not prove                                |
+| ---------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| Asset assignment | Who is responsible for this asset now?                | That the person has every possible system permission. |
+| Asset accounting | What asset exists, with which identifiers and status? | That the asset is currently secure or online.         |
+| Inventory        | Which assets are known to the organisation?           | That each record remains accurate without review.     |
+| Ownership        | Who makes or accepts lifecycle decisions?             | Who physically happens to use the asset today.        |
+
+<InPractice>
+  A laptop handed to a new employee is not fully managed merely because it is in a shipping log. Its
+  record should be associated with the recipient or responsible team, and its status should show
+  that it has been issued. That makes a later loss report, recovery request, or retirement decision
+  traceable.
+</InPractice>
+
+## Keep the record alive: monitoring and asset tracking
+
+An inventory is a starting point, not a one-time project. Monitoring and asset tracking compare the
+recorded population with the assets actually present and their observed state. They help reveal an
+unmanaged endpoint, software installed outside the normal process, an asset in the wrong location,
+or a device that should have been returned. They also allow vulnerability management and incident
+response to scope their work: which systems run the affected software, who owns them, and where they
+are located.
+
+Tracking can be physical or logical. Physical tracking concerns custody and location: which room,
+site, employee, or storage area holds the asset. Logical tracking concerns facts such as a device
+identity, installed software, service, or data repository. Neither replaces the other. A server can
+be visible on a network but still have the wrong owner in the records; a tagged laptop can be known
+to finance but no longer report to management tools.
+
+| Observation                                            | Most useful management response                                                   |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| A device appears on a network but has no asset record. | Investigate the unknown asset, establish ownership, or remove it from service.    |
+| A listed system no longer checks in.                   | Confirm its status and location rather than assuming the record is still correct. |
+| A critical software flaw is announced.                 | Use software records to identify affected deployments and responsible owners.     |
+| A contractor leaves with an issued device.             | Use assignment records to recover or formally transfer the asset.                 |
+
+<Mnemonic>
+  Think **what, who, where, state**: what the asset is, who owns it, where it is, and what lifecycle
+  state it is in. Tracking is useful when it can answer all four quickly.
+</Mnemonic>
+
+## End the lifecycle deliberately: disposal and decommissioning
+
+Disposal/decommissioning is a security event, not an administrative afterthought. An old drive,
+retired server, cancelled subscription, or obsolete application can retain organisational data,
+credentials, configurations, licences, and network trust. Leaving it connected or merely removing it
+from a desk does not end those risks.
+
+Decommissioning is the controlled withdrawal of an asset from service. It should be reflected in the
+asset record so that a scanner, audit, or incident team does not mistake a retired asset for a live
+one. Disposal concerns the final handling of the physical or digital asset. The correct method
+depends on the asset and on applicable organisational requirements, but the security aim remains
+consistent: prevent unauthorised recovery or continued use of data and access.
+
+| Lifecycle action                                  | Primary security result                                                     |
+| ------------------------------------------------- | --------------------------------------------------------------------------- |
+| Remove an asset from active service               | It can no longer provide an unnecessary path into the environment.          |
+| Update its status in the asset record             | Teams do not continue to rely on stale ownership or monitoring information. |
+| Handle stored organisational data before disposal | Data is not unintentionally transferred with the asset.                     |
+| Reconcile licences and subscriptions              | Unneeded software access and cost are not left behind.                      |
+
+<ExamTrap>
+  Removing an asset from the inventory is not proof that it was safely disposed of. The record must
+  show an appropriate final state, and the asset itself must be handled so its data and access do
+  not survive the lifecycle.
+</ExamTrap>
+
+## Reading lifecycle scenarios
+
+When a question describes a problem, identify the lifecycle stage first. An unapproved cloud tool
+points to acquisition/procurement. A laptop with no named custodian points to assignment/accounting.
+A machine discovered during a scan but absent from records points to monitoring/asset tracking. A
+retired drive containing company data points to disposal/decommissioning. Then choose the answer
+that creates the missing evidence or control at that stage, rather than a neighbouring security
+activity that sounds useful.
+
+The objective also rewards seeing the connection between the stages. Good procurement feeds the
+inventory. Good assignment makes tracking meaningful. Accurate tracking identifies what must be
+retired. Safe decommissioning closes the record. A gap anywhere weakens the ability to protect the
+assets everywhere else.
+
+## Test yourself
+
+1. Why is an asset record useful when a new software vulnerability is announced?
+2. How does assignment differ from granting access to an asset?
+3. Why must decommissioning update both the asset and its record?
+
+<KeyPoint>
+  1. It identifies affected deployments and responsible owners. 2. Assignment establishes
+  accountability; access control decides permitted actions. 3. The asset must stop exposing data or
+  access, and the record must stop misleading operational teams.
+</KeyPoint>

@@ -1,0 +1,165 @@
+## Pourquoi cet objectif compte
+
+Les opérations de sécurité ne peuvent pas protéger une ressource qu’elles ne voient pas. À l’examen,
+cet objectif demande moins de mémoriser un nom de produit que de lire un symptôme et de choisir la
+bonne observation, activité ou le bon outil. Une connexion anormale, une API indisponible, un
+transfert de fichier suspect et une panne de routeur ne produisent pas les mêmes preuves.
+
+Il faut raisonner en chaîne : une ressource informatique produit de la
+
+<Term en="Telemetry">télémétrie</Term> ; la
+
+<Term en="Monitoring">surveillance</Term> la recueille ; une activité la transforme en signal ; une
+<Term en="Alerting">alerte</Term> donne à une personne ou à un processus un élément à examiner.
+L’examen oppose souvent deux voisins, par exemple un
+<Term en="Log collector">collecteur de journaux</Term> et un
+<Term en="SIEM">SIEM</Term>, ou une capture de paquets et <Term en="NetFlow">NetFlow</Term>. Il faut
+savoir ce que chacun peut montrer, mais aussi ce qu’il ne peut pas montrer.
+
+<KeyPoint>
+  La surveillance est l’observation, l’alerte est la notification et la réponse est l’action prise
+  après qu’un signal a été jugé pertinent. Un outil peut aider à plusieurs étapes, sans que ces
+  termes deviennent synonymes.
+</KeyPoint>
+
+## Surveiller la ressource qui détient la preuve
+
+Les ressources informatiques comprennent les systèmes, les applications et l’infrastructure. Elles
+se recouvrent dans une organisation, mais elles ne répondent pas à la même question opérationnelle.
+
+| Ressource surveillée | Preuves habituelles                                                                 | Question à laquelle elle répond                          |
+| -------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Système ou terminal  | Processus lancés, authentifications, changements de fichiers, processeur et mémoire | Que s’est-il produit sur cet hôte ?                      |
+| Application          | Erreurs, transactions, latence d’API, requêtes échouées                             | Le service fonctionne-t-il pour ses utilisateurs ?       |
+| Infrastructure       | État d’interface, bande passante, santé de l’équipement, flux, DNS et routage       | Le chemin réseau ou la plateforme partagée est-il sain ? |
+
+La surveillance système suit les systèmes d’exploitation, serveurs, postes de travail et terminaux.
+Elle aide à détecter un processus inattendu, des échecs d’authentification répétés, un service
+arrêté ou l’épuisement des ressources. Un <Term en="Antimalware">antimalware</Term> de terminal peut
+ajouter un signal en identifiant un fichier ou un comportement malveillant connu. Il ne remplace pas
+les journaux centralisés : son alerte décrit le terminal, alors que les autres sources peuvent
+expliquer comment ce terminal a été atteint.
+
+La surveillance applicative suit le service depuis le point de vue de l’application. La
+
+<Term en="API monitoring">surveillance d’API</Term> peut mesurer si une requête définie réussit,
+échoue ou devient lente. La <Term en="Synthetic monitoring">surveillance synthétique</Term> envoie
+des transactions de test délibérées depuis une sonde contrôlée ; elle est utile pour découvrir une
+indisponibilité avant qu’un client ne la signale. La
+<Term en="Real user monitoring">surveillance des utilisateurs réels</Term>
+observe les sessions et requêtes réellement effectuées. Elle montre l’expérience vécue, mais pas un
+parcours que personne n’emprunte au moment de la mesure.
+
+<ExamTrap>
+  La surveillance synthétique et celle des utilisateurs réels ne sont pas rivales. La première
+  vérifie à heure fixe qu’un parcours connu fonctionne ; la seconde révèle la performance des vrais
+  parcours. « Avant les plaintes des utilisateurs » indique la première ; « vécue par les
+  utilisateurs réels » indique la seconde.
+</ExamTrap>
+
+La surveillance de l’infrastructure concerne les services partagés autour des charges de travail :
+commutateurs, routeurs, pare-feu, équipement sans fil, liens et services communs.
+L’<Term en="SNMP polling">interrogation SNMP</Term> demande à un équipement géré ses compteurs ou
+son état. Un <Term en="SNMP trap">piège SNMP</Term> est différent : l’équipement envoie de lui-même
+une notification lorsqu’un événement survient. NetFlow enregistre les métadonnées d’une
+conversation, comme source, destination, protocole, ports, heure et volume. C’est excellent pour
+repérer un transfert inhabituellement volumineux, mais ce n’est pas le contenu des paquets.
+
+## Transformer la télémétrie en opérations de sécurité
+
+Recueillir les données n’est que le début. L’objectif attend les activités qui rendent la
+surveillance utile dans les opérations.
+
+| Activité                                                                            | Finalité                                                                   | Confusion fréquente                                |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------- |
+| <Term en="Log aggregation">Agrégation des journaux</Term>                           | Rassembler des enregistrements de nombreuses sources                       | Confondre collecte et corrélation                  |
+| Alerte                                                                              | Notifier une condition ou un seuil défini                                  | Alerter sur chaque événement et créer du bruit     |
+| <Term en="Scanning">Analyse</Term>                                                  | Examiner une cible selon une condition définie, telle qu’une vulnérabilité | Croire qu’une analyse prouve une exploitation      |
+| <Term en="Reporting">Rapport</Term>                                                 | Communiquer tendances, état ou résultats à un public                       | Confondre rapport et alerte immédiate              |
+| <Term en="Archiving">Archivage</Term>                                               | Conserver des traces pour enquête, audit ou politique                      | Croire que l’archive est analysée automatiquement  |
+| <Term en="Alert response and remediation">Réponse aux alertes et remédiation</Term> | Trier, enquêter, contenir et corriger une situation confirmée              | Considérer toute alerte comme un incident confirmé |
+
+L’agrégation des journaux centralise les enregistrements des systèmes, applications et
+infrastructures. <Term en="Syslog">Syslog</Term> est un format et une convention de transport
+courants pour les messages de journalisation. La centralisation permet de comparer les événements
+sur une chronologie commune et évite de perdre des preuves lorsqu’un système local est reconstruit.
+Elle ne décide pas seule qu’une combinaison d’événements est suspecte.
+
+Un SIEM agrège des données pertinentes pour la sécurité et corrèle des événements entre sources. Il
+peut par exemple rapprocher une authentification, une alerte de terminal et un événement de pare-feu
+dans une même enquête. Il peut produire alertes et rapports, mais une alerte nécessite toujours un
+triage. Des seuils trop sensibles créent une fatigue d’alerte ; des seuils trop souples laissent
+passer une activité importante. Le but est une détection exploitable, pas le plus grand nombre de
+notifications.
+
+L’analyse est une inspection délibérée, et non une observation passive continue. Un
+
+<Term en="Vulnerability scanner">scanner de vulnérabilités</Term> identifie des faiblesses
+potentielles à partir de contrôles connus. Le <Term en="SCAP">SCAP</Term> fournit du contenu et des
+formats standardisés pour automatiser l’évaluation de la sécurité et de la configuration. Un
+résultat doit être validé et priorisé : il prouve une condition à traiter, pas qu’un attaquant l’a
+exploitée.
+
+<InPractice>
+  Une alerte sur un flux sortant inhabituel appelle une réponse limitée et méthodique : valider
+  l’actif et la destination, lire les journaux voisins, contenir si cela est justifié, puis corriger
+  la cause. Bloquer tout flux volumineux sans contexte peut interrompre une sauvegarde ou un
+  transfert métier légitime.
+</InPractice>
+
+## Choisir l’outil selon la preuve attendue
+
+Un même incident peut justifier plusieurs outils, mais chacun répond à une question précise.
+
+| Outil                                                                         | Meilleur usage                                                        | Limite à retenir                                                                |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| SIEM                                                                          | Corréler et alerter à partir de nombreuses sources                    | Il dépend de données collectées et réglées                                      |
+| Antimalware                                                                   | Détecter ou bloquer un logiciel malveillant sur un terminal           | Il ne remplace pas une visibilité réseau globale                                |
+| <Term en="Data loss prevention">Prévention des pertes de données</Term> (DLP) | Appliquer une politique aux déplacements de données sensibles         | Elle vise le traitement des données, pas la disponibilité générale              |
+| Pièges SNMP                                                                   | Recevoir des notifications d’état ou de panne d’un équipement         | Un piège est envoyé ; une interrogation est demandée                            |
+| NetFlow                                                                       | Voir qui communique, comment et en quel volume                        | Il ne révèle généralement pas le contenu des paquets                            |
+| Scanner de vulnérabilités                                                     | Identifier des faiblesses ou constats de configuration connus         | Ce n’est pas un détecteur d’intrusion                                           |
+| SCAP                                                                          | Standardiser l’évaluation automatisée de sécurité et de configuration | C’est un cadre et du contenu, pas un flux de paquets en direct                  |
+| <Term en="Protocol analyzer">Analyseur de protocole</Term>                    | Examiner paquets et détails de protocole                              | Il est plus détaillé que les métadonnées de flux et demande un placement adapté |
+
+Les outils DLP cherchent des données sensibles qui transitent par des canaux surveillés et peuvent
+alerter, bloquer ou appliquer une politique. Ils sont proches d’un SIEM, mais n’ont pas le même rôle
+: le SIEM rassemble des événements pour les analyser, alors que DLP s’intéresse directement à la
+prévention ou à la détection d’un traitement de données interdit. Un analyseur de protocole capture
+et décode les paquets ; il convient lorsque le contenu ou un échange de protocole importe. NetFlow
+fournit des métadonnées plus légères, adaptées aux tendances de trafic et aux volumes dans le temps.
+
+<Mnemonic>
+  **Le flux donne le contour de l’histoire ; les paquets donnent le dialogue.** Utilise NetFlow pour
+  le contour des conversations et un analyseur de protocole lorsque la question demande le détail du
+  protocole ou du contenu.
+</Mnemonic>
+
+## Concevoir une alerte qui aboutit
+
+Une bonne alerte part d’une condition claire, d’un responsable connu, d’un contexte suffisant pour
+enquêter et d’un chemin de réponse. La gravité doit refléter l’impact et la confiance, pas seulement
+le déclenchement d’une règle. Les traces sont conservées selon les besoins de l’organisation et les
+obligations applicables, avec des contrôles qui protègent leur intégrité. Les rapports transforment
+ensuite les preuves accumulées en tendances : échecs de connexion récurrents, constats corrigés,
+règles bruyantes ou angles morts de couverture.
+
+Si les données sont dispersées entre hôtes, il faut d’abord les collecter ou les agréger. Si les
+données existent mais que les événements liés sont manqués, un SIEM peut les corréler. Si des
+dossiers sensibles quittent l’organisation par un canal autorisé, DLP devient pertinent. Si un
+équipement réseau doit annoncer une panne d’interface, le piège SNMP est l’outil ciblé. Associe les
+mots de l’énoncé à la preuve demandée, puis choisis la réponse capable la plus précise.
+
+## Se tester
+
+1. Quelle différence essentielle existe entre un piège SNMP et l’interrogation SNMP ?
+2. Dans quel cas NetFlow est-il plus adapté qu’un analyseur de protocole ?
+3. Pourquoi un résultat de scanner de vulnérabilités ne prouve-t-il pas à lui seul une compromission
+   ?
+
+<KeyPoint>
+  1. Le piège est envoyé par l’équipement après un événement, tandis que l’interrogation demande son
+  état. 2. NetFlow convient aux métadonnées générales de conversation et de volume ; l’analyse de
+  paquets convient au détail du protocole ou du contenu. 3. Le scanner identifie une faiblesse
+  possible ou un constat de configuration ; il ne montre pas qu’un attaquant l’a exploitée.
+</KeyPoint>

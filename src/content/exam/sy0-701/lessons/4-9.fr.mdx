@@ -1,0 +1,157 @@
+## Pourquoi cet objectif compte
+
+Une investigation réussit ou échoue selon la qualité des éléments qui la soutiennent. À l’examen,
+cet objectif demande de lire un incident, de comprendre la question posée à l’analyste et de choisir
+la source qui peut y répondre. Il ne demande ni de mémoriser tous les formats de journaux ni de
+piloter un produit particulier. Les points se gagnent en séparant des sources voisines : un pare-feu
+explique une décision de connexion, mais pas le processus lancé sur un poste ; un scan de
+vulnérabilités signale une faiblesse possible, mais ne prouve pas son exploitation.
+
+Une bonne investigation relie des observations. Une connexion suspecte, une requête DNS, un
+processus sur un terminal et un événement d’audit infonuagique peuvent être incomplets isolément. Le
+rapprochement de leurs heures, identités, hôtes, adresses et valeurs de hachage peut former une
+chronologie défendable. Commence par la question de l’enquête, puis choisis les données qui ont
+enregistré l’événement plutôt que celles qui décrivent seulement un risque possible.
+
+<KeyPoint>
+  Demande : **quoi, où, quand et pour qui ?** Choisis la source la plus proche de l’événement. Les
+  renseignements et données publiques ajoutent du contexte ; ils ne remplacent pas une preuve
+  locale.
+</KeyPoint>
+
+## Les journaux : des traces d’activité
+
+Un <Term en="Log">journal</Term> est un enregistrement horodaté produit par un système, une
+application ou un contrôle de sécurité. Sa valeur dépend de ses champs, de sa couverture, de la
+précision de son horloge, de sa rétention et de son intégrité. Avant une conclusion, vérifie le
+fuseau horaire et si la source enregistre réellement l’action. Une absence dans un journal ne
+signifie quelque chose que si la journalisation était active et si les données sont encore
+conservées.
+
+| Source                                                                                   | Question d’investigation principale                                                   | Limite habituelle                                                                    |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| <Term en="Firewall log">Journal de pare-feu</Term>                                       | Ce flux a-t-il été autorisé, bloqué, traduit ou routé ?                               | Il ne nomme généralement ni l’utilisateur ni le processus à l’origine du flux.       |
+| <Term en="Application log">Journal d’application</Term>                                  | Que cette application a-t-elle accepté, refusé, créé ou signalé ?                     | Il ne révèle pas ce qui se passe hors de cette application.                          |
+| <Term en="Endpoint log">Journal de terminal</Term>                                       | Quel processus, quelle commande, quel fichier ou quel compte a agi sur cet appareil ? | La couverture dépend de l’outil et de la politique installés.                        |
+| <Term en="OS-specific security log">Journal de sécurité du système d’exploitation</Term> | Qui s’est authentifié ou a modifié un privilège ?                                     | Les événements utiles varient selon le système.                                      |
+| <Term en="IDS/IPS log">Journal IDS/IPS</Term>                                            | Quelle signature, anomalie ou règle préventive a réagi ?                              | Une détection doit être validée ; elle ne prouve pas seule une compromission.        |
+| <Term en="Network log">Journal réseau</Term>                                             | Quels systèmes ont communiqué, avec quels ports et protocole, et quand ?              | Les enregistrements de flux ne contiennent habituellement pas toute la charge utile. |
+
+Les journaux de pare-feu indiquent souvent source, destination, ports, protocole, action, règle et
+heure. Ils constituent une forte preuve d’une décision du contrôle réseau. Si la question décrit une
+règle de sortie qui a bloqué du trafic, commence ici. Si elle demande quel exécutable a tenté la
+connexion, bascule vers la télémétrie de terminal puis rapproche hôte et horaire.
+
+Les journaux d’application placent l’activité dans un contexte métier. Une application web peut
+consigner un résultat d’authentification, une action de compte, un chemin de requête, une erreur ou
+un identifiant de transaction. Les bases de données et les services de messagerie font de même pour
+leurs opérations. Ces journaux deviennent précieux pour relier un événement réseau à une action du
+service. Une erreur applicative ne prouve toutefois pas une attaque : compare-la aux données
+d’authentification, de terminal et de réseau.
+
+Les journaux de terminal et de système d’exploitation sont les plus proches lorsque le scénario
+concerne un hôte. Ils peuvent montrer connexions, création de processus, lignes de commande,
+écritures de fichiers, changements de service, événements de politique de sécurité ou usage local de
+privilèges. L’<Term en="Endpoint detection and response">EDR</Term> enrichit souvent ces traces par
+un arbre de processus et une valeur de hachage. Un processus suspect lancé par une suite bureautique
+ne raconte pas la même histoire que celui lancé par un outil d’administration approuvé.
+
+Les journaux d’<Term en="Intrusion detection system">IDS</Term> et
+d’<Term en="Intrusion prevention system">IPS</Term> enregistrent les détections issues du trafic ou
+du comportement. La distinction est pratique : un IDS alerte, tandis qu’un IPS peut prévenir une
+action. Dans les deux cas, l’alerte est une piste. Confirme le périmètre avec des données réseau, de
+terminal ou d’application : une signature peut correspondre à un trafic bénin et un flux bloqué peut
+ne jamais avoir atteint sa destination.
+
+Les journaux réseau incluent enregistrements de flux, DNS, proxy, attributions DHCP et, si elle est
+disponible, capture de paquets. DNS relie un domaine à un demandeur interne ; DHCP relie une adresse
+à un appareil à une heure donnée. Une capture de paquets peut apporter bien plus de détail qu’un
+flux, mais sa rétention est souvent plus courte. Choisis la source la moins large qui répond à la
+question, puis élargis si les éléments le justifient.
+
+<ExamTrap>
+  Un <Term en="Vulnerability scan output">résultat de scan de vulnérabilités</Term> indique qu’un
+  système peut être exposé. Il ne démontre pas qu’un attaquant a exploité la faiblesse. Les journaux
+  et artefacts de terminal servent à rechercher une exploitation ; le scan sert à évaluer
+  l’exposition et la priorité de correction.
+</ExamTrap>
+
+### Métadonnées et traces d’automatisation
+
+Les <Term en="Metadata">métadonnées</Term> décrivent un élément au lieu de son contenu visible :
+valeur de hachage, propriétaire, date de création, expéditeur, destinataire, adresse IP,
+revendication de géolocalisation ou en-tête de message. Elles permettent de pivoter sans devoir
+exposer le contenu. Les en-têtes de courriel révèlent par exemple le chemin d’un message, et la
+valeur de hachage permet de rechercher le même fichier dans les données de terminaux.
+
+Les <Term en="Automation and orchestration logs">journaux d’automatisation et d’orchestration</Term>
+deviennent essentiels lorsqu’un contrôle agit seul. Ils montrent quel guide a été exécuté, ses
+entrées, le compte ou service qui l’a lancé, chaque action et son résultat. Lorsqu’un compte a été
+désactivé de manière inattendue, ces journaux séparent une mesure automatique de confinement d’une
+action adverse ou d’une modification humaine.
+
+## Sources de données : contexte et orientation
+
+À la différence des journaux d’événements, de nombreuses sources expliquent le sens d’un constat, ce
+qui est connu à son sujet ou la réponse attendue. Évalue toujours actualité, pertinence, fiabilité
+de l’émetteur et restrictions de partage.
+
+| Source                                                                           | Apport                                                               | Ce qu’elle ne prouve pas                                     |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------ |
+| <Term en="Vulnerability feed">Flux de vulnérabilités</Term>                      | Nouvelles faiblesses et produits concernés                           | Qu’un actif précis soit vulnérable ou exploité               |
+| <Term en="Advisories and bulletins">Avis et bulletins</Term>                     | Conseils d’éditeur ou d’autorité, atténuations et urgence            | Une activité dans l’organisation                             |
+| <Term en="Threat intelligence feed">Flux de renseignement sur les menaces</Term> | Indicateurs, acteurs, campagnes et techniques                        | Que tout indicateur correspondant est malveillant localement |
+| <Term en="File/code repository">Dépôt de fichiers ou de code</Term>              | Source attendue, modifications, propriétaires et historique logiciel | Le comportement en exécution sur un hôte déployé             |
+| <Term en="Data breach report">Rapport de violation de données</Term>             | Exposition connue, notifications et données touchées                 | Le périmètre entier d’un incident en cours                   |
+| <Term en="Security assessment report">Rapport d’évaluation de sécurité</Term>    | Lacunes identifiées et contrôles recommandés                         | Une trace horodatée d’attaque                                |
+| <Term en="Runbook/playbook">Guide opérationnel</Term>                            | Étapes de réponse et escalade approuvées                             | La preuve qu’une action a été réalisée                       |
+| <Term en="OSINT/dark web">OSINT ou renseignement du web clandestin</Term>        | Contexte public ou souterrain                                        | Une attribution vérifiée sans corroboration                  |
+
+Les flux de vulnérabilités, avis et bulletins aident à trier une alerte. Un bulletin d’éditeur peut
+nommer les versions atteintes et une atténuation. Un scan et l’inventaire indiquent ensuite si ces
+versions existent localement. Les rôles restent distincts : le flux apporte la connaissance,
+l’inventaire la présence, et les journaux l’activité observée.
+
+Un flux de renseignement peut contenir des <Term en="Indicators of compromise">indicateurs de
+compromission</Term> : domaines, adresses, URL, hachages, objets de courriel ou comportements.
+Traite un indicateur comme une piste et une hypothèse. Cherche-le dans les données locales
+pertinentes, vérifie heure et contexte, et ne bloque ni n’attribue sur la seule présence dans un
+flux non vérifié. Les indicateurs vieillissent et une infrastructure partagée peut changer de
+propriétaire.
+
+Les dépôts et rapports d’évaluation établissent les attentes. Un historique de dépôt peut montrer si
+une bibliothèque suspecte est arrivée par un changement documenté ; une évaluation antérieure peut
+montrer qu’un contrôle manquant était déjà connu. Aucun ne remplace les éléments courants, mais tous
+deux orientent la recherche de cause et la correction.
+
+L’<Term en="Open-source intelligence">OSINT</Term> désigne l’information publiquement accessible,
+telle que pages d’éditeur, dépôts publics, actualités ou enregistrements de domaine. Les sources du
+web clandestin peuvent révéler identifiants proposés ou revendications de violation. Elles exigent
+une validation attentive : une revendication adverse peut être fausse, ancienne ou issue d’un autre
+incident. Conserve le constat, applique les voies autorisées et cherche une confirmation locale.
+
+<InPractice>
+  Construis une chronologie aux heures normalisées, puis pivote avec méthode : un événement
+  d’authentification identifie un compte ; les traces de terminal identifient le processus ; DNS et
+  proxy identifient la destination ; le renseignement explique son caractère suspect. Consigne la
+  source et la conclusion afin qu’une autre analyste puisse reproduire le chemin.
+</InPractice>
+
+<Mnemonic>
+  **Les journaux montrent, les sources externes expliquent.** Les journaux montrent ce que
+  l’environnement a enregistré. Flux, avis, rapports et OSINT expliquent risque, réputation,
+  historique ou prochaine action.
+</Mnemonic>
+
+## Se tester
+
+1. Quelle source répond le mieux à la question : un pare-feu a-t-il autorisé une connexion sortante
+   ?
+2. Pourquoi un scan de vulnérabilités ne suffit-il pas à prouver une exploitation ?
+3. Que doit faire une analyste avec un indicateur de renseignement avant de conclure à une
+   compromission ?
+
+<KeyPoint>
+  1. Le journal du pare-feu. 2. Il montre une exposition potentielle, non une action adverse
+  observée. 3. Elle doit le rechercher dans les éléments locaux et valider heure et contexte.
+</KeyPoint>

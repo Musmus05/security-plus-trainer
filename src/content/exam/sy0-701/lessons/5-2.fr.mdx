@@ -1,0 +1,159 @@
+## Pourquoi cet objectif compte
+
+La gestion des risques est la méthode qui transforme une longue liste de défaillances possibles en
+décisions que la direction peut financer, attribuer et réexaminer. À l’examen, cet objectif ne
+demande pas de rendre un système parfaitement sûr. Il vérifie que tu distingues les étapes :
+identifier un risque, l’évaluer et l’analyser, le consigner, décider ce qui est acceptable, choisir
+un traitement, le signaler, puis comprendre la conséquence métier d’une interruption.
+
+Un scénario peut proposer plusieurs bonnes actions de sécurité. Il faut choisir celle qui répond à
+la question au stade décrit. Repérer une base de données exposée relève de l’identification ;
+estimer la probabilité et la conséquence d’une compromission relève de l’évaluation ; choisir de
+l’isoler, de l’assurer ou de conserver le risque relève du traitement.
+
+<KeyPoint>
+  Un <Term en="Risk">risque</Term> n’est pas une <Term en="Vulnerability">vulnérabilité</Term>. La
+  vulnérabilité est une faiblesse ; le risque est la possibilité qu’une{' '}
+  <Term en="Threat">menace</Term>
+  exploite cette faiblesse et produise une conséquence métier indésirable.
+</KeyPoint>
+
+## Identifier, évaluer, analyser
+
+### Identifier les risques
+
+L’<Term en="Risk identification">identification des risques</Term> constitue la liste de départ. Les
+équipes examinent les actifs et processus métier, les menaces, vulnérabilités, dépendances,
+incidents antérieurs, fournisseurs et lacunes de contrôle. Le résultat doit être assez précis pour
+agir : « un jeton administrateur volé pourrait permettre de modifier les données de paie » est plus
+utile que « l’authentification présente un risque ». Un risque peut venir d’un acteur malveillant,
+d’une erreur, d’un service en panne ou d’un événement naturel ; sa source ne change pas la nécessité
+de le gérer.
+
+Identifier n’est pas corriger. Constater qu’un compartiment de stockage public contient des fichiers
+clients ne dit pas encore quelle est la probabilité d’un abus, quelle serait sa gravité, ni qui a
+accepté la décision. Cette étape garantit seulement que l’exposition devient visible dans le
+processus.
+
+### Évaluation et analyse des risques
+
+L’<Term en="Risk assessment">évaluation des risques</Term> rassemble les éléments qui permettent de
+juger un risque. Elle considère normalement la probabilité, l’impact, l’actif ou processus affecté
+et les contrôles existants. L’<Term en="Risk analysis">analyse des risques</Term> emploie ces
+éléments pour comparer et prioriser les risques. Une organisation peut utiliser des niveaux
+qualitatifs, comme faible, moyen et élevé, ou des chiffres et estimations financières. L’examen
+porte sur le soutien à la décision, non sur une formule imposée.
+
+| Activité                   | Question traitée                                            | Résultat habituel                                     |
+| -------------------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
+| Identification des risques | Que peut-il arriver, et pourquoi ?                          | Un risque formulé avec sa source et son actif affecté |
+| Évaluation des risques     | Quelle est sa probabilité et quelle gravité peut-il avoir ? | Des éléments ou niveaux de probabilité et d’impact    |
+| Analyse des risques        | Quels risques exigent une attention prioritaire ?           | Une vue priorisée destinée aux décideurs              |
+
+<ExamTrap>
+  Ne confonds pas évaluation ou analyse avec remédiation. Un niveau élevé justifie une décision ;
+  appliquer un contrôle est une réponse ultérieure. De même, un scan de vulnérabilités alimente
+  l’identification et l’évaluation, mais ne constitue pas tout le processus de gestion des risques.
+</ExamTrap>
+
+## Rendre le risque visible
+
+### Le registre des risques
+
+Un <Term en="Risk register">registre des risques</Term> est le document de travail des risques
+identifiés. Il rend possible la responsabilité et le suivi. Les champs exacts varient, mais une
+entrée utile relie la description à l’actif ou processus, à la probabilité et l’impact, au
+traitement choisi, à un responsable nommé, au statut, aux dates prévues et au
+
+<Term en="Residual risk">risque résiduel</Term>. Ce n’est pas une simple file de tickets : c’est le
+registre partagé qui permet à la direction de voir les expositions que l’organisation a choisi de
+porter.
+
+Mettre le registre à jour compte autant que le créer. Un risque atténué peut rester important, un
+nouveau contrôle peut réduire la probabilité, ou un changement métier peut accroître l’impact.
+Fermer une entrée parce qu’une équipe se lasse de la voir n’est ni une acceptation ni une
+atténuation : cela masque une information.
+
+### Le signalement des risques
+
+Le <Term en="Risk reporting">signalement des risques</Term> communique le registre et ses tendances
+aux personnes capables d’agir. Un propriétaire de système a besoin de la cause technique et du
+prochain contrôle, tandis que les dirigeants ont besoin de l’impact métier, de l’exposition
+restante, du financement demandé et des décisions en attente. Un bon signalement arrive à temps,
+indique les incertitudes et s’adapte au public. Il doit faire ressortir les changements : un seuil
+dépassé, un traitement en retard ou une dépendance qui modifie l’impact.
+
+<InPractice>
+  Un tableau de bord qui affiche « douze risques élevés » est incomplet s’il omet les responsables,
+  les services métier affectés et les décisions demandées. Le signalement crée de la responsabilité
+  ; il ne remplace pas le traitement retenu.
+</InPractice>
+
+## Appétit, tolérance et traitement
+
+Ces termes voisins sont des distracteurs fréquents, car ils concernent tous l’acceptation, mais ne
+répondent pas à la même question.
+
+| Terme                                                  | Sens                                                                                               | Indice d’examen                              |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| <Term en="Risk appetite">Appétit pour le risque</Term> | La quantité et le type de risque que l’organisation accepte globalement de poursuivre ou conserver | Une orientation définie par la direction     |
+| <Term en="Risk tolerance">Tolérance au risque</Term>   | La variation ou limite admise autour de cet appétit pour un objectif ou cas précis                 | Un seuil qui déclenche une action            |
+| Risque résiduel                                        | L’exposition qui demeure après les contrôles ou le traitement                                      | Ce qui doit encore être accepté ou surveillé |
+
+Par exemple, une organisation peut avoir très peu d’appétit pour la perte de données personnelles
+réglementées. Sa tolérance peut imposer qu’un service exposé à Internet ne conserve pas de faille
+critique au-delà d’une échéance définie. L’appétit est une position stratégique ; la tolérance est
+une limite utilisable. Aucun des deux ne signifie que toute perte possible disparaît.
+
+Les <Term en="Risk management strategies">stratégies de gestion des risques</Term> sont les choix
+effectués après l’analyse :
+
+| Stratégie                             | Ce qu’elle signifie                                                                   | Exemple                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| <Term en="Avoid">Éviter</Term>        | Arrêter l’activité ou modifier le plan afin que le risque ne s’applique plus          | Ne pas stocker un jeu de données sensible dans le service envisagé                        |
+| <Term en="Mitigate">Atténuer</Term>   | Réduire la probabilité, l’impact ou les deux par des contrôles                        | Ajouter MFA, segmentation et surveillance pour réduire le préjudice d’une prise de compte |
+| <Term en="Transfer">Transférer</Term> | Déplacer vers une autre partie une part de la conséquence financière ou contractuelle | Utiliser une assurance ou attribuer une responsabilité définie par contrat                |
+| <Term en="Accept">Accepter</Term>     | Conserver délibérément le risque dans des limites approuvées                          | Enregistrer un risque de faible impact approuvé et le surveiller                          |
+
+Transférer ne fait pas disparaître la menace technique. Un assureur peut supporter une perte
+financière, tandis que l’organisation subit encore une interruption et doit respecter ses
+obligations de réponse. Accepter est une décision éclairée d’un responsable autorisé, étayée par un
+risque résiduel consigné ; ce n’est pas de la négligence.
+
+<Mnemonic>
+  **ÉATA : Éviter, Atténuer, Transférer, Accepter.** Demande-toi ce qui arrive à l’activité, à la
+  probabilité ou à l’impact, à la conséquence, ou à la décision de conserver le risque.
+</Mnemonic>
+
+## Analyse d’impact sur l’activité
+
+Une <Term en="Business impact analysis">analyse d’impact sur l’activité</Term>, ou BIA, part des
+opérations métier plutôt que d’une menace particulière. Elle recense les processus critiques, les
+dépendances et les conséquences lorsqu’ils sont indisponibles ou dégradés. Ces conséquences peuvent
+inclure la perte de revenus, des pénalités contractuelles, des enjeux de sécurité des personnes, des
+obligations réglementaires, une réputation dégradée ou du travail retardé. La BIA aide à établir les
+priorités de reprise et donne à l’analyse des risques une base métier pour les niveaux d’impact.
+
+Ne confonds pas une BIA avec une évaluation technique des vulnérabilités. Cette dernière recherche
+des faiblesses dans les systèmes. La BIA demande quelle capacité métier compte, combien de temps une
+interruption est tolérable et de quoi elle dépend. Les deux éclairent les décisions de risque, mais
+elles partent des extrémités opposées du problème.
+
+<ExamTrap>
+  Une BIA ne prédit pas la prochaine attaque. Lorsqu’un énoncé demande quel processus de paie, de
+  commande ou d’urgence doit être rétabli en premier et quel est le coût de son interruption, il
+  décrit une analyse d’impact sur l’activité.
+</ExamTrap>
+
+## Se tester
+
+1. Une équipe découvre une interface administrative exposée, sans encore estimer son effet. Quelle
+   étape du risque a-t-elle accomplie ?
+2. Quelle stratégie est appliquée lorsqu’une société retire entièrement une fonctionnalité risquée ?
+3. Qu’est-ce qui distingue la tolérance au risque de l’appétit pour le risque ?
+
+<KeyPoint>
+  (1) L’identification des risques. (2) L’évitement : l’activité est modifiée ou arrêtée. (3)
+  L’appétit est la volonté stratégique générale de prendre du risque ; la tolérance est la limite
+  mesurable ou contextuelle qui impose une action.
+</KeyPoint>

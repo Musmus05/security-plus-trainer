@@ -1,0 +1,151 @@
+## Why this objective matters
+
+Audits and assessments turn a security claim into something a different person can examine. A team
+may say that privileged access is reviewed, backups are protected, or a supplier meets a contractual
+requirement. The useful question is not whether the claim sounds reassuring. It is who examined it,
+what evidence was used, and who will rely on the result.
+
+This objective is usually tested as a classification exercise. Read a scenario for the audience and
+the degree of independence required, then distinguish internal work, external work, and an
+attestation. Do not choose a label merely because an activity found a weakness: each type can find
+one.
+
+<KeyPoint>
+  Start with the consumer of the result. Internal improvement suggests an internal audit or
+  assessment. A customer or regulator that needs independent assurance suggests external work. A
+  formal conclusion about stated criteria is an attestation.
+</KeyPoint>
+
+## Audit, assessment, and evidence
+
+An **audit** is a structured examination against defined criteria. It gathers evidence, compares
+that evidence with a policy, standard, contract, or framework, and reports a conclusion. An
+**assessment** is a broader evaluation. It may measure maturity, identify gaps, test a control, or
+recommend priorities without issuing the formal opinion associated with a particular audit.
+
+The words overlap in ordinary conversation. On the exam, the clues matter more than a document
+title. Look for a stated criterion, documented scope, evidence, findings, and an audience that will
+act on the result. A review can be useful even when it does not issue a certificate or a formal
+attestation.
+
+| Question to ask                  | Audit                                          | Assessment                                               |
+| -------------------------------- | ---------------------------------------------- | -------------------------------------------------------- |
+| Main purpose                     | Determine conformance with defined criteria    | Understand condition, risk, or improvement opportunities |
+| Typical output                   | Findings and a conclusion against the criteria | Observations, gaps, maturity view, or recommendations    |
+| May be internal or external?     | Yes                                            | Yes                                                      |
+| Automatically proves compliance? | No; it depends on the engagement               | No; it can support a later decision                      |
+
+Evidence prevents a result from becoming mere opinion. It can include configuration records,
+access-review evidence, tickets, logs, policies, interview answers, or observation of a process.
+Good evidence is relevant to the criterion and sufficient for the conclusion being made. A signed
+policy may demonstrate intended design, but it does not by itself prove that a control operates.
+Likewise, a log without a defined requirement may not demonstrate that the right control exists.
+
+<ExamTrap>
+  Finding no problem during a review is not the same as proving that no problem exists. Every
+  conclusion is bounded by its scope, criteria, period, and evidence. Never infer a guarantee the
+  scenario did not give.
+</ExamTrap>
+
+## Internal audits and assessments
+
+An **internal audit** is performed for the organisation itself. The reviewer may be an internal
+audit function, a security team separate from the control owner, or another authorised group. Its
+value is early and candid feedback: management can determine whether controls work as intended
+before a customer, regulator, or incident exposes a gap.
+
+Internal does not mean informal. A strong engagement has scope, criteria, evidence, findings,
+remediation ownership, and follow-up. Independence still matters. The administrator who configured a
+system should not be the only person judging whether it meets requirements. Separation reduces the
+chance that self-interest or familiarity obscures a defect.
+
+| Internal activity       | Useful purpose                                | Limitation to remember                          |
+| ----------------------- | --------------------------------------------- | ----------------------------------------------- |
+| Control self-assessment | Lets owners identify gaps quickly             | It is not independent assurance by itself       |
+| Internal audit          | Tests whether the organisation meets criteria | Its report primarily serves internal governance |
+| Readiness assessment    | Prepares for a future external review         | Preparation is not the external review itself   |
+
+Suppose a security director asks an internal team to compare quarterly access reviews with company
+policy, sample completed reviews, and report exceptions to leadership. That is an internal audit. If
+the same team interviews owners to identify immature areas and proposes a roadmap, it is an internal
+assessment. Both are valuable; the expected conclusion differs.
+
+<InPractice>
+  Treat a finding as work with an owner and a due date. The audit or assessment identifies the
+  issue; risk acceptance, remediation, and later verification are separate management actions.
+</InPractice>
+
+## External audits and assessments
+
+An **external audit** is performed by a party outside the organisation. That party can be a
+customer, regulator, certification body, or independent assessor, depending on purpose. The key exam
+clue is independence from the organisation or control owner whose claim is examined.
+
+External work can establish trust where an internal report cannot. A prospective customer may need
+evidence before sharing data. A regulator may examine an applicable legal obligation. A
+certification body may evaluate whether defined requirements are met. The external reviewer is not
+automatically hostile; it simply has a different audience and assurance role.
+
+| Situation                                                   | Most fitting activity        | Why                                                    |
+| ----------------------------------------------------------- | ---------------------------- | ------------------------------------------------------ |
+| Leadership wants a direct view before launching a program   | Internal assessment          | The result guides internal improvement                 |
+| A customer requires independent evidence before contracting | External audit or assessment | The customer cannot rely only on the vendor's claim    |
+| A regulator examines an obligation                          | External audit or assessment | The reviewer has authority outside the organisation    |
+| A team checks its evidence before a review                  | Readiness assessment         | It prepares evidence; it is not independent validation |
+
+External work may also produce recommendations. Do not equate “external” with “punitive,” or
+“assessment” with “less rigorous.” The scenario's scope and intended reliance decide the answer.
+
+## Attestation: a formal claim
+
+An **attestation** is a formal statement that an assertion or set of controls meets specified
+criteria. The word matters because another party will rely on the statement. The assertion might be
+that controls were designed and operated according to requirements during a defined period. An
+attestation ties together criteria, evidence, scope, and conclusion.
+
+Attestation is not a manager saying “we are secure.” A self-declaration communicates a claim, but
+does not automatically provide the independent assurance a customer or regulator expects. Likewise,
+a penetration test can reveal technical weaknesses but is not, by itself, an attestation of an
+entire control environment.
+
+| Term           | Contribution                                       | Common confusion                             |
+| -------------- | -------------------------------------------------- | -------------------------------------------- |
+| Assertion      | A claim that can be examined                       | A claim is not evidence                      |
+| Attestation    | Formal conclusion about the claim against criteria | It is not a promise of perfect security      |
+| Audit evidence | Support for the conclusion                         | A document can show design, not operation    |
+| Scope          | Systems, period, and criteria covered              | A limited claim cannot safely be generalized |
+
+<Mnemonic>
+  **A-S-E:** Assertion, Scope, Evidence. Before trusting an attestation, ask what was claimed, what
+  it covered, and what supported the conclusion.
+</Mnemonic>
+
+## Choosing the answer in a scenario
+
+Use a short sequence. First identify the criteria: policy, contract, regulation, or framework.
+Second identify who requested or will rely on the result. Third decide whether the scenario demands
+independent assurance or internal improvement. Finally separate the activity from follow-up:
+correcting a finding is remediation, not the audit itself.
+
+For example, a cloud provider asks its internal compliance group to review access evidence before a
+customer review. That work is a readiness assessment. If an independent party later examines the
+same controls and issues a formal conclusion for customers to use, it is external work supporting an
+attestation. The evidence may overlap, but the purpose and reliance do not.
+
+<ExamTrap>
+  “External” describes who performs the review, while “attestation” describes the purpose and form
+  of the conclusion. They are not opposites: an independent external reviewer can perform work that
+  supports an attestation.
+</ExamTrap>
+
+## Test yourself
+
+1. Why is a system owner's self-review weaker than an independent audit for external assurance?
+2. What separates a readiness assessment from the external review it prepares for?
+3. Which boundaries should a reader check before relying on an attestation?
+
+<KeyPoint>
+  1. Self-review can identify gaps but lacks the independence an outside party may require. 2.
+  Readiness work improves evidence and controls internally; it does not provide independent
+  validation. 3. Check the assertion, criteria, systems, time period, evidence, and scope.
+</KeyPoint>

@@ -1,0 +1,162 @@
+## Why this objective matters
+
+Security architecture is judged when something fails. A sound firewall or encryption design still
+fails the organisation if one server outage, flooded site, exhausted resource, or untested restore
+stops a critical service. Resilience is the ability to continue or recover an acceptable service
+after disruption; recovery is the deliberate route back to the required state.
+
+The exam tests whether the proposed design addresses the disruption in the scenario. Read the clue
+carefully: a second component addresses a component failure, another site addresses a site loss, a
+restore addresses lost or corrupted data, and a tested procedure addresses uncertainty about whether
+the plan will work. These controls are related, but they are not interchangeable.
+
+<KeyPoint>
+  Begin with the failed dependency: **service** means availability, **site** means location
+  strategy, **data** means backup and restoration, **power** means electrical continuity, and **an
+  unproven plan** means testing. The best answer normally names the control nearest to that
+  dependency.
+</KeyPoint>
+
+## High availability: keep the service reachable
+
+**High availability (HA)** reduces interruption when an individual component, host, or path fails.
+Redundancy only helps when the replacement can take over without sharing the same failure. Two
+application servers behind a load balancer can serve requests when one host stops; two virtual
+machines on the same failed host cannot.
+
+| Design idea          | What it addresses                                 | Important limit                                |
+| -------------------- | ------------------------------------------------- | ---------------------------------------------- |
+| Redundant components | Failure of one component or connection            | A shared dependency can still fail both        |
+| Load balancing       | Distribution of requests across healthy instances | It does not restore damaged data               |
+| Failover             | Moving work to a standby service after failure    | The standby must be ready and reachable        |
+| Clustering           | Coordinated service from multiple members         | It does not automatically protect another site |
+
+Availability is not a claim that outages are impossible. It is a decision about acceptable
+interruption and how the design detects failure, directs traffic, and recovers capacity. A scenario
+where users must continue after one server fails points to HA, not simply to a backup. A backup
+helps recover information later; it does not normally take live requests at the moment of failure.
+
+<ExamTrap>
+  Redundancy is not automatically resilience. Two devices in one rack can improve hardware
+  availability, yet both can be lost to the same power event, fire, or network failure. Ask which
+  dependencies the supposedly separate copies still share.
+</ExamTrap>
+
+## Site considerations: recover beyond one location
+
+A disruption can be bigger than a server: a building can lose power, become inaccessible, or suffer
+an environmental event. **Site considerations** compare where recovery work can occur and how much
+capability is prepared there. Business impact and continuity requirements determine the choice; no
+site type is universally best.
+
+| Site type             | Prepared capability                                              | Recovery trade-off                         |
+| --------------------- | ---------------------------------------------------------------- | ------------------------------------------ |
+| Hot site              | Equipped and ready to assume operations quickly                  | Highest ongoing cost                       |
+| Warm site             | Some infrastructure is prepared; systems or data need completion | Moderate cost and recovery time            |
+| Cold site             | Basic facility with little ready computing capability            | Lowest cost and longest setup              |
+| Geographic separation | Recovery resources are away from the primary site                | Adds coordination and replication concerns |
+
+A hot site is not merely a room with spare equipment: it is prepared for rapid operation. A cold
+site is not a failed primary site; it is a planned alternate location needing setup. Geographic
+separation matters because an alternate site near the primary can share the same regional event.
+However, placing systems far apart can introduce latency, replication, and operational complexity.
+
+<InPractice>
+  Map a service dependency before declaring a second site ready. The alternate needs more than
+  servers: it may need identity access, network connectivity, current data, supplier contacts, and
+  people who know how to operate it.
+</InPractice>
+
+## Platform diversity and multi-cloud systems
+
+**Platform diversity** reduces dependence on a single implementation, vendor, operating environment,
+or technology pattern. It can limit the impact of one platform-specific defect or compromise. It
+also adds skills, monitoring, integration, and configuration work. Diversity is valuable when it
+removes a meaningful common failure mode, not when it merely makes every system different.
+
+**Multi-cloud systems** use services from more than one cloud provider. They can support resilience
+against a provider-specific outage and can help meet regional or service requirements. They do not
+automatically create high availability: the application must use the alternatives, data must be
+available where needed, and identity and network controls must work across providers.
+
+| Approach                 | Resilience benefit                                 | New responsibility                                  |
+| ------------------------ | -------------------------------------------------- | --------------------------------------------------- |
+| Platform diversity       | Reduces exposure to one shared technology weakness | Maintain secure, compatible different platforms     |
+| Multi-cloud              | Reduces reliance on one cloud provider             | Coordinate identity, data, networking, and recovery |
+| Single standard platform | Simplifies operations and hardening                | A platform-wide failure can affect more services    |
+
+<ExamTrap>
+  Multi-cloud describes provider choice, whereas geographic redundancy describes location. A
+  workload in two regions of one provider can survive a regional loss; workloads in two providers in
+  the same vulnerable area may not. The scenario decides which distinction matters.
+</ExamTrap>
+
+## Continuity of operations and capacity planning
+
+**Continuity of operations** is the ability to sustain essential business functions during a
+disruption. It includes people, procedures, communications, alternate work arrangements, and the
+technical services those functions need. Disaster recovery is an important technical contribution,
+but continuity is broader: a recovered application is of little use if its operators cannot access
+it or the business has no workable process for the disruption.
+
+**Capacity planning** ensures resources remain sufficient as demand changes and during failure.
+Normal usage is an incomplete measurement. If one node fails, the remaining nodes must carry the
+load; if traffic surges during an incident, bandwidth, compute, storage, and licences must still be
+adequate. Monitoring trends and testing realistic failure conditions turn capacity assumptions into
+evidence.
+
+<Mnemonic>
+  **Continuity keeps the business working; capacity keeps the working design from running out.** One
+  answers “can we operate?” and the other answers “can the surviving resources carry it?”
+</Mnemonic>
+
+## Testing and backups: prove recovery before needing it
+
+Plans, replicas, and backups create confidence only after testing. Testing can check that contacts
+are current, a failover actually routes traffic, a recovery site can operate, and restored data is
+usable. A tabletop exercise tests decisions and communication; a technical recovery test provides
+stronger evidence that systems and data can be restored. The right test scope balances risk and
+disruption, but an untested plan remains an assumption.
+
+Backups preserve recoverable copies of data. Their value depends on scope, retention, protection,
+and the ability to restore the right copy. Replication can improve availability by keeping another
+copy current, but it can also copy deletion or corruption quickly. A backup with suitable history
+can provide a recovery point when a live replica cannot.
+
+| Need in the scenario                                | Best first concept            |
+| --------------------------------------------------- | ----------------------------- |
+| A service must continue after host failure          | High availability or failover |
+| A building is unavailable                           | Alternate-site planning       |
+| Data was deleted or corrupted                       | Backup and restoration        |
+| Nobody knows whether the recovery plan works        | Testing                       |
+| Remaining systems become overloaded after a failure | Capacity planning             |
+
+<ExamTrap>
+  A successful backup job proves that data was copied, not that it can be restored within the
+  required time or used by the application. Restore testing proves the recovery outcome.
+</ExamTrap>
+
+## Power: preserve the foundation
+
+Power resilience considers outages, short interruptions, and unstable electrical supply. An
+**uninterruptible power supply (UPS)** can bridge a short loss and allow orderly shutdown or time
+for another source to start. A generator can sustain service longer, subject to fuel, maintenance,
+and safe operation. Redundant power feeds and conditioned power can reduce single points of failure,
+but they must be designed around actual facility dependencies.
+
+Do not confuse power protection with backup. A UPS protects running equipment during an electrical
+event; a backup protects a recoverable copy of data. An orderly shutdown may prevent corruption, but
+it is not the same as retaining a separate historical copy.
+
+## Test yourself
+
+1. A service must continue taking requests when one application server fails. Which objective topic
+   is most directly relevant?
+2. Why can a current replica be insufficient after accidental deletion?
+3. What distinguishes a UPS from a generator in a resilience design?
+
+<KeyPoint>
+  (1) High availability: redundancy and failover can keep requests served. (2) Replication can copy
+  the deletion, while a retained backup may provide an earlier recovery point. (3) A UPS bridges a
+  short power event or supports shutdown; a generator is intended to provide longer-running power.
+</KeyPoint>

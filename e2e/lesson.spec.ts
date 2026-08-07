@@ -56,14 +56,28 @@ test.describe('lesson content', () => {
     await expect(page.getByRole('heading', { name: 'Why this objective matters' })).toBeVisible();
   });
 
-  test('says so plainly when an objective has no lesson yet', async ({ page }) => {
-    // Honest emptiness beats a blank card: a learner should be able to tell unwritten content from
-    // a broken page.
-    await page.goto('/objective/5.6');
+  test('every objective in the outline now has a lesson', async ({ page }) => {
+    /*
+     * This test used to assert the opposite: that 5.6 said "not written yet". Honest emptiness is
+     * still the right behaviour and the code path is still there, but there is no longer an
+     * unwritten objective to point it at — the corpus is complete.
+     *
+     * Rather than delete the coverage, it is inverted. "No objective shows the empty state" is the
+     * stronger claim of the two, and it is the one that would catch a lesson dropped from the
+     * registry, which is exactly how 3.2 and 3.3 went missing.
+     */
+    for (const objective of ALL_OBJECTIVES) {
+      await page.goto(`/objective/${objective.id}`);
 
-    await expect(page.getByText(/n’est pas encore rédigée/)).toBeVisible();
-    // The official scope is still shown, so the page is useful even without the prose.
-    await expect(page.getByText('Phishing')).toBeVisible();
+      await expect(
+        page.getByText(/n’est pas encore rédigée/),
+        `objective ${objective.id} renders as unwritten`,
+      ).toHaveCount(0);
+      await expect(
+        page.getByRole('heading', { name: 'Pourquoi cet objectif compte' }),
+        `objective ${objective.id} has no lesson prose`,
+      ).toBeVisible();
+    }
   });
 
   test('the path marks which objectives have a lesson', async ({ page }) => {

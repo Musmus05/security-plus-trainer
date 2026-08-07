@@ -73,8 +73,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A visual pass on the learning path: a winding node trail with per-domain accent strips, crown pips,
   and a marker on the objective the dashboard is pointing at.
 
-- Content for 12 of the 28 objectives: 1.1–1.4, 2.1–2.5 and 3.1–3.3, each with a bilingual
-  lesson and a 15-question bank. Domains 1 and 2 are complete; domain 3 is three quarters done.
+- **The complete SY0-701 corpus: all 28 objectives.** 56 bilingual lessons totalling around
+  71 000 words, and 420 original questions — 15 per objective, four options each, every option
+  carrying an explanation in both languages.
 - The official acronym appendix extracted as source data (320 entries) with its extraction script.
 
 - The acronym glossary: all 320 official entries, searchable by acronym, English expansion or
@@ -93,6 +94,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   test that a version 2 blob keeps its XP, streak and progress.
 - A due-cards prompt on the dashboard, above the next objective — cards fall due whether or not
   the learner opens the app, so a review backlog compounds while new material does not.
+- The content gate now reads the application's own question registry instead of keeping a third
+  hand-maintained list, and checks lesson registration in both directions. Objectives 3.2 and 3.3
+  had been written, reviewed and committed while the app reported them as unwritten, because
+  registration lives in more than one place and nothing checked that the places agreed.
 
 ### Notes
 

@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page, test } from '@playwright/test';
 
+import { ALL_OBJECTIVES } from '../src/content/exam/sy0-701/domains';
+
 const STORAGE_KEY = 'security-plus-trainer';
 
 const persisted = (page: Page) => page.evaluate((key) => localStorage.getItem(key), STORAGE_KEY);
@@ -59,14 +61,24 @@ async function playWholeQuiz(page: Page, strategy: 'first' | 'last'): Promise<vo
 }
 
 test.describe('objective quiz', () => {
-  test('an objective with questions offers the quiz; one without does not', async ({ page }) => {
-    // A "take the quiz" button that leads to "no questions yet" reads as a broken feature rather
-    // than as content that has not been written.
-    await page.goto('/objective/1.1');
-    await expect(page.getByRole('link', { name: 'Passer le quiz' })).toBeVisible();
+  test('every objective offers its quiz', async ({ page }) => {
+    /*
+     * The negative half of this used to point at 5.6, which had no bank. All 28 objectives have one
+     * now, so the assertion is inverted: a missing button means a bank that exists on disk was
+     * dropped from the registry, which is the failure mode that hid 3.2 and 3.3 for a week.
+     *
+     * The rule the button still encodes: it appears only where questions exist, because a "take the
+     * quiz" link that leads to "no questions yet" reads as a broken feature rather than as content
+     * that has not been written.
+     */
+    for (const objective of ALL_OBJECTIVES) {
+      await page.goto(`/objective/${objective.id}`);
 
-    await page.goto('/objective/5.6');
-    await expect(page.getByRole('link', { name: 'Passer le quiz' })).toHaveCount(0);
+      await expect(
+        page.getByRole('link', { name: 'Passer le quiz' }),
+        `objective ${objective.id} offers no quiz`,
+      ).toBeVisible();
+    }
   });
 
   test('runs a full quiz and records the attempt', async ({ page }) => {

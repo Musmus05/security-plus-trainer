@@ -1,0 +1,154 @@
+## Why this objective matters
+
+An incident is not finished when an alert is closed. On the exam, this objective tests whether you
+can choose the activity that makes a response deliberate, repeatable, and useful after an event. The
+useful distinction is usually timing: preparation happens before an incident, containment and
+investigation happen during it, and learning happens afterwards. A tempting answer may be a real
+security activity but belong to the wrong point in that cycle.
+
+Incident response is also more than a technical team removing malware. It coordinates people,
+evidence, decisions, communications, and recovery while protecting the business. An organisation
+that can detect an attack but cannot preserve evidence, contact the right people, or restore a
+service safely has only solved part of the problem.
+
+<KeyPoint>
+  Read the scenario for its purpose. Is the team preparing people, rehearsing a plan, finding the
+  cause, proactively searching for hidden activity, or preserving evidence? That purpose points to
+  the tested activity.
+</KeyPoint>
+
+## The incident response process
+
+Different frameworks use slightly different labels, but the process has a consistent shape. The exam
+is interested in the outcome of each phase, not in memorising one vendor's diagram.
+
+| Phase                  | Primary goal                                              | Typical output                                             |
+| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
+| Preparation            | Be ready to respond before an event                       | Plan, roles, contacts, tooling, and playbooks              |
+| Detection and analysis | Decide whether the event is an incident and understand it | Scope, affected assets, severity, and evidence             |
+| Containment            | Limit damage and stop spread                              | Isolated hosts, blocked indicators, preserved access paths |
+| Eradication            | Remove the cause and attacker foothold                    | Removed malware, disabled accounts, corrected weakness     |
+| Recovery               | Return services to a trustworthy operating state          | Restored systems, monitoring, and business validation      |
+| Lessons learned        | Improve the next response                                 | Findings, assigned actions, and updated procedures         |
+
+Containment is not eradication. Disconnecting an infected endpoint can stop it reaching other
+systems, but it does not prove that the malicious persistence mechanism is gone. Eradication may
+require rebuilding the endpoint, removing a rogue account, resetting secrets, or correcting the
+vulnerability that admitted the attacker. Recovery comes only when the organisation can operate
+again with justified confidence, often while heightened monitoring watches for recurrence.
+
+<ExamTrap>
+  "Turn off the compromised server" is usually containment, not recovery. It reduces immediate
+  exposure but does not restore the business service. Conversely, restoring a backup without
+  removing the original access path can recreate the incident.
+</ExamTrap>
+
+### Roles and decisions
+
+The incident response plan should identify an incident commander, technical responders, system
+owners, legal or privacy contacts, communications staff, and escalation paths. Not every incident
+needs every role, but deciding who may isolate a critical system or notify an external party during
+the event wastes precious time. A plan also establishes severity criteria, documentation practices,
+communication channels, and decision authority.
+
+A playbook is a focused, repeatable procedure for a common event such as phishing, ransomware, a
+lost device, or suspicious cloud access. It does not replace judgement: a playbook gives responders
+a safe starting sequence and a recordable decision path. If a prompt says responders need known
+contacts, authority, and steps before an attack, the answer is preparation through an incident
+response plan or playbook, not a post-incident review.
+
+## Training and testing are different
+
+Training prepares people; testing evaluates the plan and exposes gaps. Both belong before a real
+incident, but they answer different questions.
+
+| Activity               | What it develops or proves                                       | Example                                                                |
+| ---------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Training               | Individual knowledge and role competence                         | An analyst learns how to classify a suspected phishing report          |
+| Tabletop exercise      | Decision-making and communication in a discussion                | Leaders walk through a ransomware scenario without changing systems    |
+| Simulation             | Response against a realistic, controlled event                   | A team investigates staged malicious activity in a test environment    |
+| Parallel test          | Whether an alternate capability can operate alongside production | Recovery staff run a standby process without interrupting the live one |
+| Full interruption test | Whether the plan works under actual failover conditions          | A scheduled exercise transfers a service to its recovery site          |
+
+The least disruptive test is usually a tabletop exercise. It is valuable for clarifying who calls
+whom and who has authority, but it cannot demonstrate that an endpoint isolation tool works or that
+a backup can be restored. A full interruption test gives stronger operational evidence, at higher
+business risk. Choose the test whose realism matches the question's need.
+
+<InPractice>
+  After an exercise, record the observable result: the paging list was outdated, a responder could
+  not reach a console, or legal approval took too long. Assign an owner and deadline. An exercise
+  without tracked improvements is rehearsal without learning.
+</InPractice>
+
+## Root cause analysis
+
+Root cause analysis asks why the incident became possible, not merely what alert appeared first. For
+example, deleting a phishing email treats a symptom. The root cause might include a missing email
+control, an unpatched browser, excessive user permissions, weak review of a payment process, or
+several connected failures. The evidence may show an initial access vector, but responders must
+avoid declaring that vector the root cause before the investigation supports it.
+
+Useful methods include asking successive "why" questions, tracing a timeline, and comparing expected
+controls with what actually happened. The result should identify corrective actions that prevent or
+reduce recurrence. Root cause analysis is retrospective and improvement-oriented; it is not the same
+as threat hunting, which looks proactively for undiscovered malicious activity.
+
+<Mnemonic>
+  **Contain, clean, recover, learn**: limit the damage; remove the foothold; restore trusted
+  operation; then learn why the event occurred and improve the response.
+</Mnemonic>
+
+## Threat hunting
+
+Threat hunting is a proactive, hypothesis-driven search for adversary activity that ordinary alerts
+have not surfaced. A hunter might ask whether a newly reported technique has appeared anywhere in
+the environment, then query endpoint, identity, DNS, and network telemetry for its traces. This is
+not simply watching a dashboard: monitoring waits for configured conditions, whereas hunting begins
+with a question and investigates across data sources.
+
+Hunting can be triggered by intelligence, an incident elsewhere, a suspicious pattern, or a regular
+programme. It may find no compromise; a well-scoped negative result still improves confidence and
+can refine detections. If it finds activity, the finding enters the incident response process, where
+the team validates scope, contains it, and preserves relevant evidence.
+
+| Term                   | Core distinction                                                 |
+| ---------------------- | ---------------------------------------------------------------- |
+| Monitoring             | Continuously observes known signals and raises configured alerts |
+| Threat hunting         | Proactively searches for hidden or unknown malicious behavior    |
+| Incident investigation | Determines facts and scope after a suspected or confirmed event  |
+| Root cause analysis    | Explains the enabling failures after the response is stable      |
+
+## Digital forensics
+
+Digital forensics collects, preserves, examines, and reports digital evidence so conclusions can be
+defended. Evidence can include disk images, volatile memory, authentication records, network
+captures, cloud audit data, and mobile-device artefacts. The required collection depends on the
+question, but the core principle is integrity: do not change the evidence unnecessarily and be able
+to explain who handled it.
+
+Chain of custody records the evidence identifier, who collected it, when and where it was obtained,
+how it was stored, every transfer, and who received it. Hash values can demonstrate that an acquired
+image has not changed. An original system may be critical to operations, so investigators commonly
+work from a verified copy while preserving the original according to procedure.
+
+<ExamTrap>
+  Rebooting a system can destroy volatile memory and change logs. If the scenario prioritises
+  investigation or legal defensibility, preserve evidence and document actions before taking steps
+  that overwrite it, while still balancing urgent containment needs.
+</ExamTrap>
+
+Forensics is not automatically a criminal investigation. Its findings can support technical
+recovery, internal discipline, insurance, regulatory response, or litigation. The same disciplined
+evidence handling makes all of those outcomes more reliable.
+
+## Test yourself
+
+1. Why is isolating a compromised workstation containment rather than eradication?
+2. Which exercise best checks decision-making and communication with minimal operational risk?
+3. What record demonstrates who handled a forensic image from collection to analysis?
+
+<KeyPoint>
+  1. Isolation limits spread but does not remove the attacker foothold. 2. A tabletop exercise. 3.
+  The chain of custody.
+</KeyPoint>

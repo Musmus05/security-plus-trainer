@@ -1,0 +1,183 @@
+## Pourquoi cet objectif compte
+
+Une <Term en="Security architecture">architecture de sécurité</Term> se juge au moment où quelque
+chose tombe en panne. Un <Term en="Firewall">pare-feu</Term> ou un
+
+<Term en="Encryption">chiffrement</Term> peut être correct tout en laissant l’organisation incapable
+de travailler lorsqu’un serveur unique, un site inondé, une capacité épuisée ou une restauration non
+vérifiée bloque un service critique. La <Term en="Resilience">résilience</Term> désigne l’aptitude à
+continuer ou à rétablir un service acceptable après une perturbation ; la
+<Term en="Recovery">reprise</Term> est le chemin organisé vers l’état attendu.
+
+L’examen vérifie l’association entre la perturbation décrite et le contrôle qui la traite. Un second
+composant répond à la panne d’un composant, un autre lieu à la perte d’un site, une restauration à
+la perte ou corruption de données, et une vérification à l’incertitude sur le plan. Ces mesures se
+complètent, mais elles ne sont pas interchangeables.
+
+<KeyPoint>
+  Pars de la dépendance défaillante : **service** → disponibilité, **site** → stratégie de lieu,
+  **données** → sauvegarde et restauration, **alimentation** → continuité électrique, **plan non
+  prouvé** → test. La meilleure réponse est généralement celle qui traite cette dépendance au plus
+  près.
+</KeyPoint>
+
+## La haute disponibilité : garder le service accessible
+
+La <Term en="High availability">haute disponibilité</Term>, ou HA, réduit l’interruption lorsqu’un
+composant, un hôte ou un chemin individuel échoue. La <Term en="Redundancy">redondance</Term> n’aide
+que si le remplaçant peut prendre le relais sans partager la même cause de panne. Deux serveurs
+applicatifs derrière un <Term en="Load balancing">répartiteur de charge</Term> peuvent servir les
+requêtes si un hôte tombe ; deux machines virtuelles sur le même hôte défaillant ne le peuvent pas.
+
+| Idée de conception                                   | Ce qu’elle traite                                | Limite importante                                 |
+| ---------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------- |
+| Redondance                                           | Panne d’un composant ou d’une liaison            | Une dépendance commune peut faire tomber les deux |
+| Répartition de charge                                | Distribution des requêtes entre instances saines | Elle ne restaure pas des données endommagées      |
+| <Term en="Failover">Basculement</Term>               | Transfert du travail vers un service de secours  | Le secours doit être prêt et joignable            |
+| <Term en="Clustering">Regroupement en cluster</Term> | Service coordonné par plusieurs membres          | Il ne protège pas automatiquement un autre site   |
+
+La disponibilité ne promet pas l’absence de panne. Elle fixe l’interruption acceptable et la façon
+dont la conception détecte l’échec, redirige le trafic et récupère de la capacité. Un scénario où
+les utilisateurs doivent continuer après la panne d’un serveur vise la haute disponibilité, pas une
+simple sauvegarde. La sauvegarde aide à récupérer plus tard ; elle ne prend normalement pas les
+requêtes en direct au moment de la panne.
+
+<ExamTrap>
+  La redondance n’est pas automatiquement de la résilience. Deux appareils dans le même rack
+  améliorent la disponibilité matérielle, mais une même panne électrique, un incendie ou un incident
+  réseau peut les atteindre ensemble. Cherche toujours les dépendances encore partagées.
+</ExamTrap>
+
+## Les considérations de site : reprendre au-delà d’un lieu
+
+Une perturbation peut dépasser un serveur : un bâtiment peut perdre son alimentation, devenir
+inaccessible ou subir un événement environnemental. Les
+
+<Term en="Site considerations">considérations de site</Term> comparent le lieu où le travail de
+reprise peut s’effectuer et le niveau de capacité préparé à cet endroit. L’analyse d’impact et les
+besoins de continuité déterminent le choix ; aucun type de site n’est toujours le meilleur.
+
+| Type de site                                                    | Capacité préparée                                                                  | Compromis de reprise                       |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------ |
+| <Term en="Hot site">Site chaud</Term>                           | Équipé et prêt à reprendre rapidement les opérations                               | Coût permanent le plus élevé               |
+| <Term en="Warm site">Site tiède</Term>                          | Une partie de l’infrastructure est prête ; systèmes ou données restent à compléter | Coût et délai intermédiaires               |
+| <Term en="Cold site">Site froid</Term>                          | Installation de base avec peu de capacité informatique prête                       | Coût faible et installation la plus longue |
+| <Term en="Geographic separation">Séparation géographique</Term> | Ressources de reprise éloignées du site principal                                  | Réplication et coordination plus complexes |
+
+Un site chaud n’est pas seulement une salle avec des équipements de rechange : il est préparé pour
+fonctionner vite. Un site froid n’est pas le site principal en panne ; c’est un lieu alternatif
+prévu qui exige une mise en place. L’éloignement géographique importe parce qu’un site voisin peut
+subir le même événement régional. En contrepartie, la distance peut ajouter latence, réplication et
+complexité opérationnelle.
+
+<InPractice>
+  Avant de déclarer un second site prêt, cartographie les dépendances du service. Il peut lui
+  falloir plus que des serveurs : accès aux identités, connectivité réseau, données à jour, contacts
+  des fournisseurs et personnes sachant l’exploiter.
+</InPractice>
+
+## Diversité de plateformes et systèmes multi-cloud
+
+La <Term en="Platform diversity">diversité de plateformes</Term> réduit la dépendance à une seule
+mise en œuvre, un fournisseur, un environnement d’exploitation ou un même modèle technique. Elle
+peut limiter l’impact d’un défaut ou d’une compromission propre à une plateforme. Elle ajoute aussi
+du travail de compétences, surveillance, intégration et configuration. La diversité est utile quand
+elle retire un véritable mode de panne commun, pas lorsqu’elle rend chaque système différent.
+
+Les <Term en="Multi-cloud systems">systèmes multi-cloud</Term> utilisent des services de plusieurs
+fournisseurs de nuage. Ils peuvent aider face à une panne propre à un fournisseur et satisfaire des
+besoins de région ou de service. Ils ne créent pas automatiquement de haute disponibilité :
+l’application doit exploiter les alternatives, les données doivent être disponibles au bon endroit
+et les contrôles d’identité comme de réseau doivent fonctionner chez les différents fournisseurs.
+
+| Approche                       | Gain de résilience                                        | Responsabilité nouvelle                                     |
+| ------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Diversité de plateformes       | Réduit l’exposition à une faiblesse technologique commune | Maintenir des plateformes différentes, sûres et compatibles |
+| Multi-cloud                    | Réduit la dépendance à un fournisseur de nuage            | Coordonner identité, données, réseau et reprise             |
+| Plateforme unique standardisée | Simplifie exploitation et durcissement                    | Une panne commune peut toucher davantage de services        |
+
+<ExamTrap>
+  Multi-cloud décrit le choix des fournisseurs ; la redondance géographique décrit le lieu. Une
+  charge dans deux régions d’un seul fournisseur peut survivre à une perte régionale ; deux
+  fournisseurs dans une même zone vulnérable ne le garantissent pas. Le scénario indique la nuance
+  attendue.
+</ExamTrap>
+
+## Continuité des opérations et planification de capacité
+
+La <Term en="Continuity of operations">continuité des opérations</Term> est l’aptitude à maintenir
+les fonctions métier essentielles pendant une perturbation. Elle comprend personnes, procédures,
+communications, modalités de travail alternatives et services techniques nécessaires. La reprise
+après sinistre est une contribution technique importante, mais la continuité est plus vaste : une
+application rétablie sert peu si ses opérateurs ne peuvent pas y accéder ou si le métier n’a pas de
+processus praticable.
+
+La <Term en="Capacity planning">planification de capacité</Term> vérifie que les ressources restent
+suffisantes lorsque la demande change ou qu’une panne survient. La charge normale ne suffit pas. Si
+un nœud tombe, les nœuds restants doivent absorber la charge ; si le trafic augmente pendant un
+incident, bande passante, calcul, stockage et licences doivent rester suffisants. Suivre les
+tendances et tester des conditions réalistes transforme une hypothèse de capacité en preuve.
+
+<Mnemonic>
+  **La continuité garde le métier en marche ; la capacité évite que la conception survivante manque
+  de ressources.** L’une répond à « pouvons-nous opérer ? », l’autre à « les ressources restantes
+  peuvent-elles le supporter ? ».
+</Mnemonic>
+
+## Tests et sauvegardes : prouver la reprise avant le besoin
+
+Les plans, répliques et sauvegardes inspirent confiance seulement après des
+
+<Term en="Testing">tests</Term>. Ils peuvent vérifier les contacts, le routage réel d’un
+basculement, l’exploitation du site de reprise et l’utilisabilité des données restaurées. Un
+exercice sur table teste décisions et communications ; un test technique de reprise fournit une
+preuve plus forte que systèmes et données reviennent effectivement. Le périmètre doit équilibrer
+risque et perturbation, mais un plan non testé demeure une supposition.
+
+Les <Term en="Backups">sauvegardes</Term> conservent des copies récupérables de données. Leur valeur
+dépend du périmètre, de la conservation, de leur protection et de la capacité à restaurer la bonne
+copie. La réplication peut améliorer la disponibilité grâce à une copie actuelle, mais elle peut
+aussi propager vite une suppression ou corruption. Une sauvegarde avec historique peut fournir un
+point de reprise qu’une réplique active ne possède pas.
+
+| Besoin du scénario                                    | Premier concept à choisir          |
+| ----------------------------------------------------- | ---------------------------------- |
+| Le service doit continuer après la panne d’un hôte    | Haute disponibilité ou basculement |
+| Un bâtiment est indisponible                          | Planification d’un site alternatif |
+| Des données ont été supprimées ou corrompues          | Sauvegarde et restauration         |
+| Personne ne sait si le plan fonctionne                | Tests                              |
+| Les systèmes restants sont surchargés après une panne | Planification de capacité          |
+
+<ExamTrap>
+  Une tâche de sauvegarde réussie prouve que des données ont été copiées, non qu’elles peuvent être
+  restaurées dans le délai demandé ou utilisées par l’application. Le test de restauration prouve le
+  résultat de reprise.
+</ExamTrap>
+
+## L’alimentation : préserver la base physique
+
+La <Term en="Power">résilience électrique</Term> considère les coupures, interruptions brèves et une
+alimentation instable. Une <Term en="Uninterruptible power supply">alimentation sans
+interruption</Term> ou UPS peut franchir une courte coupure, permettre un arrêt ordonné ou laisser
+le temps à une autre source de démarrer. Un générateur peut soutenir le service plus longtemps, sous
+réserve de carburant, maintenance et fonctionnement sûr. Des arrivées électriques redondantes et une
+alimentation conditionnée réduisent des points uniques de panne, si elles correspondent aux
+dépendances réelles du bâtiment.
+
+Ne confonds pas protection électrique et sauvegarde. Un UPS protège un équipement en marche lors
+d’un événement électrique ; une sauvegarde protège une copie récupérable de données. Un arrêt
+ordonné peut éviter une corruption, mais il ne remplace pas une copie historique distincte.
+
+## Se tester
+
+1. Un service doit continuer à accepter des requêtes après la panne d’un serveur applicatif. Quel
+   sujet de l’objectif est le plus directement concerné ?
+2. Pourquoi une réplique actuelle peut-elle être insuffisante après une suppression accidentelle ?
+3. Quelle différence distingue un UPS d’un générateur dans une conception résiliente ?
+
+<KeyPoint>
+  (1) La haute disponibilité : redondance et basculement peuvent maintenir le service. (2) La
+  réplication peut copier la suppression, tandis qu’une sauvegarde conservée peut offrir un point de
+  reprise antérieur. (3) Un UPS franchit une courte coupure ou soutient l’arrêt ; un générateur vise
+  une alimentation de durée plus longue.
+</KeyPoint>

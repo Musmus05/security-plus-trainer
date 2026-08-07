@@ -1,0 +1,169 @@
+## Pourquoi cet objectif compte
+
+Un <Term en="audit">audit</Term> ou une <Term en="assessment">évaluation</Term> transforme une
+affirmation de sécurité en un résultat qu’une autre personne peut examiner. Une équipe peut dire que
+les accès privilégiés sont revus, que les sauvegardes sont protégées ou qu’un fournisseur respecte
+une exigence. La question utile n’est pas de savoir si cette affirmation paraît rassurante. Il faut
+savoir qui l’a examinée, sur quelles preuves et qui devra pouvoir s’y fier.
+
+À l’examen, cet objectif est surtout un exercice de classement. Repérer le destinataire du résultat
+et le niveau d’indépendance demandé, puis distinguer un examen interne, un examen externe et une
+attestation. Il ne faut pas choisir une étiquette seulement parce qu’une activité a révélé une
+faiblesse : chacun de ces travaux peut en révéler une.
+
+<KeyPoint>
+  Commencer par la personne qui utilisera le résultat. Une amélioration interne oriente vers un
+  audit ou une évaluation interne. Un client ou un régulateur qui demande une assurance indépendante
+  oriente vers un travail externe. Une conclusion formelle selon des critères annoncés est une
+  attestation.
+</KeyPoint>
+
+## Audit, évaluation et preuves
+
+Un <Term en="audit">audit</Term> est un examen structuré par rapport à des critères définis. Il
+recueille des preuves, les compare à une politique, une norme, un contrat ou un référentiel, puis
+formule une conclusion. Une <Term en="assessment">évaluation</Term> est plus large : elle peut
+mesurer la maturité, relever des écarts, tester un contrôle ou proposer des priorités sans rendre
+l’opinion formelle attendue d’un audit précis.
+
+Les termes se recouvrent dans une conversation ordinaire. Dans une question, les indices comptent
+plus que le titre d’un document. Chercher des critères indiqués, un périmètre documenté, des
+preuves, des constats et une audience qui prendra une décision à partir du résultat. Un examen peut
+être utile même lorsqu’il ne délivre ni certificat ni attestation formelle.
+
+| Question                               | Audit                                         | Évaluation                                               |
+| -------------------------------------- | --------------------------------------------- | -------------------------------------------------------- |
+| Finalité principale                    | Vérifier la conformité à des critères définis | Comprendre une situation, un risque ou des améliorations |
+| Résultat habituel                      | Constats et conclusion selon les critères     | Observations, écarts, maturité ou recommandations        |
+| Peut être interne ou externe ?         | Oui                                           | Oui                                                      |
+| Prouve automatiquement la conformité ? | Non, cela dépend de la mission                | Non, elle peut éclairer une décision                     |
+
+Une <Term en="audit evidence">preuve d’audit</Term> évite que le résultat ne soit qu’une opinion.
+Elle peut être une configuration, une trace de revue des accès, un ticket, un journal, une
+politique, un entretien ou l’observation d’un processus. Une bonne preuve est pertinente pour le
+critère et suffisante pour la conclusion. Une politique signée peut démontrer une intention de
+conception, mais elle ne prouve pas seule qu’un <Term en="security control">contrôle de
+sécurité</Term> fonctionne. De même, un journal sans exigence définie peut ne pas démontrer que le
+bon contrôle existe.
+
+<ExamTrap>
+  Ne pas trouver de problème pendant une revue ne prouve pas qu’il n’en existe aucun. Toute
+  conclusion est limitée par son périmètre, ses critères, sa période et les preuves réunies. Il ne
+  faut jamais en déduire une garantie absente du scénario.
+</ExamTrap>
+
+## Audits internes et évaluations internes
+
+Un <Term en="internal audit">audit interne</Term> est réalisé pour l’organisation elle-même. Le
+réviseur peut appartenir à une fonction d’audit interne, à une équipe sécurité distincte du
+propriétaire du contrôle ou à un autre groupe autorisé. Sa valeur est un retour précoce et direct :
+la direction peut savoir si les contrôles fonctionnent comme prévu avant qu’un client, un régulateur
+ou un incident ne révèle un écart.
+
+Interne ne veut pas dire informel. Une mission solide a un périmètre, des critères, des preuves, des
+constats, un responsable de correction et un suivi. L’<Term en="independence">indépendance</Term>
+reste importante. L’administrateur qui a configuré un système ne devrait pas être le seul juge de sa
+conformité. La séparation réduit le risque que l’habitude ou l’intérêt personnel masque un défaut.
+
+| Activité interne                                                       | Finalité utile                                  | Limite à retenir                                  |
+| ---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------- |
+| <Term en="control self-assessment">Autoévaluation des contrôles</Term> | Aide les propriétaires à voir vite leurs écarts | Ne fournit pas seule une assurance indépendante   |
+| Audit interne                                                          | Vérifie les critères propres à l’organisation   | Son rapport sert d’abord à la gouvernance interne |
+| <Term en="readiness assessment">Évaluation de préparation</Term>       | Prépare un futur examen externe                 | La préparation n’est pas cet examen externe       |
+
+Par exemple, une directrice de la sécurité demande à une équipe interne de comparer les revues
+trimestrielles des accès à la politique, d’échantillonner les dossiers terminés et de signaler les
+exceptions à la direction. C’est un audit interne. Si la même équipe interroge les responsables pour
+repérer les zones peu matures et propose une feuille de route, c’est une évaluation interne. Les
+deux sont utiles, mais la conclusion attendue diffère.
+
+<InPractice>
+  Un constat doit devenir un travail avec un responsable et une échéance. L’audit ou l’évaluation
+  relève le problème ; l’acceptation du risque, la correction et la vérification ultérieure sont des
+  actions de gestion distinctes.
+</InPractice>
+
+## Audits externes et évaluations externes
+
+Un <Term en="external audit">audit externe</Term> est mené par une partie extérieure à
+l’organisation. Cette partie peut être un client, un régulateur, un organisme de certification ou un
+évaluateur indépendant, selon la finalité. L’indice central à l’examen est l’indépendance vis-à-vis
+de l’organisation ou du propriétaire du contrôle dont l’affirmation est examinée.
+
+Un travail externe peut créer une confiance qu’un rapport interne ne procure pas. Un client
+potentiel peut demander des éléments avant de partager des données. Un régulateur peut examiner une
+obligation légale applicable. Un organisme de certification peut évaluer le respect d’exigences
+définies. Le réviseur externe n’est pas forcément hostile : il sert une audience et une finalité
+d’assurance différentes.
+
+| Situation                                                | Activité la plus adaptée    | Pourquoi                                                               |
+| -------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------- |
+| La direction veut une vision directe avant un programme  | Évaluation interne          | Le résultat guide une amélioration interne                             |
+| Un client exige une preuve indépendante avant un contrat | Audit ou évaluation externe | Le client ne peut pas se fier seulement à l’affirmation du fournisseur |
+| Un régulateur examine une obligation                     | Audit ou évaluation externe | Le réviseur détient une autorité extérieure                            |
+| Une équipe vérifie ses preuves avant une mission         | Évaluation de préparation   | Elle prépare les éléments, sans valider indépendamment                 |
+
+Un examen externe peut aussi produire des recommandations. Il ne faut pas confondre « externe » et «
+punitif », ni « évaluation » et « peu rigoureux ». Le périmètre du scénario et la personne qui
+s’appuie sur le résultat déterminent la réponse.
+
+## Attestation : une affirmation formelle
+
+Une <Term en="attestation">attestation</Term> est une déclaration formelle selon laquelle une
+
+<Term en="assertion">assertion</Term> ou un ensemble de contrôles respecte des critères indiqués. Le
+terme importe parce qu’une autre partie s’appuiera sur cette déclaration. L’assertion peut être que
+des contrôles ont été conçus et appliqués selon des exigences pendant une période définie.
+L’attestation relie critères, preuves, périmètre et conclusion.
+
+Une attestation n’est pas un responsable qui dit simplement « nous sommes sécurisés ». Une
+
+<Term en="self-declaration">autodéclaration</Term> communique une affirmation, mais n’apporte pas
+automatiquement l’assurance indépendante attendue par un client ou un régulateur. De même, un
+<Term en="penetration test">test d’intrusion</Term> peut révéler des faiblesses techniques sans
+constituer à lui seul une attestation de tout l’environnement de contrôle.
+
+| Terme                             | Apport                                            | Confusion fréquente                                           |
+| --------------------------------- | ------------------------------------------------- | ------------------------------------------------------------- |
+| Assertion                         | Une affirmation à examiner                        | Une affirmation n’est pas une preuve                          |
+| Attestation                       | Une conclusion formelle selon des critères        | Ce n’est pas une promesse de sécurité parfaite                |
+| Preuve d’audit                    | Un appui à la conclusion                          | Un document peut montrer la conception, pas le fonctionnement |
+| <Term en="scope">Périmètre</Term> | Les systèmes, la période et les critères couverts | Une affirmation limitée ne se généralise pas sans risque      |
+
+<Mnemonic>
+  **A-P-P :** Assertion, Périmètre, Preuves. Avant de se fier à une attestation, demander ce qui est
+  affirmé, ce qui est couvert et ce qui soutient la conclusion.
+</Mnemonic>
+
+## Choisir dans un scénario
+
+Suivre une séquence courte. Identifier d’abord les critères : politique, contrat, règlement ou
+référentiel. Identifier ensuite qui a demandé le résultat ou qui s’y fiera. Décider alors si le
+scénario exige une assurance indépendante ou une amélioration interne. Enfin, séparer l’activité de
+son suivi : corriger un constat est une <Term en="remediation">remédiation</Term>, pas l’audit
+lui-même.
+
+Par exemple, un fournisseur de services infonuagiques demande à son groupe conformité interne de
+revoir les preuves d’accès avant la visite d’un client. Ce travail est une évaluation de
+préparation. Si une partie indépendante examine ensuite les mêmes contrôles et donne une conclusion
+formelle aux clients, il s’agit d’un travail externe soutenant une attestation. Les preuves peuvent
+se recouper, mais la finalité et la personne qui s’y fie ne se recoupent pas.
+
+<ExamTrap>
+  « Externe » décrit qui réalise la revue, alors qu’« attestation » décrit la finalité et la forme
+  de la conclusion. Les deux ne sont pas opposés : un réviseur externe indépendant peut réaliser un
+  travail qui soutient une attestation.
+</ExamTrap>
+
+## Se tester
+
+1. Pourquoi l’autoévaluation du propriétaire est-elle moins forte qu’un audit indépendant pour un
+   client ?
+2. Quelle différence sépare une évaluation de préparation de la mission externe qu’elle prépare ?
+3. Quelles limites faut-il vérifier avant de se fier à une attestation ?
+
+<KeyPoint>
+  1. Elle peut révéler des écarts mais ne possède pas l’indépendance demandée par un tiers. 2. La
+  préparation améliore les preuves et les contrôles en interne ; elle ne valide pas indépendamment.
+  3. Vérifier l’assertion, les critères, les systèmes, la période, les preuves et le périmètre.
+</KeyPoint>

@@ -1,0 +1,168 @@
+## Why this objective matters
+
+Security compliance is how an organisation demonstrates that its security programme meets the
+requirements that apply to it. Those requirements may come from law, regulation, contracts, industry
+rules, or the organisation’s own commitments. On the exam, the task is not to memorise a particular
+legal framework. It is to recognise whether a situation calls for evidence and reporting, ongoing
+monitoring, a response to non-compliance, or privacy protection.
+
+The tempting wrong answer is often a neighbouring activity. An audit can examine evidence, but
+compliance reporting communicates a status or result. A policy can state an expectation, but
+monitoring checks whether practice still meets it. Privacy protects people’s information; it is not
+synonymous with every security control. Read the outcome in the scenario before choosing the tool.
+
+<KeyPoint>
+  Effective compliance is a cycle: identify applicable requirements, turn them into observable
+  expectations, monitor those expectations, report the result to the right audience, and address
+  gaps. A report is useful only when it supports a decision or action.
+</KeyPoint>
+
+## Compliance reporting turns evidence into a decision
+
+Compliance reporting presents a clear account of an organisation’s compliance position. It might
+show which systems meet a required configuration, whether required training is complete, where
+exceptions remain, or whether a corrective action is overdue. The report is not the control itself:
+it makes the condition of controls visible to people who have accountability for it.
+
+| Reporting element | Question it answers                                                 | Why it matters                                                                       |
+| ----------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Scope             | What systems, people, data, or period does this cover?              | Prevents a favourable result from being mistaken for organisation-wide assurance     |
+| Requirement       | What rule, obligation, or commitment is being measured?             | Connects a result to a real expectation instead of a vague claim                     |
+| Evidence          | What observations support the result?                               | Makes the conclusion traceable and defensible                                        |
+| Status            | Is the requirement met, unmet, or subject to an approved exception? | Gives the audience a usable decision point                                           |
+| Owner and date    | Who is responsible, and when was the information current?           | Supports accountability and prevents stale information from being treated as current |
+| Action            | What remediation, acceptance, or escalation follows?                | Turns a finding into risk management rather than passive record keeping              |
+
+The audience determines the level of detail. A technical owner may need the affected hosts and
+failed settings. Senior management usually needs the trend, business impact, material exceptions,
+and decisions needed from them. A regulator or customer may require a prescribed format and an
+attestation from an authorised person. Giving everyone a raw log export is not automatically more
+transparent; it can obscure the result, disclose unnecessary data, and fail to answer the audience’s
+actual question.
+
+<ExamTrap>
+  A dashboard showing that a control failed is **monitoring**. A summary that tells a risk committee
+  the failure rate, affected scope, owner, and planned corrective action is **compliance
+  reporting**. The same source data can support both, but their purpose is different.
+</ExamTrap>
+
+## Monitoring is continuous, not a once-a-year event
+
+Compliance monitoring is the recurring work of checking whether requirements are being met. It may
+use configuration checks, access reviews, training completion records, retention checks, system
+logs, or control-owner confirmations. The precise mechanism varies, but the question remains the
+same: does the current state satisfy the applicable requirement?
+
+| Activity              | Primary purpose                                         | Common confusion                                                     |
+| --------------------- | ------------------------------------------------------- | -------------------------------------------------------------------- |
+| Compliance monitoring | Detect whether practice currently meets a requirement   | It is ongoing, not merely a point-in-time opinion                    |
+| Compliance reporting  | Communicate compliance status and needed action         | It packages results; it does not gather every observation itself     |
+| Audit                 | Independently examine evidence against criteria         | It may use monitoring evidence, but it is not the monitoring process |
+| Assessment            | Evaluate a condition, risk, or control at a given scope | It can inform compliance without replacing continuous checks         |
+| Remediation           | Correct an identified gap                               | It follows a finding; it does not prove the gap was found            |
+
+Monitoring should be proportional to risk and change. A control protecting sensitive records or a
+highly regulated process generally merits closer, more frequent observation than a low-impact
+internal process. Frequency alone is not effectiveness, though. A monthly check that measures the
+wrong system, trusts an incomplete inventory, or has no owner can create a reassuring number while
+missing the real requirement.
+
+<InPractice>
+  A practical compliance metric is specific enough to act on: “98% of in-scope administrator
+  accounts completed the required review by the deadline; the remaining six accounts are owned by
+  these teams and have tickets due next week.” “Compliance is mostly good” provides no comparable
+  evidence, scope, or action.
+</InPractice>
+
+When monitoring identifies a gap, retain the supporting evidence and record the decision. The
+organisation may remediate, accept a defined residual risk through its approved process, compensate
+with another control where appropriate, or stop the non-compliant activity. Quietly changing a
+status from red to green without a reason destroys the value of monitoring and reporting alike.
+
+## Consequences of non-compliance are wider than a fine
+
+Non-compliance means an applicable requirement is not met. The consequence depends on the source of
+the requirement and the facts, but exam questions often distinguish direct sanctions from the
+operational and trust effects that follow.
+
+| Consequence                | How it appears                                                      | What it is not                                       |
+| -------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------- |
+| Financial penalty          | A regulator, contract, or agreement imposes a monetary cost         | A technical fix by itself                            |
+| Legal or regulatory action | An authority requires action, restricts activity, or investigates   | An internal policy reminder                          |
+| Contractual consequence    | A customer exercises a remedy, withholds payment, or ends service   | Proof that every law was violated                    |
+| Reputational damage        | Customers, partners, or the public lose confidence                  | A measurable control result, though it can be severe |
+| Operational disruption     | A service must pause, be redesigned, or receive emergency resources | The same thing as an incident’s root cause           |
+| Increased risk             | A missing safeguard leaves data, systems, or people more exposed    | Evidence that compromise has already happened        |
+
+The best response begins by containing any immediate exposure and accurately determining the gap.
+Then assign ownership, define corrective action, set a due date, and verify that the correction
+actually addresses the requirement. A policy rewrite may be useful, but it is not a substitute for
+fixing a misconfigured system. Likewise, a technical patch does not close a reporting failure if the
+organisation still cannot demonstrate that the requirement is met.
+
+<Mnemonic>
+  **Find, fix, prove, report.** Monitoring finds a gap; remediation fixes it; validation proves the
+  fix worked; reporting gives accountable people the result and any remaining decision.
+</Mnemonic>
+
+## Privacy focuses on people and their data
+
+Privacy concerns the appropriate collection, use, sharing, retention, and disposal of personal
+information. Security supports privacy by preventing unauthorised access or alteration, but privacy
+also asks whether the organisation should collect or use information in a particular way at all. An
+encrypted database can be secure against unauthorised access and still hold more personal data than
+the stated purpose requires.
+
+| Privacy principle in a scenario                   | Appropriate response                                                   |
+| ------------------------------------------------- | ---------------------------------------------------------------------- |
+| Collect only what a stated service needs          | Apply data minimisation; do not gather convenient extra fields         |
+| Use data only for the communicated purpose        | Restrict a new use until it is authorised and appropriate              |
+| Retain personal information no longer than needed | Follow retention and disposal requirements                             |
+| Share data with another party                     | Confirm an appropriate basis, safeguards, and contractual expectations |
+| A person asks how their information is handled    | Provide accurate, approved information through the proper process      |
+
+Privacy requirements vary by jurisdiction and organisation, so do not invent a universal deadline or
+rule from a vague exam stem. Instead, identify the privacy issue: unnecessary collection, unapproved
+use, excessive retention, inappropriate disclosure, or a failure to protect personal information.
+Then choose the control or process that addresses that issue.
+
+<ExamTrap>
+  Encryption protects confidentiality, but it does not automatically establish privacy compliance.
+  If a scenario says a team wants to collect a new category of personal data “just in case,” the
+  closer answer is data minimisation or purpose limitation, not stronger encryption.
+</ExamTrap>
+
+Privacy also shapes compliance reporting. Reports should contain enough information to establish
+status and support action, while limiting unnecessary personal data. For example, a management
+report can show an overdue access-review count without distributing a full list of employee details
+to people who do not need it. This is not hiding a problem; it is applying need to know to the
+reporting process itself.
+
+## Putting the cycle together
+
+Consider a requirement that privileged accounts be reviewed every quarter. Monitoring collects
+review completion and identifies accounts whose review is missing. Reporting tells the account owner
+and management the scope, exception, risk, and due date. If the requirement is missed, the
+organisation can face increased exposure and, depending on its obligations, contractual or
+regulatory consequences. Privacy matters if the report contains employee or customer information:
+distribute only the details needed by the recipients.
+
+This sequence explains why effective compliance cannot be reduced to a document. A policy gives a
+requirement a home. Monitoring tests the present condition. Evidence supports the conclusion.
+Reporting moves the conclusion to the people who must act. Corrective action closes the gap, and a
+new check verifies that it stayed closed.
+
+## Test yourself
+
+1. A continuous configuration check detects that systems lack a required setting. Is that compliance
+   monitoring or compliance reporting?
+2. Which report detail makes a non-compliance result actionable: a vague favourable summary, or the
+   affected scope, owner, due date, and corrective action?
+3. A team wants to retain personal information indefinitely because it might be useful later. Which
+   privacy principle should guide the decision?
+
+<KeyPoint>
+  (1) Compliance monitoring; reporting communicates the result to an audience. (2) The affected
+  scope, owner, due date, and corrective action. (3) Data minimisation together with appropriate
+  retention: keep personal information only as long as the stated purpose and requirements need it.
+</KeyPoint>

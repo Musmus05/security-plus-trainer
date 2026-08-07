@@ -1,0 +1,145 @@
+## Why this objective matters
+
+This objective tests whether you can adjust an existing enterprise security capability when a
+scenario exposes a specific gap. It is not a memorisation exercise about product names. Read the
+symptom, identify where the unwanted activity can be observed or stopped, and select the control
+whose decision point matches it. A firewall that permits a connection, an IPS that blocks an
+exploit, and a web filter that blocks a category may all appear in one question, but they solve
+different problems.
+
+The exam also expects clear boundaries. Some capabilities prevent an event, some detect it, and some
+make response faster. A good answer modifies the narrowest useful capability without claiming that
+it replaces every other layer.
+
+<KeyPoint>
+  Start with the thing to control: network connection, web request, DNS lookup, email message,
+  endpoint behaviour, file change, sensitive data, device admission, or user pattern. Then choose
+  the capability that sees that thing.
+</KeyPoint>
+
+## Control the path, not just the destination
+
+Several controls restrict network-borne activity. The useful distinction is the evidence each one
+examines and the point at which it acts.
+
+| Capability    | Primary decision                        | Typical security modification                     |
+| ------------- | --------------------------------------- | ------------------------------------------------- |
+| Firewall      | Connection or packet matches a rule     | Restrict source, destination, port, or protocol   |
+| IDS           | Observed suspicious traffic or activity | Alert for investigation                           |
+| IPS           | Inline suspicious traffic or activity   | Block traffic before it reaches the target        |
+| Web filter    | Web destination, category, or request   | Block risky categories or unsuitable destinations |
+| DNS filtering | Name lookup                             | Refuse resolution for known malicious domains     |
+
+A **firewall** enforces rules at a network boundary or between segments. If a database only needs
+connections from an application tier, a rule can deny other sources. It is a strong answer when the
+scenario names addresses, ports, protocols, or segments. It does not inspect every file attachment
+or decide whether a user is behaving unusually.
+
+An **intrusion detection system (IDS)** observes and alerts. An **intrusion prevention system
+(IPS)** is placed inline and can block. The difference matters: alerting after an exploit attempt is
+not equivalent to preventing the attempt. An IPS rule can be appropriate for a specific attack
+pattern, but an overly broad blocking signature can interrupt legitimate traffic. Tune it, test the
+effect, and monitor false positives.
+
+<ExamTrap>
+  IDS is detection, not prevention. If the requirement says that traffic must be stopped before it
+  reaches a server, choose IPS or another inline enforcement point, not an IDS alert.
+</ExamTrap>
+
+A **web filter** applies web-use policy. It can block a category such as newly registered domains,
+unapproved file-sharing sites, or a known harmful URL. **DNS filtering** acts earlier: it prevents a
+client from resolving a disallowed name. DNS filtering is efficient against a known malicious
+domain, but it does not inspect a complete URL path and cannot control a connection made directly to
+an IP address. These limitations are why layered controls are normal.
+
+## Harden the endpoint and its communications
+
+**Operating system security** is the secure configuration and ongoing maintenance of the host:
+timely patches, supported versions, least privilege, service reduction, protected administrative
+access, and logging. In a scenario, remove or disable an unnecessary service rather than merely
+watching it. Apply a security update when a vendor fix exists, and use a compensating control when a
+legacy system cannot be patched.
+
+The **implementation of secure protocols** means replacing insecure ways of communicating with
+protected alternatives. The question is usually about the property in danger.
+
+| Need                                    | Appropriate direction                                 | Neighbouring but wrong answer                         |
+| --------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| Protect credentials in transit          | Use an encrypted, authenticated protocol              | Encrypting a disk does not protect traffic in transit |
+| Prevent cleartext remote administration | Replace an insecure remote protocol with a secure one | Changing a firewall port leaves the protocol insecure |
+| Protect web sessions                    | Enforce HTTPS with valid certificate handling         | DNS filtering does not encrypt an HTTP session        |
+
+Secure protocol choices protect data in transit; they do not by themselves decide whether a user is
+authorised or whether an endpoint is already compromised. Keep those control objectives separate.
+
+## Protect messages, files, and data
+
+**Email security** can authenticate senders, filter malicious or unwanted messages, scan
+attachments, and quarantine suspicious content. The best adjustment depends on the evidence. A
+spoofed sender calls for sender authentication and anti-spoofing controls. A dangerous attachment
+calls for attachment inspection or quarantine. Blocking a web category is not an email control just
+because both routes might deliver malware.
+
+**File integrity monitoring (FIM)** records a trusted baseline for important files and alerts when a
+file changes unexpectedly. It is particularly valuable for system binaries, configuration files, and
+other high-value locations. FIM tells the team that a file changed; it does not necessarily identify
+the user’s intent, block every change, or restore the original file. A planned update should update
+the approved baseline through change control, not teach the team to ignore every alert.
+
+**Data loss prevention (DLP)** identifies sensitive data and applies handling policy while it is in
+use, moving, or stored. For example, it can stop a document containing regulated identifiers from
+being sent outside the organisation. DLP is about the data and its permitted movement. It is not a
+general malware detector, and it is not a replacement for encryption or access control.
+
+<InPractice>
+  A DLP policy that blocks every spreadsheet becomes noise. Effective policies combine a useful data
+  classification or pattern with a context such as an external recipient, removable media, or
+  unmanaged cloud service. Tune the policy from real outcomes before expanding enforcement.
+</InPractice>
+
+## Decide which devices and behaviours deserve trust
+
+**Network access control (NAC)** decides whether a device may join a network and, often, which
+network access it receives. It can check identity and security posture, then permit, restrict,
+quarantine, or deny the device. NAC is the right answer when an unmanaged laptop or noncompliant
+device is trying to connect. It is not a tool for inspecting the contents of an email already in a
+mailbox.
+
+**Endpoint detection and response (EDR)** collects and correlates endpoint telemetry so analysts can
+detect, investigate, contain, and respond to suspicious endpoint activity. **Extended detection and
+response (XDR)** extends that correlation across additional sources such as network, identity,
+email, and cloud telemetry. The key distinction is scope: EDR is endpoint-centred; XDR joins signals
+across security layers. Neither is simply an antivirus signature list.
+
+**User behavior analytics (UBA)** establishes patterns of normal user activity and highlights
+meaningful deviations, such as an unusual time, location, data volume, or access pattern. It raises
+priorities for review; it does not prove malicious intent merely because a person behaves
+differently one day. An analyst must consider business context and false positives.
+
+<Mnemonic>
+  **NAC admits devices; EDR investigates devices; UBA evaluates people-shaped patterns.** If the
+  scenario starts before network admission, think NAC. If it starts with endpoint activity, think
+  EDR. If it starts with an unusual user pattern, think UBA.
+</Mnemonic>
+
+## Make a defensible modification
+
+For any scenario, state the security outcome first: prevent access, detect a change, protect data,
+restrict a device, or investigate behaviour. Then choose the closest capability, define a narrowly
+scoped rule or policy, test it, and monitor its effect. A temporary block for an active campaign may
+be justified, but it still needs ownership and review so that an emergency rule does not become an
+unexplained permanent exception.
+
+## Test yourself
+
+1. A workstation must not resolve a known phishing domain. Which capability is closest to the
+   lookup?
+2. A server’s protected configuration file changes outside an approved deployment. Which capability
+   supplies the most direct alert?
+3. A managed endpoint begins launching suspicious processes and contacting unfamiliar hosts. Which
+   endpoint-centred capability helps investigate and contain it?
+
+<KeyPoint>
+  (1) DNS filtering. (2) File integrity monitoring. (3) EDR. Each control is chosen for its decision
+  point, not because it is broadly associated with security.
+</KeyPoint>
