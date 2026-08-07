@@ -4,7 +4,7 @@ import { XP } from '@/domain/gamification';
 import { createFixedClock } from '@/lib/clock';
 
 import { STORE_VERSION } from './migrations';
-import { INITIAL_GAMIFICATION } from './progress.schema';
+import { INITIAL_GAMIFICATION, MAX_EXAM_HISTORY } from './progress.schema';
 import { DEFAULT_SETTINGS } from './settings.schema';
 import { setClockForTests, STORAGE_KEY, useAppStore } from './store';
 
@@ -19,6 +19,8 @@ function reset(): void {
     gamification: INITIAL_GAMIFICATION,
     progress: {},
     srs: {},
+    currentExam: null,
+    examHistory: [],
     lastStreakOutcome: null,
   });
 }
@@ -51,6 +53,8 @@ describe('settings', () => {
     };
 
     expect(Object.keys(persisted.state ?? {}).sort()).toEqual([
+      'currentExam',
+      'examHistory',
       'gamification',
       'progress',
       'settings',
@@ -229,7 +233,14 @@ describe('progress and XP', () => {
   });
 
   it('records a passed exam with its bonus', () => {
-    useAppStore.getState().recordExamAttempt(true);
+    useAppStore.getState().finishExam({
+      correct: 80,
+      total: 90,
+      unanswered: 0,
+      scaled: 811,
+      passed: true,
+      byDomain: [{ domain: 1, correct: 10, total: 11 }],
+    });
 
     expect(useAppStore.getState().gamification.totalXp).toBeGreaterThanOrEqual(
       XP.examCompleted + XP.examPassed,
@@ -297,6 +308,136 @@ describe('progress and XP', () => {
     expect(state.gamification).toEqual(INITIAL_GAMIFICATION);
     expect(state.progress).toEqual({});
     expect(state.srs).toEqual({});
+  });
+});
+
+describe('mock exams', () => {
+  const attempt = {
+    questionIds: ['q-1-1-001', 'q-2-1-002', 'q-4-6-003'],
+    answers: { 'q-1-1-001': ['a'] },
+    flagged: ['q-2-1-002'],
+    index: 1,
+    startedAt: 1_800_000_000_000,
+    durationMs: 90 * 60 * 1000,
+    seed: 12_345,
+  };
+
+  beforeEach(() => {
+    localStorage.clear();
+    reset();
+    setClockForTests(createFixedClock('2026-03-12T09:00:00Z'));
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('keeps an attempt in progress across a reload', () => {
+    // The one piece of state where losing it costs the learner ninety minutes of their evening.
+    useAppStore.getState().startExam(attempt);
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().currentExam).toEqual(attempt);
+  });
+
+  it('clears the attempt and files the result in a single write', () => {
+    /*
+     * Two separate `set` calls would leave a persisted state where the exam is both finished and
+     * still in progress, and a reload landing in that window would drop the candidate back into an
+     * exam they had already submitted.
+     */
+    useAppStore.getState().startExam(attempt);
+    useAppStore.getState().finishExam({
+      correct: 70,
+      total: 90,
+      unanswered: 2,
+      scaled: 722,
+      passed: false,
+      byDomain: [{ domain: 1, correct: 8, total: 11 }],
+    });
+
+    const state = useAppStore.getState();
+    expect(state.currentExam).toBeNull();
+    expect(state.examHistory).toHaveLength(1);
+    expect(state.examHistory[0]).toMatchObject({ scaled: 722, passed: false });
+  });
+
+  it('stamps the result with the clock rather than trusting the caller', () => {
+    useAppStore.getState().finishExam({
+      correct: 1,
+      total: 1,
+      unanswered: 0,
+      scaled: 900,
+      passed: true,
+      byDomain: [],
+    });
+
+    expect(useAppStore.getState().examHistory[0]?.at).toBe(Date.parse('2026-03-12T09:00:00Z'));
+  });
+
+  it('abandoning an attempt files no result', () => {
+    useAppStore.getState().startExam(attempt);
+    useAppStore.getState().abandonExam();
+
+    expect(useAppStore.getState().currentExam).toBeNull();
+    expect(useAppStore.getState().examHistory).toEqual([]);
+  });
+
+  it('caps the history rather than growing it for ever', () => {
+    // An unbounded history is a slow leak in a store measured in a few megabytes.
+    for (let i = 0; i < MAX_EXAM_HISTORY + 5; i += 1) {
+      useAppStore.getState().finishExam({
+        correct: i,
+        total: 90,
+        unanswered: 0,
+        scaled: 100 + i,
+        passed: false,
+        byDomain: [],
+      });
+    }
+
+    expect(useAppStore.getState().examHistory).toHaveLength(MAX_EXAM_HISTORY);
+  });
+
+  it('discards an attempt whose index points past its questions', () => {
+    /*
+     * Half an exam is not a shorter exam — the domain weighting is the entire point of the format.
+     * An index past the end would render a blank question with no way forward, so the attempt is
+     * dropped rather than repaired.
+     */
+    seedStorage({
+      settings: DEFAULT_SETTINGS,
+      gamification: INITIAL_GAMIFICATION,
+      currentExam: { ...attempt, index: 99 },
+    });
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().currentExam).toBeNull();
+  });
+
+  it('drops only the broken entries from a corrupt history', () => {
+    seedStorage({
+      settings: DEFAULT_SETTINGS,
+      gamification: INITIAL_GAMIFICATION,
+      examHistory: [
+        {
+          at: 1_800_000_000_000,
+          correct: 70,
+          total: 90,
+          unanswered: 0,
+          scaled: 722,
+          passed: false,
+          byDomain: [],
+        },
+        { at: 'yesterday', correct: 70, total: 90, unanswered: 0, scaled: 722, passed: false },
+      ],
+    });
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().examHistory).toHaveLength(1);
   });
 });
 

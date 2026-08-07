@@ -78,6 +78,14 @@ describe('translation catalogues', () => {
       'dashboard.heatmapCell',
       // Same word in both languages.
       'quiz.kind.discrimination',
+      'exam.factQuestions',
+      'exam.factMinutes',
+      'exam.questionCount_one',
+      'exam.questionCount_other',
+      // Placeholders and punctuation only. Every word that differs arrives through interpolation —
+      // `exam.goToQuestion` reads "Question 3, answered" against "Question 3, répondue".
+      'exam.goToQuestion',
+      'exam.historyDetail',
     ]);
 
     const english = new Map(leafEntries(en));

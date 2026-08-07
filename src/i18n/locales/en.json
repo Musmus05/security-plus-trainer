@@ -77,8 +77,7 @@
     },
     "exam": {
       "title": "Mock exam",
-      "subtitle": "{{questions}} questions in {{minutes}} minutes · pass at {{passing}}",
-      "placeholder": "The exam simulator arrives in its own change."
+      "subtitle": "{{questions}} questions in {{minutes}} minutes · estimated pass at {{passing}}"
     },
     "flashcards": {
       "title": "Flashcards",
@@ -223,5 +222,48 @@
     "resultCount_other": "{{count}} results",
     "noResults": "No acronym matches “{{query}}”.",
     "examinedIn": "In the scope of"
+  },
+  "exam": {
+    "start": "Start the mock exam",
+    "factQuestions": "questions",
+    "factMinutes": "minutes",
+    "factPassing": "passing score",
+    "mixTitle": "Official domain split",
+    "questionCount_one": "{{count}} question",
+    "questionCount_other": "{{count}} questions",
+    "scoringNotice": "The 100–900 score is **an estimate produced by this app**, not a prediction. CompTIA does not publish its scaling: the real exam weights items by difficulty, so an official {{passing}} corresponds to no fixed percentage. Here the mapping is linear — 0% gives 100, 100% gives 900 — which puts the {{passing}} threshold at 81.25% correct. The number to trust is the raw score.",
+    "timeRemaining": "Time remaining",
+    "answeredOf": "{{done}} of {{total}} answered",
+    "questionOf": "Question {{number}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next",
+    "flag": "Flag",
+    "unflag": "Remove flag",
+    "flaggedCount_one": "{{count}} flagged question",
+    "flaggedCount_other": "{{count}} flagged questions",
+    "reviewGrid": "Jump to a question",
+    "goToQuestion": "Question {{number}}, {{state}}",
+    "stateAnswered": "answered",
+    "stateBlank": "blank",
+    "stateFlagged": "flagged",
+    "fiveMinutesLeft": "Under five minutes. Now is the time to revisit the flagged questions.",
+    "submit": "Finish",
+    "submitConfirm": "Finish and mark",
+    "confirmSubmitTitle": "Finish the exam?",
+    "confirmSubmitAll": "Every question has an answer. Marking is final for this attempt.",
+    "confirmSubmitUnanswered_one": "{{count}} question is still blank. It will be marked wrong.",
+    "confirmSubmitUnanswered_other": "{{count}} questions are still blank. They will be marked wrong.",
+    "disclaimer": "Estimated score on {{min}}–{{max}} · threshold {{passing}} · unofficial estimate",
+    "passed": "Passed",
+    "failed": "Not passed",
+    "scaledEstimate": "Estimated score: {{scaled}} · threshold {{passing}}",
+    "unansweredCount_one": "{{count}} question left blank",
+    "unansweredCount_other": "{{count}} questions left blank",
+    "retake": "Take another mock exam",
+    "byDomainTitle": "By domain",
+    "domainAccuracy": "Domain {{domain}}: {{percent}}%",
+    "reviseTitle": "Revise these first",
+    "historyTitle": "Previous attempts",
+    "historyDetail": "{{correct}}/{{total}} · {{date}}"
   }
 }

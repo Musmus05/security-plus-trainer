@@ -13,6 +13,7 @@ import {
   type XpAward,
   xpOn,
 } from '@/domain/gamification';
+import type { ExamAttempt } from '@/domain/exam';
 import type { Clock } from '@/domain/ports';
 import { type CardState, type Grade, newCard, schedule } from '@/domain/srs';
 import { createSystemClock } from '@/lib/clock';
@@ -20,11 +21,15 @@ import { resolveStorage } from '@/lib/storage';
 
 import { runMigrations, STORE_VERSION } from './migrations';
 import {
+  coerceExamAttempt,
+  coerceExamHistory,
   coerceGamification,
   coerceProgress,
   coerceSrs,
+  type ExamResultRecord,
   type GamificationState,
   INITIAL_GAMIFICATION,
+  MAX_EXAM_HISTORY,
   NO_RECORD,
   type ProgressMap,
   type SrsMap,
@@ -64,6 +69,15 @@ export interface AppState {
    * decks or if a deck is regenerated from different source data.
    */
   srs: SrsMap;
+  /**
+   * The mock exam in progress, or null.
+   *
+   * Persisted so the ninety-minute clock survives a reload, a crash, or closing the laptop — the
+   * attempt is the one piece of state where losing it costs the learner an hour and a half.
+   */
+  currentExam: ExamAttempt | null;
+  /** Finished attempts, newest first. */
+  examHistory: readonly ExamResultRecord[];
 
   /** What the most recent day-recording did, for the UI to celebrate. Deliberately not persisted. */
   lastStreakOutcome: StreakOutcome['kind'] | null;
@@ -79,10 +93,17 @@ export interface AppState {
   markLessonRead: (objectiveId: string) => void;
   /** Record a finished objective quiz. */
   recordQuizAttempt: (objectiveId: string, correct: number, total: number) => void;
-  /** Record a finished mock exam. */
-  recordExamAttempt: (passed: boolean) => void;
   /** Grade one flashcard, advancing its schedule. */
   gradeCard: (cardId: string, grade: Grade) => void;
+
+  /** Begin a mock exam, replacing any attempt already in progress. */
+  startExam: (attempt: ExamAttempt) => void;
+  /** Persist the attempt after every interaction, so nothing is lost to a reload. */
+  saveExam: (attempt: ExamAttempt) => void;
+  /** Submit the attempt: clears it, files the result and pays the XP. */
+  finishExam: (result: Omit<ExamResultRecord, 'at'>) => void;
+  /** Walk away from an attempt without scoring it. */
+  abandonExam: () => void;
 
   resetAll: () => void;
 }
@@ -146,6 +167,8 @@ export const useAppStore = create<AppState>()(
         gamification: INITIAL_GAMIFICATION,
         progress: {},
         srs: {},
+        currentExam: null,
+        examHistory: [],
         lastStreakOutcome: null,
 
         setLocale: (locale) => set((state) => ({ settings: { ...state.settings, locale } })),
@@ -196,8 +219,31 @@ export const useAppStore = create<AppState>()(
           applyTo(quizXp(correct, total));
         },
 
-        recordExamAttempt: (passed) => {
-          applyTo(examXp(passed));
+        startExam: (attempt) => {
+          set({ currentExam: attempt });
+        },
+
+        saveExam: (attempt) => {
+          set({ currentExam: attempt });
+        },
+
+        /*
+         * Clearing the attempt and filing the result are one `set`, not two. Between two separate
+         * writes there is a persisted state where the exam is finished *and* still in progress —
+         * and a reload landing in that window would drop the candidate back into a scored exam.
+         */
+        finishExam: (result) => {
+          const at = clock.now();
+
+          set((state) => ({
+            currentExam: null,
+            examHistory: [{ ...result, at }, ...state.examHistory].slice(0, MAX_EXAM_HISTORY),
+          }));
+          applyTo(examXp(result.passed));
+        },
+
+        abandonExam: () => {
+          set({ currentExam: null });
         },
 
         /*
@@ -223,6 +269,8 @@ export const useAppStore = create<AppState>()(
             gamification: INITIAL_GAMIFICATION,
             progress: {},
             srs: {},
+            currentExam: null,
+            examHistory: [],
             lastStreakOutcome: null,
           }),
       };
@@ -239,6 +287,8 @@ export const useAppStore = create<AppState>()(
         gamification: state.gamification,
         progress: state.progress,
         srs: state.srs,
+        currentExam: state.currentExam,
+        examHistory: state.examHistory,
       }),
 
       migrate: (persisted, version) => {
@@ -264,6 +314,8 @@ export const useAppStore = create<AppState>()(
           gamification: coerceGamification(blob['gamification']),
           progress: coerceProgress(blob['progress']),
           srs: coerceSrs(blob['srs']),
+          currentExam: coerceExamAttempt(blob['currentExam']),
+          examHistory: coerceExamHistory(blob['examHistory']),
         };
       },
     },

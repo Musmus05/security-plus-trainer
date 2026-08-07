@@ -77,8 +77,7 @@
     },
     "exam": {
       "title": "Examen blanc",
-      "subtitle": "{{questions}} questions en {{minutes}} minutes · réussite à {{passing}}",
-      "placeholder": "Le simulateur d’examen arrive dans sa propre étape."
+      "subtitle": "{{questions}} questions en {{minutes}} minutes · réussite estimée à {{passing}}"
     },
     "flashcards": {
       "title": "Flashcards",
@@ -223,5 +222,48 @@
     "resultCount_other": "{{count}} résultats",
     "noResults": "Aucun acronyme ne correspond à « {{query}} ».",
     "examinedIn": "Au programme de"
+  },
+  "exam": {
+    "start": "Démarrer l’examen blanc",
+    "factQuestions": "questions",
+    "factMinutes": "minutes",
+    "factPassing": "score requis",
+    "mixTitle": "Répartition officielle par domaine",
+    "questionCount_one": "{{count}} question",
+    "questionCount_other": "{{count}} questions",
+    "scoringNotice": "Le score sur 100–900 est une **estimation de cette application**, pas une prédiction. CompTIA ne publie pas son barème : l’examen réel pondère les questions selon leur difficulté, donc un {{passing}} officiel ne correspond à aucun pourcentage fixe. Ici, la conversion est linéaire — 0 % donne 100, 100 % donne 900 — ce qui place le seuil de {{passing}} à 81,25 % de bonnes réponses. Le nombre fiable est le score brut.",
+    "timeRemaining": "Temps restant",
+    "answeredOf": "{{done}} réponses sur {{total}}",
+    "questionOf": "Question {{number}} sur {{total}}",
+    "previous": "Précédente",
+    "next": "Suivante",
+    "flag": "Marquer",
+    "unflag": "Retirer la marque",
+    "flaggedCount_one": "{{count}} question marquée",
+    "flaggedCount_other": "{{count}} questions marquées",
+    "reviewGrid": "Aller à une question",
+    "goToQuestion": "Question {{number}}, {{state}}",
+    "stateAnswered": "répondue",
+    "stateBlank": "sans réponse",
+    "stateFlagged": "marquée",
+    "fiveMinutesLeft": "Moins de cinq minutes. C’est le moment de revoir les questions marquées.",
+    "submit": "Terminer",
+    "submitConfirm": "Terminer et corriger",
+    "confirmSubmitTitle": "Terminer l’examen ?",
+    "confirmSubmitAll": "Toutes les questions ont une réponse. La correction est définitive pour cette tentative.",
+    "confirmSubmitUnanswered_one": "Il reste {{count}} question sans réponse. Elle sera comptée comme fausse.",
+    "confirmSubmitUnanswered_other": "Il reste {{count}} questions sans réponse. Elles seront comptées comme fausses.",
+    "disclaimer": "Score estimé sur {{min}}–{{max}} · seuil {{passing}} · estimation non officielle",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "scaledEstimate": "Score estimé : {{scaled}} · seuil {{passing}}",
+    "unansweredCount_one": "{{count}} question laissée sans réponse",
+    "unansweredCount_other": "{{count}} questions laissées sans réponse",
+    "retake": "Refaire un examen blanc",
+    "byDomainTitle": "Détail par domaine",
+    "domainAccuracy": "Domaine {{domain}} : {{percent}} %",
+    "reviseTitle": "À revoir en priorité",
+    "historyTitle": "Tentatives précédentes",
+    "historyDetail": "{{correct}}/{{total}} · {{date}}"
   }
 }
