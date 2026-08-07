@@ -138,7 +138,13 @@
     "crowns_other": "{{count}} couronnes sur {{max}}",
     "notWrittenYet": "La leçon de cet objectif n’est pas encore rédigée. Les points officiels ci-dessous sont le périmètre exact sur lequel l’examen t’interroge.",
     "shownInOtherLanguage": "Affichée en {{language}} — pas encore traduite",
-    "tableLabel": "Tableau, défilement horizontal"
+    "tableLabel": "Tableau, défilement horizontal",
+    "callout": {
+      "examTrap": "Piège d’examen",
+      "mnemonic": "Moyen mnémotechnique",
+      "keyPoint": "À retenir",
+      "inPractice": "En pratique"
+    }
   },
   "dashboard": {
     "rank": "{{rank}} · niveau {{level}}",

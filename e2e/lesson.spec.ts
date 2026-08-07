@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 
 import { ALL_OBJECTIVES } from '../src/content/exam/sy0-701/domains';
 import { hasLesson } from '../src/content/lesson-bank';
@@ -96,3 +96,56 @@ test.describe('lesson content', () => {
     await expect(page.getByText('Leçon', { exact: true })).toHaveCount(expected);
   });
 });
+
+test.describe('lesson language and reading', () => {
+  test('callout headings follow the lesson, not the interface', async ({ page }) => {
+    /*
+     * The four callout labels were hardcoded French and rendered in all 56 lesson files, so an
+     * English lesson was interrupted by "À retenir". A callout heading is part of the prose around
+     * it and belongs to the lesson's language.
+     */
+    await page.goto('/objective/1.1');
+    await expect(page.getByText('À retenir').first()).toBeVisible();
+
+    await page.getByRole('radio', { name: /Switch interface to English|English/ }).check();
+    await expect(page.getByRole('heading', { name: 'Why this objective matters' })).toBeVisible();
+
+    await expect(page.getByText('Key point').first()).toBeVisible();
+    await expect(page.getByText('À retenir')).toHaveCount(0);
+    await expect(page.getByText('Piège d’examen')).toHaveCount(0);
+    await expect(page.getByText('En pratique')).toHaveCount(0);
+    await expect(page.getByText('Moyen mnémotechnique')).toHaveCount(0);
+  });
+
+  test('reaching the end of a lesson marks it read', async ({ page }) => {
+    /*
+     * Pressing a button to record something you have just spent ten minutes doing is busywork, and
+     * forgetting costs the crown, the XP and the streak — so a learner who reads every lesson and
+     * never clicks appears to have done nothing.
+     */
+    await page.goto('/objective/1.1');
+    await expect(page.getByRole('button', { name: 'Marquer comme lu' })).toBeVisible();
+
+    // A real wheel scroll rather than `window.scrollTo`, twice, because one wheel event does not
+    // reach the bottom of a 1 200-word lesson.
+    await page.mouse.wheel(0, 100_000);
+    await page.mouse.wheel(0, 100_000);
+
+    await expect(page.getByText('Lu', { exact: true })).toBeVisible();
+    await expect.poll(() => persistedBlob(page)).toContain('"lessonRead":true');
+    // The XP is paid exactly once, however many times the observer fires on the way down.
+    await expect.poll(() => persistedBlob(page)).toContain('"totalXp":20');
+  });
+
+  test('does not mark a lesson read before it has been scrolled', async ({ page }) => {
+    // A sentinel at the end of the page is already on screen when a short page loads, and an
+    // unguarded observer would mark the lesson read before a word of it had been read.
+    await page.goto('/objective/1.1');
+
+    await expect(page.getByRole('button', { name: 'Marquer comme lu' })).toBeVisible();
+    await expect(page.getByText('Lu', { exact: true })).toHaveCount(0);
+  });
+});
+
+const persistedBlob = (page: Page) =>
+  page.evaluate(() => localStorage.getItem('security-plus-trainer'));

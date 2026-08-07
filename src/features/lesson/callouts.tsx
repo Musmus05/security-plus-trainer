@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/ui';
 
+import { useLessonLocale } from './lesson-locale';
+
 /**
  * The components a lesson author can use inside MDX.
  *
@@ -34,18 +36,34 @@ interface CalloutProps {
   children: React.ReactNode;
 }
 
+type CalloutLabelKey =
+  | 'lesson.callout.examTrap'
+  | 'lesson.callout.mnemonic'
+  | 'lesson.callout.keyPoint'
+  | 'lesson.callout.inPractice';
+
+/**
+ * A callout label is translated into the **lesson's** language, not the interface's.
+ *
+ * `lng` forces the lookup instead of reading the active language. A callout heading is part of the
+ * prose around it: an English lesson interrupted by "À retenir" reads as a bug, and it was one —
+ * these four labels were hardcoded French and appeared in all 56 lesson files.
+ */
 function Callout({
   icon,
-  label,
+  labelKey,
   tone,
   title,
   children,
-}: CalloutProps & { icon: React.ReactNode; label: string; tone: string }) {
+}: CalloutProps & { icon: React.ReactNode; labelKey: CalloutLabelKey; tone: string }) {
+  const { t } = useTranslation();
+  const lng = useLessonLocale();
+
   return (
     <aside className={cn('my-5 rounded-2xl border-l-4 p-4', tone)}>
       <p className="mb-1.5 flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
         {icon}
-        {title ?? label}
+        {title ?? t(labelKey, { lng })}
       </p>
       <div className="text-ink text-[0.9375rem] leading-relaxed [&>p]:my-1.5">{children}</div>
     </aside>
@@ -57,7 +75,7 @@ export function ExamTrap({ title, children }: CalloutProps) {
   return (
     <Callout
       icon={<AlertTriangle aria-hidden className="size-3.5" />}
-      label="Piège d’examen"
+      labelKey="lesson.callout.examTrap"
       tone="border-l-critical bg-critical-wash text-critical-text"
       {...(title === undefined ? {} : { title })}
     >
@@ -71,7 +89,7 @@ export function Mnemonic({ title, children }: CalloutProps) {
   return (
     <Callout
       icon={<BrainCircuit aria-hidden className="size-3.5" />}
-      label="Moyen mnémotechnique"
+      labelKey="lesson.callout.mnemonic"
       tone="border-l-good bg-good-wash text-good-text"
       {...(title === undefined ? {} : { title })}
     >
@@ -85,7 +103,7 @@ export function KeyPoint({ title, children }: CalloutProps) {
   return (
     <Callout
       icon={<Target aria-hidden className="size-3.5" />}
-      label="À retenir"
+      labelKey="lesson.callout.keyPoint"
       tone="border-l-action bg-info-wash text-info-text"
       {...(title === undefined ? {} : { title })}
     >
@@ -107,11 +125,14 @@ export function KeyPoint({ title, children }: CalloutProps) {
  */
 export function ScrollableTable({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
+  // The region sits inside `lang={shownIn}`, so naming it in the interface language would put a
+  // French label on an element the markup declares as English.
+  const lng = useLessonLocale();
 
   return (
     <div
       role="region"
-      aria-label={t('lesson.tableLabel')}
+      aria-label={t('lesson.tableLabel', { lng })}
       tabIndex={0}
       className="border-edge focus-visible:outline-action my-5 overflow-x-auto rounded-2xl border focus-visible:outline-2 focus-visible:outline-offset-2"
     >
@@ -125,7 +146,7 @@ export function InPractice({ title, children }: CalloutProps) {
   return (
     <Callout
       icon={<Lightbulb aria-hidden className="size-3.5" />}
-      label="En pratique"
+      labelKey="lesson.callout.inPractice"
       tone="border-l-edge-strong bg-sunken text-ink-secondary"
       {...(title === undefined ? {} : { title })}
     >
