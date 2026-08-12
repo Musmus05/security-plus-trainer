@@ -234,6 +234,7 @@ describe('progress and XP', () => {
 
   it('records a passed exam with its bonus', () => {
     useAppStore.getState().finishExam({
+      scope: 'full',
       correct: 80,
       total: 90,
       unanswered: 0,
@@ -313,6 +314,7 @@ describe('progress and XP', () => {
 
 describe('mock exams', () => {
   const attempt = {
+    scope: 'full' as const,
     questionIds: ['q-1-1-001', 'q-2-1-002', 'q-4-6-003'],
     answers: { 'q-1-1-001': ['a'] },
     flagged: ['q-2-1-002'],
@@ -349,6 +351,7 @@ describe('mock exams', () => {
      */
     useAppStore.getState().startExam(attempt);
     useAppStore.getState().finishExam({
+      scope: 'full',
       correct: 70,
       total: 90,
       unanswered: 2,
@@ -365,6 +368,7 @@ describe('mock exams', () => {
 
   it('stamps the result with the clock rather than trusting the caller', () => {
     useAppStore.getState().finishExam({
+      scope: 'full',
       correct: 1,
       total: 1,
       unanswered: 0,
@@ -388,6 +392,7 @@ describe('mock exams', () => {
     // An unbounded history is a slow leak in a store measured in a few megabytes.
     for (let i = 0; i < MAX_EXAM_HISTORY + 5; i += 1) {
       useAppStore.getState().finishExam({
+        scope: 'full',
         correct: i,
         total: 90,
         unanswered: 0,

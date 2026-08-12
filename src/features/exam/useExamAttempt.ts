@@ -5,17 +5,20 @@ import { DOMAINS } from '@/content/exam/sy0-701/domains';
 import { loadQuestions, OBJECTIVES_WITH_QUESTIONS } from '@/content/question-bank';
 import type { Question } from '@/content/schemas';
 import {
-  allocate,
+  allocationFor,
   answeredCount,
   currentQuestionId,
   type ExamAnswer,
   type ExamAttempt,
+  type ExamScope,
   type ExamScore,
+  durationMsFor,
   goTo as goToQuestion,
   isExpired,
   next as nextQuestion,
   previous as previousQuestion,
   remainingMs,
+  questionCountFor,
   sampleExam,
   scoreAttempt,
   selectOption as selectExamOption,
@@ -28,8 +31,20 @@ import { createSystemClock } from '@/lib/clock';
 import { createRandomSeed } from '@/lib/rng';
 import { useAppStore } from '@/lib/store/store';
 
-const DURATION_MS = EXAM_META.durationMinutes * 60 * 1000;
 const SCORE_OPTIONS = { scale: EXAM_META.scoreScale, passingScore: EXAM_META.passingScore };
+const WEIGHTS = DOMAINS.map((domain) => ({ domain: domain.id, weight: domain.weight }));
+
+/** The shape of one exam: how many questions from where, and how long for. */
+export function examPlan(scope: ExamScope) {
+  const allocation = allocationFor(scope, WEIGHTS, EXAM_META.maxQuestions);
+  const questionCount = questionCountFor(allocation);
+
+  return {
+    allocation,
+    questionCount,
+    durationMs: durationMsFor(questionCount, EXAM_META.maxQuestions, EXAM_META.durationMinutes),
+  };
+}
 
 /** How often the countdown re-renders. One second: the clock shows seconds. */
 const TICK_MS = 1000;
@@ -47,8 +62,18 @@ export type ExamPhase = 'idle' | 'loading' | 'running' | 'finished';
  * whatever happened since the last one, and the events worth surviving — a crash, a closed laptop,
  * a stray reload — are exactly the ones that give no warning.
  */
-export function useExamAttempt() {
-  const attempt = useAppStore((state) => state.currentExam);
+export function useExamAttempt(scope: ExamScope = 'full') {
+  const plan = useMemo(() => examPlan(scope), [scope]);
+
+  /*
+   * Only the attempt belonging to *this* page's scope. There is one attempt at a time, so opening
+   * the domain 4 paper while a full mock is running must not silently adopt the other exam's
+   * questions and clock. The hub tells the learner which one is in progress instead.
+   */
+  const stored = useAppStore((state) => state.currentExam);
+  const attempt = stored !== null && stored.scope === scope ? stored : null;
+  const otherInProgress = stored !== null && stored.scope !== scope ? stored.scope : null;
+
   const history = useAppStore((state) => state.examHistory);
   const startExam = useAppStore((state) => state.startExam);
   const saveExam = useAppStore((state) => state.saveExam);
@@ -116,28 +141,24 @@ export function useExamAttempt() {
     setStarting(true);
 
     void loadAllBanks().then((banks) => {
-      const pools = groupByDomain(banks);
-      const allocation = allocate(
-        DOMAINS.map((domain) => ({ domain: domain.id, weight: domain.weight })),
-        EXAM_META.maxQuestions,
-      );
       const seed = createRandomSeed();
-      const drawn = sampleExam(pools, allocation, createSeededRng(seed));
+      const drawn = sampleExam(groupByDomain(banks), plan.allocation, createSeededRng(seed));
 
       submitted.current = false;
       setScore(null);
       setQuestions(new Map(banks.map((question) => [question.id, question])));
       startExam(
         startAttempt(
+          scope,
           drawn.map((question) => question.id),
           createSystemClock().now(),
-          DURATION_MS,
+          plan.durationMs,
           seed,
         ),
       );
       setStarting(false);
     });
-  }, [startExam]);
+  }, [startExam, scope, plan]);
 
   const submit = useCallback(() => {
     if (attempt === null || questions === null || submitted.current) {
@@ -171,6 +192,7 @@ export function useExamAttempt() {
     const result = scoreAttempt(answers, SCORE_OPTIONS);
     setScore(result);
     finishExam({
+      scope,
       correct: result.correct,
       total: result.total,
       unanswered: result.unanswered,
@@ -178,7 +200,7 @@ export function useExamAttempt() {
       passed: result.passed,
       byDomain: result.byDomain.map(({ domain, correct, total }) => ({ domain, correct, total })),
     });
-  }, [attempt, questions, finishExam]);
+  }, [attempt, questions, finishExam, scope]);
 
   /*
    * Time running out submits the attempt, exactly as the real exam does. Placed in an effect rather
@@ -234,12 +256,16 @@ export function useExamAttempt() {
 
   return {
     phase,
+    scope,
+    plan,
+    /** The scope of an attempt running under a *different* exam, if there is one. */
+    otherInProgress,
     attempt,
     question,
     options,
     score,
     history,
-    remainingMs: attempt === null ? DURATION_MS : remainingMs(attempt, now),
+    remainingMs: attempt === null ? plan.durationMs : remainingMs(attempt, now),
     answered: attempt === null ? 0 : answeredCount(attempt),
     total: attempt?.questionIds.length ?? 0,
     questionNumber: (attempt?.index ?? 0) + 1,

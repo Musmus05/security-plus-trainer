@@ -252,7 +252,6 @@
     "stateAnswered": "répondue",
     "stateBlank": "sans réponse",
     "stateFlagged": "marquée",
-    "fiveMinutesLeft": "Moins de cinq minutes. C’est le moment de revoir les questions marquées.",
     "submit": "Terminer",
     "submitConfirm": "Terminer et corriger",
     "confirmSubmitTitle": "Terminer l’examen ?",
@@ -270,6 +269,21 @@
     "domainAccuracy": "Domaine {{domain}} : {{percent}} %",
     "reviseTitle": "À revoir en priorité",
     "historyTitle": "Tentatives précédentes",
-    "historyDetail": "{{correct}}/{{total}} · {{date}}"
+    "historyDetail": "{{correct}}/{{total}} · {{date}}",
+    "timeRunningOut_one": "Moins d’une minute. C’est le moment de revoir les questions marquées.",
+    "timeRunningOut_other": "Moins de {{count}} minutes. C’est le moment de revoir les questions marquées.",
+    "minuteCount_one": "{{count}} minute",
+    "minuteCount_other": "{{count}} minutes",
+    "byDomainExamsTitle": "Examens par domaine",
+    "byDomainExamsHelp": "Un examen blanc court sur un seul domaine, avec sa part exacte de questions et le même temps par question que l’épreuve réelle.",
+    "domainShare": "{{questions}} questions — la part exacte du domaine {{domain}} dans une épreuve de {{total}} questions.",
+    "domainPaper": "Domaine {{domain}}",
+    "fullPaper": "Examen complet",
+    "otherInProgress": "Tu as déjà un examen en cours : {{exam}}. Termine-le ou abandonne-le avant d’en démarrer un autre.",
+    "resumeOther": "Reprendre cet examen",
+    "unknownTitle": "Examen introuvable",
+    "unknownBody": "« {{id}} » ne correspond à aucun domaine SY0-701.",
+    "backToExams": "Retour aux examens",
+    "domainExamLabel": "Domaine {{number}} {{name}} — {{questions}} questions en {{minutes}} minutes"
   }
 }

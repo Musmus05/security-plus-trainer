@@ -82,6 +82,8 @@ describe('translation catalogues', () => {
       'exam.factMinutes',
       'exam.questionCount_one',
       'exam.questionCount_other',
+      'exam.minuteCount_one',
+      'exam.minuteCount_other',
       // Placeholders and punctuation only. Every word that differs arrives through interpolation —
       // `exam.goToQuestion` reads "Question 3, answered" against "Question 3, répondue".
       'exam.goToQuestion',

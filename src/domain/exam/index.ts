@@ -22,6 +22,14 @@ export {
   toggleFlag,
 } from './attempt';
 export {
+  allocationFor,
+  durationMsFor,
+  type ExamScope,
+  isDomainScope,
+  parseScope,
+  questionCountFor,
+} from './scope';
+export {
   accuracyForScaled,
   type DomainBreakdown,
   type ExamAnswer,
