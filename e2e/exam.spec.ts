@@ -38,8 +38,12 @@ test.describe('mock exam', () => {
     await page.goto('/exam');
 
     await expect(page.getByText('Répartition officielle par domaine')).toBeVisible();
-    await expect(page.getByText('25 questions')).toBeVisible();
-    await expect(page.getByText('11 questions')).toBeVisible();
+
+    // Scoped to the split list. "25 questions" now also appears on the domain 4 exam row further
+    // down the page, so an unscoped match resolves to two elements and asserts nothing about either.
+    const split = page.getByRole('list').filter({ hasText: 'Opérations de sécurité' }).first();
+    await expect(split).toContainText('25 questions');
+    await expect(split).toContainText('11 questions');
   });
 
   test('labels the scaled score as an estimate before it is ever shown', async ({ page }) => {
@@ -249,5 +253,109 @@ test.describe('mock exam', () => {
 
     await expect(page.getByText('Tentatives précédentes')).toBeVisible();
     await expect(page.getByText('Échoué')).toBeVisible();
+  });
+});
+
+test.describe('domain exams', () => {
+  test('the hub lists one paper per domain with its size and clock', async ({ page }) => {
+    await page.goto('/exam');
+
+    await expect(page.getByRole('heading', { name: 'Examens par domaine' })).toBeVisible();
+
+    /*
+     * The sizes are the domains' own shares of the real paper — 11 / 20 / 16 / 25 / 18 — and the
+     * clock is the real exam's minute per question. Asserting the pair together is what would catch
+     * a duration invented independently of the question count.
+     */
+    for (const [domain, count] of [
+      [1, 11],
+      [2, 20],
+      [3, 16],
+      [4, 25],
+      [5, 18],
+    ] as const) {
+      await expect(
+        page.getByRole('link', {
+          name: `${String(count)} questions en ${String(count)} minutes`,
+        }),
+        `domain ${String(domain)}`,
+      ).toBeVisible();
+    }
+  });
+
+  test('the domain number is announced, not only shown', async ({ page }) => {
+    // The number badge is decorative and hidden, so without an explicit name the link reads as the
+    // domain title twice — and the number is how the exam itself identifies its domains.
+    await page.goto('/exam');
+
+    await expect(page.getByRole('link', { name: /^Domaine 1\.0 Concepts généraux/ })).toBeVisible();
+  });
+
+  test('a domain paper draws only that domain, on its own clock', async ({ page }) => {
+    // "General Security Concepts" is domain 1: 11 questions, 11 minutes.
+    await page.goto('/exam/1');
+
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Concepts généraux');
+    await page.getByRole('button', { name: 'Démarrer l’examen blanc' }).click();
+
+    await expect(page.getByText('Question 1 sur 11')).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Question \d+,/ })).toHaveCount(11);
+    await expect(page.getByRole('timer', { name: 'Temps restant' })).toContainText('0:10');
+  });
+
+  test('the result of a domain paper reports only that domain', async ({ page }) => {
+    await page.goto('/exam/3');
+    await page.getByRole('button', { name: 'Démarrer l’examen blanc' }).click();
+    await options(page).first().check();
+
+    await page.getByRole('button', { name: 'Terminer' }).click();
+    await page.getByRole('button', { name: 'Terminer et corriger' }).click();
+
+    await expect(page.getByText('/16', { exact: true })).toBeVisible();
+    // One row in the breakdown, not five: the other four domains were never examined.
+    await expect(page.getByRole('progressbar', { name: /^Domaine \d/ })).toHaveCount(1);
+    await expect(page.getByRole('progressbar', { name: /^Domaine 3\.0/ })).toBeVisible();
+  });
+
+  test('refuses to start a second exam while one is running', async ({ page }) => {
+    /*
+     * There is one attempt at a time. Silently replacing an exam somebody is halfway through, with
+     * a clock still running on it, is not a trade a button should make on their behalf.
+     */
+    await page.goto('/exam/2');
+    await page.getByRole('button', { name: 'Démarrer l’examen blanc' }).click();
+    await expect(page.getByText('Question 1 sur 20')).toBeVisible();
+
+    await page.goto('/exam/4');
+
+    await expect(page.getByText(/Tu as déjà un examen en cours : Domaine 2/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Démarrer l’examen blanc' })).toHaveCount(0);
+
+    await page.getByRole('link', { name: 'Reprendre cet examen' }).click();
+    await expect(page.getByText('Question 1 sur 20')).toBeVisible();
+  });
+
+  test('the full paper and a domain paper keep separate histories', async ({ page }) => {
+    await page.goto('/exam/5');
+    await page.getByRole('button', { name: 'Démarrer l’examen blanc' }).click();
+    await page.getByRole('button', { name: 'Terminer' }).click();
+    await page.getByRole('button', { name: 'Terminer et corriger' }).click();
+    await expect(page.getByText('Détail par domaine')).toBeVisible();
+
+    // The domain 5 paper remembers its own attempt…
+    await page.goto('/exam/5');
+    await expect(page.getByText('Tentatives précédentes')).toBeVisible();
+    await expect(page.getByText('0/18')).toBeVisible();
+
+    // …and the full mock does not claim it as one of its own.
+    await page.goto('/exam');
+    await expect(page.getByText('Tentatives précédentes')).toHaveCount(0);
+  });
+
+  test('a URL naming no real domain is a dead end, not an empty exam', async ({ page }) => {
+    await page.goto('/exam/9');
+
+    await expect(page.getByRole('heading', { level: 1, name: 'Examen introuvable' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Démarrer l’examen blanc' })).toHaveCount(0);
   });
 });

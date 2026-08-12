@@ -21,7 +21,7 @@ const STARTED = 1_800_000_000_000;
 const NINETY_MINUTES = 90 * 60 * 1000;
 const OPTIONS = ['a', 'b', 'c', 'd'];
 
-const fresh = () => startAttempt(IDS, STARTED, NINETY_MINUTES, 42);
+const fresh = () => startAttempt('full', IDS, STARTED, NINETY_MINUTES, 42);
 
 describe('navigation', () => {
   it('starts on the first question', () => {

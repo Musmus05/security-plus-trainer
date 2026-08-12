@@ -57,6 +57,16 @@ export const router = createBrowserRouter([
         },
       },
       {
+        // The full paper is `/exam`; a domain paper is `/exam/4`. The segment is the domain number
+        // the exam itself uses, so a guessed URL works — and one that names no real domain is
+        // refused rather than starting an exam of zero questions.
+        path: 'exam/:scope',
+        lazy: async () => {
+          const { ExamPage } = await import('./pages/ExamPage');
+          return { Component: ExamPage };
+        },
+      },
+      {
         path: 'flashcards',
         lazy: async () => {
           const { FlashcardsPage } = await import('./pages/FlashcardsPage');

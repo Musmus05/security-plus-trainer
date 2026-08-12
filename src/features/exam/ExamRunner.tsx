@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EXAM_META } from '@/content/exam-meta';
-import { formatRemaining, isAnswered, isFlagged } from '@/domain/exam';
+import { type ExamScope, formatRemaining, isAnswered, isFlagged } from '@/domain/exam';
 import { Badge, Button, Card, cn, ProgressBar } from '@/ui';
 
 import { ExamQuestion } from './ExamQuestion';
@@ -11,12 +11,21 @@ import { ExamResult } from './ExamResult';
 import { ExamStart } from './ExamStart';
 import { useExamAttempt } from './useExamAttempt';
 
-/** Below this the clock turns urgent. Five minutes is enough to revisit the flagged items. */
-const URGENT_MS = 5 * 60 * 1000;
+/**
+ * Below this the clock turns urgent.
+ *
+ * A proportion, not a fixed five minutes: on an 11-question domain paper five minutes is nearly
+ * half the exam, so a warning at that point would be on screen for most of it and mean nothing.
+ */
+const URGENT_FRACTION = 1 / 18;
 
-export function ExamRunner() {
+export interface ExamRunnerProps {
+  scope?: ExamScope;
+}
+
+export function ExamRunner({ scope = 'full' }: ExamRunnerProps) {
   const { t } = useTranslation();
-  const exam = useExamAttempt();
+  const exam = useExamAttempt(scope);
   const [confirmingSubmit, setConfirmingSubmit] = useState(false);
 
   if (exam.phase === 'finished' && exam.score !== null) {
@@ -25,7 +34,14 @@ export function ExamRunner() {
 
   if (exam.phase === 'idle' || exam.phase === 'loading') {
     return (
-      <ExamStart loading={exam.phase === 'loading'} onStart={exam.start} history={exam.history} />
+      <ExamStart
+        scope={exam.scope}
+        plan={exam.plan}
+        loading={exam.phase === 'loading'}
+        onStart={exam.start}
+        otherInProgress={exam.otherInProgress}
+        history={exam.history}
+      />
     );
   }
 
@@ -34,7 +50,7 @@ export function ExamRunner() {
     return null;
   }
 
-  const urgent = exam.remainingMs <= URGENT_MS;
+  const urgent = exam.remainingMs <= exam.plan.durationMs * URGENT_FRACTION;
   const unanswered = exam.total - exam.answered;
 
   return (
@@ -84,7 +100,7 @@ export function ExamRunner() {
           role="alert"
           className="bg-critical-wash text-critical-text rounded-xl px-4 py-2 text-sm font-semibold"
         >
-          {t('exam.fiveMinutesLeft')}
+          {t('exam.timeRunningOut', { count: Math.max(1, Math.ceil(exam.remainingMs / 60_000)) })}
         </p>
       )}
 

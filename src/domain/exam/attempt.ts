@@ -1,3 +1,5 @@
+import type { ExamScope } from './scope';
+
 /**
  * An in-progress mock exam.
  *
@@ -10,6 +12,8 @@
  */
 
 export interface ExamAttempt {
+  /** The full paper, or a single domain. Persisted so a reload resumes the right one. */
+  scope: ExamScope;
   /** Question ids in delivery order. */
   questionIds: readonly string[];
   /** Question id → selected option ids. Absent means unanswered. */
@@ -30,12 +34,13 @@ export interface ExamAttempt {
 }
 
 export function startAttempt(
+  scope: ExamScope,
   questionIds: readonly string[],
   startedAt: number,
   durationMs: number,
   seed: number,
 ): ExamAttempt {
-  return { questionIds, answers: {}, flagged: [], index: 0, startedAt, durationMs, seed };
+  return { scope, questionIds, answers: {}, flagged: [], index: 0, startedAt, durationMs, seed };
 }
 
 export function currentQuestionId(attempt: ExamAttempt): string | undefined {

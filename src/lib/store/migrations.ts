@@ -10,7 +10,7 @@
  * shape, and writing a fake predecessor just to have something to test would prove nothing.
  */
 
-export const STORE_VERSION = 4;
+export const STORE_VERSION = 5;
 
 export type Migration = (state: unknown) => unknown;
 
@@ -36,6 +36,16 @@ export const MIGRATIONS: Record<number, Migration> = {
 
   /** 3 → 4: the mock exam attempt and its history joined the persisted state. Additive. */
   3: (state) => state,
+
+  /**
+   * 4 to 5: exam attempts and results gained a scope, so a domain paper can be told from the full
+   * one.
+   *
+   * Nothing is rewritten. The schema defaults a missing scope to 'full', which is what every
+   * attempt written before this change actually was — and defaulting rather than requiring is the
+   * difference between shipping this and discarding an exam somebody is halfway through.
+   */
+  4: (state) => state,
 };
 
 export interface MigrationOutcome {

@@ -131,7 +131,17 @@ export function coerceSrs(value: unknown): SrsMap {
  * each is several hundred kilobytes, and a `localStorage` entry that large is a candidate for
  * eviction — which would lose the attempt it was written to protect.
  */
+/**
+ * Which exam an attempt or a result belongs to: the full paper, or one domain on its own.
+ *
+ * Defaulted rather than required, so an attempt written before domain papers existed parses as the
+ * full exam instead of being discarded. That default is the difference between shipping this and
+ * throwing away an exam somebody is halfway through.
+ */
+export const examScopeSchema = z.union([z.literal('full'), z.number().int().min(1).max(5)]);
+
 export const examAttemptSchema = z.object({
+  scope: examScopeSchema.default('full'),
   questionIds: z.array(z.string().min(1)).max(200),
   answers: z.record(z.string().min(1), z.array(z.string().min(1))),
   flagged: z.array(z.string().min(1)),
@@ -142,6 +152,7 @@ export const examAttemptSchema = z.object({
 });
 
 export const examResultSchema = z.object({
+  scope: examScopeSchema.default('full'),
   /** Epoch milliseconds the attempt was submitted. */
   at: z.number().int().positive(),
   correct: z.number().int().nonnegative(),

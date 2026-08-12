@@ -252,7 +252,6 @@
     "stateAnswered": "answered",
     "stateBlank": "blank",
     "stateFlagged": "flagged",
-    "fiveMinutesLeft": "Under five minutes. Now is the time to revisit the flagged questions.",
     "submit": "Finish",
     "submitConfirm": "Finish and mark",
     "confirmSubmitTitle": "Finish the exam?",
@@ -270,6 +269,21 @@
     "domainAccuracy": "Domain {{domain}}: {{percent}}%",
     "reviseTitle": "Revise these first",
     "historyTitle": "Previous attempts",
-    "historyDetail": "{{correct}}/{{total}} · {{date}}"
+    "historyDetail": "{{correct}}/{{total}} · {{date}}",
+    "timeRunningOut_one": "Under a minute. Now is the time to revisit the flagged questions.",
+    "timeRunningOut_other": "Under {{count}} minutes. Now is the time to revisit the flagged questions.",
+    "minuteCount_one": "{{count}} minute",
+    "minuteCount_other": "{{count}} minutes",
+    "byDomainExamsTitle": "Exams by domain",
+    "byDomainExamsHelp": "A short mock over a single domain, with that domain’s exact share of the questions and the real exam’s time per question.",
+    "domainShare": "{{questions}} questions — exactly what domain {{domain}} contributes to a {{total}}-question paper.",
+    "domainPaper": "Domain {{domain}}",
+    "fullPaper": "Full exam",
+    "otherInProgress": "You already have an exam in progress: {{exam}}. Finish or abandon it before starting another.",
+    "resumeOther": "Resume that exam",
+    "unknownTitle": "No such exam",
+    "unknownBody": "“{{id}}” is not an SY0-701 domain.",
+    "backToExams": "Back to the exams",
+    "domainExamLabel": "Domain {{number}} {{name}} — {{questions}} questions in {{minutes}} minutes"
   }
 }

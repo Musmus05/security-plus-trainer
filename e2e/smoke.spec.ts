@@ -31,6 +31,9 @@ const ROUTES = [
   '/objective/1.1',
   '/objective/1.1/quiz',
   '/exam',
+  // A domain paper is a different page shape from the full mock — its own header, back link and
+  // share notice — so it gets its own pass rather than being assumed covered by `/exam`.
+  '/exam/1',
   '/flashcards',
   '/glossary',
   '/settings',

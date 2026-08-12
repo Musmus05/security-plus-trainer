@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- An exam per domain, alongside the full mock. Each draws exactly the number of questions that
+  domain contributes to the real paper — 11, 20, 16, 25, 18 — on the real exam's own
+  minute-per-question budget, so a domain paper rehearses the same pressure over a slice of it.
+  A full mock costs ninety minutes; revising domain 4 should not require sitting the other four.
+- Only one exam runs at a time. Opening another paper while one is in progress offers to resume
+  it rather than silently replacing an attempt with a clock still running on it.
+- Each paper keeps its own attempt history, at `STORE_VERSION` 5 with a migration: a missing
+  scope on an older attempt reads as the full exam rather than being discarded.
 - A lesson marks itself read once the learner reaches the end of it. The button remains for
   marking earlier, and a lesson short enough to fit on screen without scrolling is not
   auto-marked.
