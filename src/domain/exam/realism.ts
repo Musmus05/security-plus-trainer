@@ -55,6 +55,45 @@ export function examRank(
 }
 
 /**
+ * How many sightings of a question are worth distinguishing.
+ *
+ * Past three, "seen a lot" is one bucket. The exam only needs to know which questions are freshest,
+ * not to maintain a precise history of every impression.
+ */
+export const MAX_TRACKED_SIGHTINGS = 3;
+
+/** The highest value `examRank` returns. */
+export const MAX_KIND_RANK = 2;
+
+/**
+ * Fold "how exam-like is it" and "how fresh is it" into one rank.
+ *
+ * **Recall is always last, whatever its freshness.** That is the one rule freshness may not
+ * override: never-seen recall questions are the freshest thing in the corpus, and letting freshness
+ * win would fill a second paper with "what does this acronym stand for" — undoing the whole reason
+ * the exam ranks at all.
+ *
+ * Among everything else, **freshness comes first** and the scenario preference breaks ties within
+ * it. That ordering was the other way round at first, and it was wrong in practice: 2.4 is the only
+ * "Given a scenario" objective in domain 2, so its scenarios were the entire top rank for a paper
+ * needing twenty questions — every one of them was drawn regardless of whether the learner had just
+ * drilled that objective's quiz. Preferring a fresh discrimination over a stale scenario costs
+ * almost nothing, because both are exam-like; showing a question the learner answered ten minutes
+ * ago costs the score its meaning.
+ */
+export function composeRank(kindRank: number, timesSeen: number): number {
+  if (kindRank <= 0) {
+    return 0;
+  }
+
+  const sightings = Math.min(Math.max(0, timesSeen), MAX_TRACKED_SIGHTINGS);
+  const freshness = MAX_TRACKED_SIGHTINGS - sightings;
+
+  // `+ 1` on the multiplier so a fresher question of any exam-like kind always beats a staler one.
+  return freshness * (MAX_KIND_RANK + 1) + kindRank;
+}
+
+/**
  * Draw `count` questions, exhausting the highest rank before touching the next.
  *
  * Falling through to lower ranks rather than failing is the point: a domain whose scenario pool is

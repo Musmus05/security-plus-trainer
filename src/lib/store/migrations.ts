@@ -10,7 +10,7 @@
  * shape, and writing a fake predecessor just to have something to test would prove nothing.
  */
 
-export const STORE_VERSION = 5;
+export const STORE_VERSION = 6;
 
 export type Migration = (state: unknown) => unknown;
 
@@ -46,6 +46,15 @@ export const MIGRATIONS: Record<number, Migration> = {
    * difference between shipping this and discarding an exam somebody is halfway through.
    */
   4: (state) => state,
+
+  /**
+   * 5 to 6: the app started recording which questions the learner has already been shown.
+   *
+   * Additive. An older blob simply has none, which reads as 'nothing seen yet' — so the first exam
+   * after upgrading is drawn as if nothing had been drilled. That is a one-off inaccuracy in the
+   * learner's favour and not worth reconstructing a history the app never kept.
+   */
+  5: (state) => state,
 };
 
 export interface MigrationOutcome {

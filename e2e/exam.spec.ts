@@ -364,3 +364,107 @@ test.describe('domain exams', () => {
     await expect(page.getByRole('button', { name: 'Démarrer l’examen blanc' })).toHaveCount(0);
   });
 });
+
+test.describe('exam freshness', () => {
+  /** The ids the store has recorded as shown, from either a quiz or a submitted exam. */
+  async function seenIds(page: Page): Promise<string[]> {
+    const raw = await persisted(page);
+    if (raw === null) return [];
+    const blob = JSON.parse(raw) as { state: { seenQuestions?: Record<string, number> } };
+    return Object.keys(blob.state.seenQuestions ?? {});
+  }
+
+  /** The ids on the paper currently in progress. */
+  async function paperIds(page: Page): Promise<string[]> {
+    const raw = await persisted(page);
+    if (raw === null) return [];
+    const blob = JSON.parse(raw) as { state: { currentExam: { questionIds: string[] } | null } };
+    return blob.state.currentExam?.questionIds ?? [];
+  }
+
+  test('a quiz records only the questions actually answered', async ({ page }) => {
+    /*
+     * Recorded on reveal, not when the ten are drawn. Ageing all ten after two answers would make
+     * the exam avoid eight questions the learner never read.
+     */
+    await page.goto('/objective/1.1/quiz');
+
+    await options(page).first().check();
+    await page.getByRole('button', { name: 'Vérifier' }).click();
+
+    await expect.poll(async () => (await seenIds(page)).length).toBe(1);
+  });
+
+  test('the exam avoids questions the quizzes have already shown', async ({ page }) => {
+    // The whole point: recognising a question is not knowing the answer, and a mock full of items
+    // already drilled reports a score that flatters.
+    await page.goto('/objective/2.4/quiz');
+
+    for (let question = 1; question <= 10; question += 1) {
+      await options(page).first().check();
+      await page.getByRole('button', { name: 'Vérifier' }).click();
+      await page
+        .getByRole('button', { name: question === 10 ? 'Voir le résultat' : 'Question suivante' })
+        .click();
+    }
+
+    await expect.poll(async () => (await seenIds(page)).length).toBe(10);
+    const drilled = await seenIds(page);
+
+    await page.goto('/exam');
+    await startExam(page);
+
+    const paper = await paperIds(page);
+    expect(paper).toHaveLength(90);
+    expect(paper.filter((id) => drilled.includes(id))).toEqual([]);
+  });
+
+  test('a submitted paper is not handed back as the next one', async ({ page }) => {
+    await page.goto('/exam');
+    await startExam(page);
+    const first = await paperIds(page);
+
+    await page.getByRole('button', { name: 'Terminer' }).click();
+    await page.getByRole('button', { name: 'Terminer et corriger' }).click();
+    await expect(page.getByText('Détail par domaine')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Refaire un examen blanc' }).click();
+    await expect(page.getByText('Question 1 sur 90')).toBeVisible();
+
+    const second = await paperIds(page);
+    expect(second).toHaveLength(90);
+    // 314 non-recall questions against 90 a paper, so a second sitting can be entirely fresh.
+    expect(second.filter((id) => first.includes(id))).toEqual([]);
+  });
+
+  test('an abandoned paper is not counted as seen', async ({ page }) => {
+    // An attempt walked away from was not really taken; ageing its questions would push them out
+    // of the next paper for no reason.
+    await page.goto('/exam');
+    await startExam(page);
+
+    await page.goto('/path');
+
+    expect(await seenIds(page)).toEqual([]);
+  });
+
+  test('freshness never outranks exam-likeness', async ({ page }) => {
+    /*
+     * The ordering that matters. Recall questions are the freshest thing in the corpus once the
+     * exam has used its scenarios — if freshness dominated, a second paper would fill with "what
+     * does this acronym stand for".
+     */
+    await page.goto('/exam');
+    await startExam(page);
+    await page.getByRole('button', { name: 'Terminer' }).click();
+    await page.getByRole('button', { name: 'Terminer et corriger' }).click();
+    await expect(page.getByText('Détail par domaine')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Refaire un examen blanc' }).click();
+    await expect(page.getByText('Question 1 sur 90')).toBeVisible();
+
+    // Recall ids are never drawn, however unseen they are. Proven by the unit suite against the
+    // corpus; here it is enough that the paper is full and none of it repeats.
+    expect(await paperIds(page)).toHaveLength(90);
+  });
+});

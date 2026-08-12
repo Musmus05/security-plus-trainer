@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **The mock exam prefers questions the learner has not met.** The app records which questions
+  have actually been shown — on reveal in a quiz, on submit for an exam — and the paper is drawn
+  freshest-first. The first three sittings come out with no repeats at all; after that the
+  314-question non-recall pool starts to overlap, which it must.
+- Recall questions are still excluded whatever their freshness. They are the freshest thing in
+  the corpus, so letting freshness win would fill a second paper with "what does this acronym
+  stand for".
 - **The mock exam is drawn scenario-led, and never uses recall questions.** Seven of the 28
   objectives literally begin "Given a scenario" and are examined with scenarios wherever the
   corpus has them; everywhere else recall is a last resort. A paper runs at roughly 70% scenario
