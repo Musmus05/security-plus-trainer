@@ -56,6 +56,7 @@ export function useQuizSession(objectiveId: string) {
   const [showResult, setShowResult] = useState(false);
   const recorded = useRef(false);
   const recordQuizAttempt = useAppStore((state) => state.recordQuizAttempt);
+  const markQuestionsSeen = useAppStore((state) => state.markQuestionsSeen);
 
   useEffect(() => {
     let cancelled = false;
@@ -91,12 +92,22 @@ export function useQuizSession(objectiveId: string) {
     const next = revealCurrent(session);
     setSession(next);
 
+    /*
+     * Recorded on reveal, not when the session is drawn. Drawing ten questions and answering two
+     * would otherwise age all ten, and the mock exam would go on to avoid eight questions the
+     * learner never actually read.
+     */
+    const answered = currentItem(next);
+    if (answered?.revealed === true) {
+      markQuestionsSeen([answered.question.id]);
+    }
+
     if (isComplete(next) && !recorded.current) {
       recorded.current = true;
       const result = scoreSession(next);
       recordQuizAttempt(objectiveId, result.correct, result.total);
     }
-  }, [session, objectiveId, recordQuizAttempt]);
+  }, [session, objectiveId, recordQuizAttempt, markQuestionsSeen]);
 
   const next = useCallback(() => {
     if (session === null) {

@@ -1,5 +1,8 @@
 export {
+  composeRank,
   examRank,
+  MAX_KIND_RANK,
+  MAX_TRACKED_SIGHTINGS,
   type QuestionKind,
   type RankableQuestion,
   sampleByRank,

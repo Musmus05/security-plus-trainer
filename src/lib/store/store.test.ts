@@ -21,6 +21,7 @@ function reset(): void {
     srs: {},
     currentExam: null,
     examHistory: [],
+    seenQuestions: {},
     lastStreakOutcome: null,
   });
 }
@@ -57,6 +58,7 @@ describe('settings', () => {
       'examHistory',
       'gamification',
       'progress',
+      'seenQuestions',
       'settings',
       'srs',
     ]);
@@ -309,6 +311,91 @@ describe('progress and XP', () => {
     expect(state.gamification).toEqual(INITIAL_GAMIFICATION);
     expect(state.progress).toEqual({});
     expect(state.srs).toEqual({});
+  });
+});
+
+describe('questions already met', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    reset();
+    setClockForTests(createFixedClock('2026-03-12T09:00:00Z'));
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('counts sightings rather than flagging them', () => {
+    // A count keeps degrading once everything has been seen — "least often" is still a useful
+    // ordering when "never" has run out.
+    useAppStore.getState().markQuestionsSeen(['q-1-1-001']);
+    useAppStore.getState().markQuestionsSeen(['q-1-1-001']);
+
+    expect(useAppStore.getState().seenQuestions['q-1-1-001']).toBe(2);
+  });
+
+  it('counts a repeat within one call once', () => {
+    // Revealing the same question twice in a sitting is one sighting; counting it twice would age
+    // a question the learner met once.
+    useAppStore.getState().markQuestionsSeen(['q-1-1-001', 'q-1-1-001', 'q-1-1-002']);
+
+    expect(useAppStore.getState().seenQuestions).toEqual({ 'q-1-1-001': 1, 'q-1-1-002': 1 });
+  });
+
+  it('does nothing for an empty list', () => {
+    const before = useAppStore.getState().seenQuestions;
+    useAppStore.getState().markQuestionsSeen([]);
+
+    expect(useAppStore.getState().seenQuestions).toBe(before);
+  });
+
+  it('survives a reload', () => {
+    useAppStore.getState().markQuestionsSeen(['q-4-6-003']);
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().seenQuestions['q-4-6-003']).toBe(1);
+  });
+
+  it('drops only the broken entries from a corrupt map', () => {
+    seedStorage({
+      settings: DEFAULT_SETTINGS,
+      gamification: INITIAL_GAMIFICATION,
+      seenQuestions: { 'q-1-1-001': 2, 'q-1-1-002': 0, 'q-1-1-003': 'many', 'q-1-1-004': -1 },
+    });
+
+    void useAppStore.persist.rehydrate();
+
+    // Zero and negative counts are not "seen fewer times", they are nonsense — a question is
+    // either met or absent from the map.
+    expect(useAppStore.getState().seenQuestions).toEqual({ 'q-1-1-001': 2 });
+  });
+
+  it('resetAll clears it', () => {
+    useAppStore.getState().markQuestionsSeen(['q-1-1-001']);
+    useAppStore.getState().resetAll();
+
+    expect(useAppStore.getState().seenQuestions).toEqual({});
+  });
+
+  it('migrates a version 5 blob, which simply had none', () => {
+    /*
+     * An older blob reads as "nothing seen yet", so the first exam after upgrading is drawn as if
+     * nothing had been drilled. A one-off inaccuracy in the learner's favour, and not worth
+     * reconstructing a history the app never kept.
+     */
+    seedStorage(
+      {
+        settings: { ...DEFAULT_SETTINGS, locale: 'en' },
+        gamification: { ...INITIAL_GAMIFICATION, totalXp: 300 },
+      },
+      5,
+    );
+
+    void useAppStore.persist.rehydrate();
+
+    expect(useAppStore.getState().gamification.totalXp).toBe(300);
+    expect(useAppStore.getState().seenQuestions).toEqual({});
   });
 });
 

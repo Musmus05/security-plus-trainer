@@ -25,6 +25,7 @@ import {
   coerceExamHistory,
   coerceGamification,
   coerceProgress,
+  coerceSeenQuestions,
   coerceSrs,
   type ExamResultRecord,
   type GamificationState,
@@ -32,6 +33,7 @@ import {
   MAX_EXAM_HISTORY,
   NO_RECORD,
   type ProgressMap,
+  type SeenQuestions,
   type SrsMap,
 } from './progress.schema';
 import {
@@ -78,6 +80,13 @@ export interface AppState {
   currentExam: ExamAttempt | null;
   /** Finished attempts, newest first. */
   examHistory: readonly ExamResultRecord[];
+  /**
+   * Question id to how many times it has been shown, across quizzes and exams alike.
+   *
+   * Written wherever a question is actually put in front of the learner, so the mock exam can
+   * prefer what they have not met. See `src/domain/exam/realism.ts`.
+   */
+  seenQuestions: SeenQuestions;
 
   /** What the most recent day-recording did, for the UI to celebrate. Deliberately not persisted. */
   lastStreakOutcome: StreakOutcome['kind'] | null;
@@ -93,6 +102,8 @@ export interface AppState {
   markLessonRead: (objectiveId: string) => void;
   /** Record a finished objective quiz. */
   recordQuizAttempt: (objectiveId: string, correct: number, total: number) => void;
+  /** Record that these questions were shown. Idempotent per call, cumulative across calls. */
+  markQuestionsSeen: (questionIds: readonly string[]) => void;
   /** Grade one flashcard, advancing its schedule. */
   gradeCard: (cardId: string, grade: Grade) => void;
 
@@ -169,6 +180,7 @@ export const useAppStore = create<AppState>()(
         srs: {},
         currentExam: null,
         examHistory: [],
+        seenQuestions: {},
         lastStreakOutcome: null,
 
         setLocale: (locale) => set((state) => ({ settings: { ...state.settings, locale } })),
@@ -217,6 +229,22 @@ export const useAppStore = create<AppState>()(
             },
           }));
           applyTo(quizXp(correct, total));
+        },
+
+        markQuestionsSeen: (questionIds) => {
+          if (questionIds.length === 0) {
+            return;
+          }
+
+          set((state) => {
+            const seen = { ...state.seenQuestions };
+            // De-duplicated within the call: revealing the same question twice in one sitting is
+            // one sighting, and counting it twice would age a question the learner met once.
+            for (const id of new Set(questionIds)) {
+              seen[id] = (seen[id] ?? 0) + 1;
+            }
+            return { seenQuestions: seen };
+          });
         },
 
         startExam: (attempt) => {
@@ -271,6 +299,7 @@ export const useAppStore = create<AppState>()(
             srs: {},
             currentExam: null,
             examHistory: [],
+            seenQuestions: {},
             lastStreakOutcome: null,
           }),
       };
@@ -289,6 +318,7 @@ export const useAppStore = create<AppState>()(
         srs: state.srs,
         currentExam: state.currentExam,
         examHistory: state.examHistory,
+        seenQuestions: state.seenQuestions,
       }),
 
       migrate: (persisted, version) => {
@@ -316,6 +346,7 @@ export const useAppStore = create<AppState>()(
           srs: coerceSrs(blob['srs']),
           currentExam: coerceExamAttempt(blob['currentExam']),
           examHistory: coerceExamHistory(blob['examHistory']),
+          seenQuestions: coerceSeenQuestions(blob['seenQuestions']),
         };
       },
     },

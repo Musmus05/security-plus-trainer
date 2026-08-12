@@ -12,6 +12,7 @@ import {
   type ExamAttempt,
   type ExamScope,
   type ExamScore,
+  composeRank,
   durationMsFor,
   examRank,
   goTo as goToQuestion,
@@ -89,6 +90,7 @@ export function useExamAttempt(scope: ExamScope = 'full') {
   const saveExam = useAppStore((state) => state.saveExam);
   const finishExam = useAppStore((state) => state.finishExam);
   const abandonExam = useAppStore((state) => state.abandonExam);
+  const markQuestionsSeen = useAppStore((state) => state.markQuestionsSeen);
 
   /** Questions for the current attempt, by id. Null while the banks are loading. */
   const [questions, setQuestions] = useState<Map<string, Question> | null>(null);
@@ -152,13 +154,28 @@ export function useExamAttempt(scope: ExamScope = 'full') {
 
     void loadAllBanks().then((banks) => {
       const seed = createRandomSeed();
+
+      /*
+       * Read once, not per question. The rank function runs over the whole 420-question corpus, and
+       * `getState()` inside it would be four hundred store reads to answer the same question.
+       *
+       * Read here rather than through a selector on purpose: this is a snapshot taken at the moment
+       * the paper is drawn, and it must not make the component re-render every time a quiz answer
+       * updates it.
+       */
+      const seen = useAppStore.getState().seenQuestions;
+
       const drawn = sampleExam(
         groupByDomain(banks),
         plan.allocation,
         createSeededRng(seed),
-        // What separates a mock paper from a quiz: it is drawn scenario-led and recall is a last
-        // resort. See `src/domain/exam/realism.ts`.
-        (question) => examRank(question, SCENARIO_OBJECTIVES),
+        /*
+         * Two preferences folded into one rank. Exam-likeness dominates — recall is a last resort
+         * whatever its freshness — and within each kind the questions the learner has met least
+         * often come first, so a mock is not a rerun of the quizzes they have already drilled.
+         * See `src/domain/exam/realism.ts`.
+         */
+        (question) => composeRank(examRank(question, SCENARIO_OBJECTIVES), seen[question.id] ?? 0),
       );
 
       submitted.current = false;
@@ -206,6 +223,13 @@ export function useExamAttempt(scope: ExamScope = 'full') {
       ];
     });
 
+    /*
+     * The whole paper is recorded on submit rather than as each question is reached. A sitting is
+     * the unit here: an attempt walked away from was not really taken, and ageing its questions
+     * would push them out of the next paper for no reason.
+     */
+    markQuestionsSeen(attempt.questionIds);
+
     const result = scoreAttempt(answers, SCORE_OPTIONS);
     setScore(result);
     finishExam({
@@ -217,7 +241,7 @@ export function useExamAttempt(scope: ExamScope = 'full') {
       passed: result.passed,
       byDomain: result.byDomain.map(({ domain, correct, total }) => ({ domain, correct, total })),
     });
-  }, [attempt, questions, finishExam, scope]);
+  }, [attempt, questions, finishExam, scope, markQuestionsSeen]);
 
   /*
    * Time running out submits the attempt, exactly as the real exam does. Placed in an effect rather

@@ -122,6 +122,52 @@ export function coerceSrs(value: unknown): SrsMap {
   return kept;
 }
 
+/* ------------------------------------------------------- questions already met */
+
+/**
+ * Question id → how many times it has been put in front of the learner.
+ *
+ * The exam and the quizzes draw from the same 420 questions, and a mock full of items already
+ * drilled is a poor predictor: recognising a question is not the same as knowing the answer, and
+ * the score flatters. This is what lets the exam prefer what the learner has not met.
+ *
+ * A count rather than a flag, because the ordering has to keep degrading once everything has been
+ * seen — "least often" is still useful when "never" has run out.
+ */
+export const seenQuestionsSchema = z.record(z.string().min(1), z.number().int().positive());
+export type SeenQuestions = z.infer<typeof seenQuestionsSchema>;
+
+/**
+ * Bounded by the corpus in practice; bounded here against a hand-edited blob.
+ *
+ * 420 questions today, and an exam version change would not multiply that by ten. The cap exists so
+ * a pathological `localStorage` entry cannot grow the store without limit, not because normal use
+ * comes near it.
+ */
+export const MAX_SEEN_QUESTIONS = 5000;
+
+export function coerceSeenQuestions(value: unknown): SeenQuestions {
+  if (typeof value !== 'object' || value === null) {
+    return {};
+  }
+
+  const counter = z.number().int().positive();
+  const kept: SeenQuestions = {};
+  let count = 0;
+
+  for (const [id, times] of Object.entries(value)) {
+    if (count >= MAX_SEEN_QUESTIONS) {
+      break;
+    }
+    const parsed = counter.safeParse(times);
+    if (id.length > 0 && parsed.success) {
+      kept[id] = parsed.data;
+      count += 1;
+    }
+  }
+  return kept;
+}
+
 /* ---------------------------------------------------------------- mock exams */
 
 /**
