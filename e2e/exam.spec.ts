@@ -38,12 +38,8 @@ test.describe('mock exam', () => {
     await page.goto('/exam');
 
     await expect(page.getByText('Répartition officielle par domaine')).toBeVisible();
-
-    // Scoped to the split list. "25 questions" now also appears on the domain 4 exam row further
-    // down the page, so an unscoped match resolves to two elements and asserts nothing about either.
-    const split = page.getByRole('list').filter({ hasText: 'Opérations de sécurité' }).first();
-    await expect(split).toContainText('25 questions');
-    await expect(split).toContainText('11 questions');
+    await expect(page.getByText('25 questions')).toBeVisible();
+    await expect(page.getByText('11 questions')).toBeVisible();
   });
 
   test('labels the scaled score as an estimate before it is ever shown', async ({ page }) => {
@@ -257,16 +253,18 @@ test.describe('mock exam', () => {
 });
 
 test.describe('domain exams', () => {
-  test('the hub lists one paper per domain with its size and clock', async ({ page }) => {
-    await page.goto('/exam');
-
-    await expect(page.getByRole('heading', { name: 'Examens par domaine' })).toBeVisible();
-
+  test('each domain on the learning path offers its own paper', async ({ page }) => {
     /*
+     * They live on the path, not on the exam page. Sitting one is revision of that domain, so it
+     * belongs beside the domain's own progress bar and the lessons it examines — `/exam` is the
+     * full simulation and nothing else.
+     *
      * The sizes are the domains' own shares of the real paper — 11 / 20 / 16 / 25 / 18 — and the
      * clock is the real exam's minute per question. Asserting the pair together is what would catch
      * a duration invented independently of the question count.
      */
+    await page.goto('/path');
+
     for (const [domain, count] of [
       [1, 11],
       [2, 20],
@@ -276,19 +274,26 @@ test.describe('domain exams', () => {
     ] as const) {
       await expect(
         page.getByRole('link', {
-          name: `${String(count)} questions en ${String(count)} minutes`,
+          name: `Examen du domaine ${String(domain)}.0 — ${String(count)} questions en ${String(count)} minutes`,
         }),
         `domain ${String(domain)}`,
       ).toBeVisible();
     }
   });
 
-  test('the domain number is announced, not only shown', async ({ page }) => {
-    // The number badge is decorative and hidden, so without an explicit name the link reads as the
-    // domain title twice — and the number is how the exam itself identifies its domains.
+  test('the exam page is the full simulation and nothing else', async ({ page }) => {
     await page.goto('/exam');
 
-    await expect(page.getByRole('link', { name: /^Domaine 1\.0 Concepts généraux/ })).toBeVisible();
+    await expect(page.getByText('Examens par domaine')).toHaveCount(0);
+    await expect(page.getByText('Répartition officielle par domaine')).toBeVisible();
+  });
+
+  test('a domain link on the path opens that paper', async ({ page }) => {
+    await page.goto('/path');
+    await page.getByRole('link', { name: /^Examen du domaine 1\.0/ }).click();
+
+    await expect(page).toHaveURL(/\/exam\/1$/);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Concepts généraux');
   });
 
   test('a domain paper draws only that domain, on its own clock', async ({ page }) => {

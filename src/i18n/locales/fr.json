@@ -117,7 +117,10 @@
     "youAreHere": "ici",
     "lessonAvailable": "Leçon",
     "trailLabel_one": "Un parcours de {{count}} objectif",
-    "trailLabel_other": "Un parcours de {{count}} objectifs"
+    "trailLabel_other": "Un parcours de {{count}} objectifs",
+    "domainExam": "Examen de ce domaine",
+    "domainExamMeta": "{{questions}} questions · {{minutes}} min",
+    "domainExamLabel": "Examen du domaine {{number}} — {{questions}} questions en {{minutes}} minutes"
   },
   "lesson": {
     "backToPath": "Retour au parcours",
@@ -274,8 +277,6 @@
     "timeRunningOut_other": "Moins de {{count}} minutes. C’est le moment de revoir les questions marquées.",
     "minuteCount_one": "{{count}} minute",
     "minuteCount_other": "{{count}} minutes",
-    "byDomainExamsTitle": "Examens par domaine",
-    "byDomainExamsHelp": "Un examen blanc court sur un seul domaine, avec sa part exacte de questions et le même temps par question que l’épreuve réelle.",
     "domainShare": "{{questions}} questions — la part exacte du domaine {{domain}} dans une épreuve de {{total}} questions.",
     "domainPaper": "Domaine {{domain}}",
     "fullPaper": "Examen complet",
@@ -283,7 +284,6 @@
     "resumeOther": "Reprendre cet examen",
     "unknownTitle": "Examen introuvable",
     "unknownBody": "« {{id}} » ne correspond à aucun domaine SY0-701.",
-    "backToExams": "Retour aux examens",
-    "domainExamLabel": "Domaine {{number}} {{name}} — {{questions}} questions en {{minutes}} minutes"
+    "backToExams": "Retour aux examens"
   }
 }

@@ -1,6 +1,8 @@
 import type { Rng } from '@/domain/ports';
 import { sample, shuffle } from '@/domain/shuffle';
 
+import { sampleByRank } from './realism';
+
 /**
  * Drawing a mock exam at the official domain weights.
  *
@@ -77,8 +79,17 @@ export function sampleExam<Q extends SampleQuestion>(
   pools: Readonly<Record<number, readonly Q[]>>,
   allocation: readonly Allocation[],
   rng: Rng,
+  /**
+   * Optional preference over the pool, highest drawn first. See `realism.ts` — this is what makes
+   * the mock paper scenario-led rather than a reshuffle of the same questions the quizzes use.
+   * Omitted, every question is equally likely, which is what a quiz wants.
+   */
+  rankOf?: (question: Q) => number,
 ): Q[] {
-  const drawn = allocation.flatMap(({ domain, count }) => sample(pools[domain] ?? [], count, rng));
+  const drawn = allocation.flatMap(({ domain, count }) => {
+    const pool = pools[domain] ?? [];
+    return rankOf === undefined ? sample(pool, count, rng) : sampleByRank(pool, count, rankOf, rng);
+  });
 
   return shuffle(drawn, rng);
 }

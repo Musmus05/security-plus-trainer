@@ -16,7 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- An exam per domain, alongside the full mock. Each draws exactly the number of questions that
+- **The mock exam is drawn scenario-led, and never uses recall questions.** Seven of the 28
+  objectives literally begin "Given a scenario" and are examined with scenarios wherever the
+  corpus has them; everywhere else recall is a last resort. A paper runs at roughly 70% scenario
+  and 30% discrimination, against 25% recall in the corpus as a whole. Recall is how a term is
+  learnt, so it stays in the quizzes and the flashcards.
+- The domain exams live on the learning path, on each domain's own card, rather than on the exam
+  page. Sitting one is revision of that domain; `/exam` is the full simulation and nothing else.
+- An exam per domain. Each draws exactly the number of questions that
   domain contributes to the real paper — 11, 20, 16, 25, 18 — on the real exam's own
   minute-per-question budget, so a domain paper rehearses the same pressure over a slice of it.
   A full mock costs ninety minutes; revising domain 4 should not require sitting the other four.
