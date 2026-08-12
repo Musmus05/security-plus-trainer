@@ -117,7 +117,10 @@
     "youAreHere": "here",
     "lessonAvailable": "Lesson",
     "trailLabel_one": "A trail of {{count}} objective",
-    "trailLabel_other": "A trail of {{count}} objectives"
+    "trailLabel_other": "A trail of {{count}} objectives",
+    "domainExam": "Exam for this domain",
+    "domainExamMeta": "{{questions}} questions · {{minutes}} min",
+    "domainExamLabel": "Exam for domain {{number}} — {{questions}} questions in {{minutes}} minutes"
   },
   "lesson": {
     "backToPath": "Back to the learning path",
@@ -274,8 +277,6 @@
     "timeRunningOut_other": "Under {{count}} minutes. Now is the time to revisit the flagged questions.",
     "minuteCount_one": "{{count}} minute",
     "minuteCount_other": "{{count}} minutes",
-    "byDomainExamsTitle": "Exams by domain",
-    "byDomainExamsHelp": "A short mock over a single domain, with that domain’s exact share of the questions and the real exam’s time per question.",
     "domainShare": "{{questions}} questions — exactly what domain {{domain}} contributes to a {{total}}-question paper.",
     "domainPaper": "Domain {{domain}}",
     "fullPaper": "Full exam",
@@ -283,7 +284,6 @@
     "resumeOther": "Resume that exam",
     "unknownTitle": "No such exam",
     "unknownBody": "“{{id}}” is not an SY0-701 domain.",
-    "backToExams": "Back to the exams",
-    "domainExamLabel": "Domain {{number}} {{name}} — {{questions}} questions in {{minutes}} minutes"
+    "backToExams": "Back to the exams"
   }
 }

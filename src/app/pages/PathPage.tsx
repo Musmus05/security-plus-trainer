@@ -1,9 +1,11 @@
-import { Trophy } from 'lucide-react';
+import { ClipboardCheck, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 
 import { DOMAINS } from '@/content/exam/sy0-701/domains';
 import { crownsFor } from '@/domain/gamification';
 import { toObjectiveProgress, useDashboard } from '@/features/dashboard/useDashboard';
+import { examPlan } from '@/features/exam/useExamAttempt';
 import { PathTrail } from '@/features/path/PathTrail';
 import { useAppStore } from '@/lib/store/store';
 import { Badge, Card, cn, domainAccent, ProgressBar } from '@/ui';
@@ -72,6 +74,32 @@ export function PathPage() {
                     />
                   </div>
                 )}
+
+                {/*
+                  The domain paper lives here rather than on the exam page. Sitting one is revision
+                  of *this* domain — it belongs beside the domain's own progress, next to the
+                  lessons it examines. `/exam` is left as the full simulation and nothing else.
+                */}
+                <Link
+                  to={`/exam/${String(domain.id)}`}
+                  aria-label={t('path.domainExamLabel', {
+                    number: domain.number,
+                    questions: examPlan(domain.id).questionCount,
+                    minutes: examPlan(domain.id).durationMs / 60_000,
+                  })}
+                  className="border-edge hover:bg-sunken focus-visible:outline-action mt-4 flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  <span className="flex items-center gap-2 text-sm font-semibold">
+                    <ClipboardCheck aria-hidden className={cn('size-4', accent.text)} />
+                    {t('path.domainExam')}
+                  </span>
+                  <span className="text-ink-muted text-xs">
+                    {t('path.domainExamMeta', {
+                      questions: examPlan(domain.id).questionCount,
+                      minutes: examPlan(domain.id).durationMs / 60_000,
+                    })}
+                  </span>
+                </Link>
               </div>
             </Card>
 

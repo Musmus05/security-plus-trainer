@@ -1,4 +1,11 @@
 export {
+  examRank,
+  type QuestionKind,
+  type RankableQuestion,
+  sampleByRank,
+  scenarioObjectiveIds,
+} from './realism';
+export {
   type Allocation,
   allocate,
   type SampleQuestion,

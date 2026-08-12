@@ -88,6 +88,8 @@ describe('translation catalogues', () => {
       // `exam.goToQuestion` reads "Question 3, answered" against "Question 3, répondue".
       'exam.goToQuestion',
       'exam.historyDetail',
+      // "{{questions}} questions · {{minutes}} min" — "questions" and "min" are the same in both.
+      'path.domainExamMeta',
     ]);
 
     const english = new Map(leafEntries(en));

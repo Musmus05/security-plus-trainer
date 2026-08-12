@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { EXAM_META } from '@/content/exam-meta';
-import { DOMAINS } from '@/content/exam/sy0-701/domains';
+import { ALL_OBJECTIVES, DOMAINS } from '@/content/exam/sy0-701/domains';
 import { loadQuestions, OBJECTIVES_WITH_QUESTIONS } from '@/content/question-bank';
 import type { Question } from '@/content/schemas';
 import {
@@ -13,12 +13,14 @@ import {
   type ExamScope,
   type ExamScore,
   durationMsFor,
+  examRank,
   goTo as goToQuestion,
   isExpired,
   next as nextQuestion,
   previous as previousQuestion,
   remainingMs,
   questionCountFor,
+  scenarioObjectiveIds,
   sampleExam,
   scoreAttempt,
   selectOption as selectExamOption,
@@ -33,6 +35,14 @@ import { useAppStore } from '@/lib/store/store';
 
 const SCORE_OPTIONS = { scale: EXAM_META.scoreScale, passingScore: EXAM_META.passingScore };
 const WEIGHTS = DOMAINS.map((domain) => ({ domain: domain.id, weight: domain.weight }));
+
+/**
+ * The seven objectives whose official title begins "Given a scenario".
+ *
+ * Derived from the outline rather than listed, so it cannot fall out of step with the document it
+ * came from.
+ */
+const SCENARIO_OBJECTIVES = scenarioObjectiveIds(ALL_OBJECTIVES);
 
 /** The shape of one exam: how many questions from where, and how long for. */
 export function examPlan(scope: ExamScope) {
@@ -142,7 +152,14 @@ export function useExamAttempt(scope: ExamScope = 'full') {
 
     void loadAllBanks().then((banks) => {
       const seed = createRandomSeed();
-      const drawn = sampleExam(groupByDomain(banks), plan.allocation, createSeededRng(seed));
+      const drawn = sampleExam(
+        groupByDomain(banks),
+        plan.allocation,
+        createSeededRng(seed),
+        // What separates a mock paper from a quiz: it is drawn scenario-led and recall is a last
+        // resort. See `src/domain/exam/realism.ts`.
+        (question) => examRank(question, SCENARIO_OBJECTIVES),
+      );
 
       submitted.current = false;
       setScore(null);

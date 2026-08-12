@@ -8,7 +8,6 @@ import { type ExamScope, isDomainScope } from '@/domain/exam';
 import type { ExamResultRecord } from '@/lib/store/progress.schema';
 import { Badge, Button, Card, cn } from '@/ui';
 
-import { DomainExamList } from './DomainExamList';
 import { type examPlan } from './useExamAttempt';
 
 export interface ExamStartProps {
@@ -139,8 +138,6 @@ export function ExamStart({
           {t('exam.scoringNotice', { passing: EXAM_META.passingScore })}
         </p>
       </Card>
-
-      {domain === undefined && <DomainExamList history={history} />}
 
       {ownHistory.length > 0 && (
         <section className="flex flex-col gap-3">
